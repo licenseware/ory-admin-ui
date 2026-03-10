@@ -5,7 +5,7 @@ go 1.25.5
 require (
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/go-chi/chi/v5 v5.2.5
-	github.com/meysam81/x/logging v0.0.0-20260219154253-49caa677ab7a
+	github.com/meysam81/x/logging v0.0.0-20260310092240-698998704ca9
 	github.com/rs/zerolog v1.34.0
 	github.com/urfave/cli/v3 v3.6.2
 )
