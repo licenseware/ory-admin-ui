@@ -3,6 +3,7 @@ import { ref, computed, watch } from "vue"
 import { useProfileStore, nameToSlug } from "@/stores/profile"
 import { useThemeStore } from "@/stores/theme"
 import { useHealthAlive, usePublicHealthAlive, useVersion } from "@/composables/useHealth"
+import { useOathkeeperHealth, useOathkeeperVersion } from "@/composables/useOathkeeper"
 import Card from "@/components/ui/Card.vue"
 import CardHeader from "@/components/ui/CardHeader.vue"
 import CardTitle from "@/components/ui/CardTitle.vue"
@@ -40,18 +41,23 @@ const themeStore = useThemeStore()
 const { isError: adminHealthError, refetch: checkAdminHealth } = useHealthAlive()
 const { isError: publicHealthError, refetch: checkPublicHealth } = usePublicHealthAlive()
 const { data: version } = useVersion()
+const { isError: oathkeeperHealthError, refetch: checkOathkeeperHealth } = useOathkeeperHealth()
+const { data: oathkeeperVersion } = useOathkeeperVersion()
 
 // --- Active Profile Config form state ---
 const adminUrl = ref(profileStore.kratosAdminBaseURL)
 const publicUrl = ref(profileStore.kratosPublicBaseURL)
+const oathkeeperUrl = ref(profileStore.oathkeeperApiBaseURL)
 
 watch(
   () => profileStore.activeSlug,
   () => {
     adminUrl.value = profileStore.kratosAdminBaseURL
     publicUrl.value = profileStore.kratosPublicBaseURL
+    oathkeeperUrl.value = profileStore.oathkeeperApiBaseURL
     adminTestResult.value = null
     publicTestResult.value = null
+    oathkeeperTestResult.value = null
   }
 )
 
@@ -60,12 +66,17 @@ const isTestingAdmin = ref(false)
 const adminTestResult = ref<"success" | "error" | null>(null)
 const isTestingPublic = ref(false)
 const publicTestResult = ref<"success" | "error" | null>(null)
+const isTestingOathkeeper = ref(false)
+const oathkeeperTestResult = ref<"success" | "error" | null>(null)
 
 watch(adminUrl, () => {
   adminTestResult.value = null
 })
 watch(publicUrl, () => {
   publicTestResult.value = null
+})
+watch(oathkeeperUrl, () => {
+  oathkeeperTestResult.value = null
 })
 
 const isActiveConfigProfile = computed(
@@ -75,7 +86,8 @@ const isActiveConfigProfile = computed(
 const hasConfigChanges = computed(() => {
   return (
     adminUrl.value !== profileStore.kratosAdminBaseURL ||
-    publicUrl.value !== profileStore.kratosPublicBaseURL
+    publicUrl.value !== profileStore.kratosPublicBaseURL ||
+    oathkeeperUrl.value !== profileStore.oathkeeperApiBaseURL
   )
 })
 
@@ -97,21 +109,35 @@ const isValidPublicUrl = computed(() => {
   }
 })
 
+const isValidOathkeeperUrl = computed(() => {
+  if (!oathkeeperUrl.value) return true
+  try {
+    new URL(oathkeeperUrl.value)
+    return true
+  } catch {
+    return false
+  }
+})
+
 function saveActiveProfile() {
   profileStore.updateProfile(profileStore.activeSlug, {
     kratosAdminBaseURL: adminUrl.value.replace(/\/+$/, ""),
     kratosPublicBaseURL: publicUrl.value.replace(/\/+$/, ""),
+    oathkeeperApiBaseURL: oathkeeperUrl.value ? oathkeeperUrl.value.replace(/\/+$/, "") : undefined,
   })
   toast.success("Profile saved")
   checkAdminHealth()
   checkPublicHealth()
+  checkOathkeeperHealth()
 }
 
 function resetActiveProfile() {
   adminUrl.value = profileStore.kratosAdminBaseURL
   publicUrl.value = profileStore.kratosPublicBaseURL
+  oathkeeperUrl.value = profileStore.oathkeeperApiBaseURL
   adminTestResult.value = null
   publicTestResult.value = null
+  oathkeeperTestResult.value = null
 }
 
 function overrideLocally() {
@@ -149,11 +175,31 @@ async function testPublicConnection() {
   publicTestResult.value = publicHealthError.value ? "error" : "success"
 }
 
+async function testOathkeeperConnection() {
+  if (!oathkeeperUrl.value) {
+    toast.info("Oathkeeper URL is not configured")
+    return
+  }
+  if (!isValidOathkeeperUrl.value) {
+    toast.error("Please enter a valid Oathkeeper API URL")
+    return
+  }
+  isTestingOathkeeper.value = true
+  profileStore.updateProfile(profileStore.activeSlug, {
+    oathkeeperApiBaseURL: oathkeeperUrl.value.replace(/\/+$/, ""),
+  })
+  await new Promise((resolve) => setTimeout(resolve, 500))
+  await checkOathkeeperHealth()
+  isTestingOathkeeper.value = false
+  oathkeeperTestResult.value = oathkeeperHealthError.value ? "error" : "success"
+}
+
 // --- New Profile form ---
 const showNewProfileForm = ref(false)
 const newProfileName = ref("")
 const newAdminUrl = ref("http://localhost:4455")
 const newPublicUrl = ref("http://localhost:4433")
+const newOathkeeperUrl = ref("http://localhost:4456")
 
 const newProfileSlug = computed(() => nameToSlug(newProfileName.value))
 
@@ -162,12 +208,14 @@ function createNewProfile() {
     profileStore.createProfile(newProfileName.value, {
       kratosAdminBaseURL: newAdminUrl.value,
       kratosPublicBaseURL: newPublicUrl.value,
+      oathkeeperApiBaseURL: newOathkeeperUrl.value,
     })
     toast.success(`Profile "${newProfileName.value}" created`)
     showNewProfileForm.value = false
     newProfileName.value = ""
     newAdminUrl.value = "http://localhost:4455"
     newPublicUrl.value = "http://localhost:4433"
+    newOathkeeperUrl.value = "http://localhost:4456"
   } catch (e) {
     toast.error((e as Error).message)
   }
@@ -339,6 +387,10 @@ watch(theme, (newTheme) => {
             <Label for="new-public-url">Public API URL</Label>
             <Input id="new-public-url" v-model="newPublicUrl" type="url" />
           </div>
+          <div class="space-y-2">
+            <Label for="new-oathkeeper-url">Oathkeeper API URL</Label>
+            <Input id="new-oathkeeper-url" v-model="newOathkeeperUrl" type="url" />
+          </div>
           <div class="flex gap-2">
             <Button size="sm" @click="createNewProfile" :disabled="!newProfileName">
               Create
@@ -463,6 +515,42 @@ watch(theme, (newTheme) => {
           </p>
         </div>
 
+        <div class="space-y-2">
+          <Label for="oathkeeper-endpoint">Oathkeeper API Endpoint</Label>
+          <div class="flex items-center gap-2">
+            <Input
+              id="oathkeeper-endpoint"
+              v-model="oathkeeperUrl"
+              type="url"
+              :disabled="isActiveConfigProfile"
+              :class="!isValidOathkeeperUrl && oathkeeperUrl ? 'border-destructive' : ''"
+            />
+            <Button
+              variant="outline"
+              @click="testOathkeeperConnection"
+              :disabled="!isValidOathkeeperUrl || isTestingOathkeeper"
+            >
+              <Loader2 v-if="isTestingOathkeeper" class="mr-1 h-3 w-3 animate-spin" />
+              Test
+            </Button>
+            <CheckCircle
+              v-if="oathkeeperTestResult === 'success'"
+              class="h-4 w-4 flex-shrink-0 text-success"
+            />
+            <XCircle
+              v-else-if="oathkeeperTestResult === 'error'"
+              class="h-4 w-4 flex-shrink-0 text-destructive"
+            />
+          </div>
+          <p v-if="!isValidOathkeeperUrl && oathkeeperUrl" class="text-xs text-destructive">
+            Please enter a valid URL
+          </p>
+          <p class="text-xs text-text-muted">
+            The URL of your Oathkeeper API. Leave empty if not using Oathkeeper. Typically port
+            4456.
+          </p>
+        </div>
+
         <div v-if="!isActiveConfigProfile" class="flex justify-end gap-2">
           <Button
             variant="outline"
@@ -568,6 +656,19 @@ watch(theme, (newTheme) => {
             class="font-mono text-sm text-accent hover:text-accent-hover"
           >
             {{ version.version }}
+          </a>
+          <span v-else class="font-mono text-sm text-text-primary">Unknown</span>
+        </div>
+        <div class="flex justify-between border-b border-border-subtle py-2">
+          <span class="text-sm text-text-muted">Oathkeeper Version</span>
+          <a
+            v-if="oathkeeperVersion?.version"
+            :href="`https://github.com/ory/oathkeeper/releases/tag/v${oathkeeperVersion.version}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-sm text-accent hover:text-accent-hover"
+          >
+            {{ oathkeeperVersion.version }}
           </a>
           <span v-else class="font-mono text-sm text-text-primary">Unknown</span>
         </div>

@@ -1,6 +1,8 @@
 import { computed } from "vue"
 import { useQuery } from "@tanstack/vue-query"
 import { healthApi } from "@/api/health"
+import { useOathkeeperHealth } from "@/composables/useOathkeeper"
+import { useProfileStore } from "@/stores/profile"
 
 export function useHealthAlive() {
   return useQuery({
@@ -25,16 +27,32 @@ export function usePublicHealthAlive() {
 export type SystemHealthStatus = "healthy" | "degraded" | "disconnected"
 
 export function useSystemHealth() {
+  const profileStore = useProfileStore()
+  const oathkeeperEnabled = computed(() => profileStore.isOathkeeperConfigured)
+
   const { isError: adminError, isLoading: adminLoading } = useHealthAlive()
   const { isError: publicError, isLoading: publicLoading } = usePublicHealthAlive()
+  const { isError: oathkeeperError, isLoading: oathkeeperLoading } = useOathkeeperHealth({
+    enabled: oathkeeperEnabled,
+  })
 
   const adminUp = computed(() => !adminError.value)
   const publicUp = computed(() => !publicError.value)
-  const isLoading = computed(() => adminLoading.value || publicLoading.value)
+  const oathkeeperUp = computed(() => !oathkeeperEnabled.value || !oathkeeperError.value)
+  const isLoading = computed(
+    () =>
+      adminLoading.value ||
+      publicLoading.value ||
+      (oathkeeperEnabled.value && oathkeeperLoading.value)
+  )
+
+  const kratosHealthy = computed(() => adminUp.value && publicUp.value)
 
   const status = computed<SystemHealthStatus>(() => {
-    if (adminUp.value && publicUp.value) return "healthy"
-    if (!adminUp.value && !publicUp.value) return "disconnected"
+    if (kratosHealthy.value && oathkeeperUp.value) return "healthy"
+    const allDown =
+      !adminUp.value && !publicUp.value && (!oathkeeperEnabled.value || !oathkeeperUp.value)
+    if (allDown) return "disconnected"
     return "degraded"
   })
 
@@ -47,7 +65,8 @@ export function useSystemHealth() {
   const tooltipText = computed(() => {
     const admin = adminUp.value ? "up" : "down"
     const pub = publicUp.value ? "up" : "down"
-    return `Admin API: ${admin} · Public API: ${pub}`
+    const ok = !oathkeeperEnabled.value ? "n/a" : oathkeeperUp.value ? "up" : "down"
+    return `Admin API: ${admin} · Public API: ${pub} · Oathkeeper: ${ok}`
   })
 
   const colorClass = computed(() => {
@@ -62,7 +81,17 @@ export function useSystemHealth() {
     return "bg-destructive/10"
   })
 
-  return { status, label, tooltipText, colorClass, bgColorClass, adminUp, publicUp, isLoading }
+  return {
+    status,
+    label,
+    tooltipText,
+    colorClass,
+    bgColorClass,
+    adminUp,
+    publicUp,
+    oathkeeperUp,
+    isLoading,
+  }
 }
 
 export function useHealthReady() {

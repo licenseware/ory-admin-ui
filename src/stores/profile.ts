@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import { ref, computed } from "vue"
 import { useQueryClient } from "@tanstack/vue-query"
 import { getRuntimeProfiles } from "@/config/loader"
-import { resetApiClient, resetPublicApiClient } from "@/api/client"
+import { resetApiClient, resetPublicApiClient, resetOathkeeperApiClient } from "@/api/client"
 import { profilesMapSchema, importExportSchema, slugSchema } from "@/types/profile"
 import type {
   Profile,
@@ -18,6 +18,7 @@ const ACTIVE_SLUG_STORAGE_KEY = "ory-active-profile"
 const HARDCODED_LOCAL_PROFILE: ProfileData = {
   kratosAdminBaseURL: "http://localhost:4455",
   kratosPublicBaseURL: "http://localhost:4433",
+  oathkeeperApiBaseURL: "http://localhost:4456",
 }
 
 /**
@@ -42,6 +43,7 @@ function toProfile(slug: string, data: ProfileData): Profile {
         adminUrl: data.kratosAdminBaseURL || "http://localhost:4455",
         publicUrl: data.kratosPublicBaseURL || "http://localhost:4433",
       },
+      ...(data.oathkeeperApiBaseURL ? { oathkeeper: { apiUrl: data.oathkeeperApiBaseURL } } : {}),
     },
   }
 }
@@ -73,6 +75,12 @@ export const useProfileStore = defineStore("profile", () => {
   const kratosPublicBaseURL = computed(
     () => activeProfile.value?.services.kratos?.publicUrl || "http://localhost:4433"
   )
+
+  const oathkeeperApiBaseURL = computed(
+    () => activeProfile.value?.services.oathkeeper?.apiUrl ?? ""
+  )
+
+  const isOathkeeperConfigured = computed(() => !!activeProfile.value?.services.oathkeeper?.apiUrl)
 
   const isConfigured = computed(() => kratosAdminBaseURL.value.length > 0)
 
@@ -123,6 +131,7 @@ export const useProfileStore = defineStore("profile", () => {
         localMap[slug] = {
           kratosAdminBaseURL: profile.services.kratos?.adminUrl,
           kratosPublicBaseURL: profile.services.kratos?.publicUrl,
+          oathkeeperApiBaseURL: profile.services.oathkeeper?.apiUrl,
         }
       }
     }
@@ -190,6 +199,7 @@ export const useProfileStore = defineStore("profile", () => {
     persistActiveSlug()
     resetApiClient()
     resetPublicApiClient()
+    resetOathkeeperApiClient()
     invalidateAllQueries()
   }
 
@@ -213,6 +223,7 @@ export const useProfileStore = defineStore("profile", () => {
     const updatedData: ProfileData = {
       kratosAdminBaseURL: data.kratosAdminBaseURL ?? existing.services.kratos?.adminUrl,
       kratosPublicBaseURL: data.kratosPublicBaseURL ?? existing.services.kratos?.publicUrl,
+      oathkeeperApiBaseURL: data.oathkeeperApiBaseURL ?? existing.services.oathkeeper?.apiUrl,
     }
 
     profiles.value.set(slug, toProfile(slug, updatedData))
@@ -221,6 +232,7 @@ export const useProfileStore = defineStore("profile", () => {
     if (slug === activeSlug.value) {
       resetApiClient()
       resetPublicApiClient()
+      resetOathkeeperApiClient()
       invalidateAllQueries()
     }
   }
@@ -254,6 +266,7 @@ export const useProfileStore = defineStore("profile", () => {
         exportMap[slug] = {
           kratosAdminBaseURL: profile.services.kratos?.adminUrl,
           kratosPublicBaseURL: profile.services.kratos?.publicUrl,
+          oathkeeperApiBaseURL: profile.services.oathkeeper?.apiUrl,
         }
       }
     }
@@ -289,6 +302,8 @@ export const useProfileStore = defineStore("profile", () => {
     activeProfile,
     kratosAdminBaseURL,
     kratosPublicBaseURL,
+    oathkeeperApiBaseURL,
+    isOathkeeperConfigured,
     isConfigured,
     allProfiles,
     localProfiles,

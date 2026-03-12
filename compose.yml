@@ -53,6 +53,7 @@ services:
       - ./dev/access-rules.yml:/etc/oathkeeper/access-rules.yml:ro
     ports:
       - "4455:4455"
+      - "24455:4455"
 
   mailslurper:
     image: oryd/mailslurper:latest-smtps

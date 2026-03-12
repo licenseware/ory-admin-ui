@@ -16,11 +16,16 @@ export const serviceEndpointsSchema = z.object({
   publicUrl: z.string(),
 })
 
+export const oathkeeperEndpointsSchema = z.object({
+  apiUrl: z.string(),
+})
+
 // --- Raw config shape (per-profile in config.json / localStorage) ---
 
 export const profileDataSchema = z.object({
   kratosAdminBaseURL: z.string().optional(),
   kratosPublicBaseURL: z.string().optional(),
+  oathkeeperApiBaseURL: z.string().optional(),
 })
 
 // --- Profiles map (Record<slug, profileData>) ---
@@ -34,6 +39,7 @@ export const profileSchema = z.object({
   slug: slugSchema,
   services: z.object({
     kratos: serviceEndpointsSchema.optional(),
+    oathkeeper: oathkeeperEndpointsSchema.optional(),
   }),
 })
 
@@ -47,6 +53,7 @@ export const importExportSchema = z.object({
 // --- Inferred types ---
 
 export type ServiceEndpoints = z.infer<typeof serviceEndpointsSchema>
+export type OathkeeperEndpoints = z.infer<typeof oathkeeperEndpointsSchema>
 export type ProfileData = z.infer<typeof profileDataSchema>
 export type ProfilesMap = z.infer<typeof profilesMapSchema>
 export type Profile = z.infer<typeof profileSchema>

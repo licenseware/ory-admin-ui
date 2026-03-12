@@ -89,3 +89,46 @@ export function getPublicApiClient() {
 export function resetPublicApiClient() {
   publicApiClient = null
 }
+
+export function createOathkeeperApiClient() {
+  const settings = useProfileStore()
+
+  return ky.create({
+    prefixUrl: settings.oathkeeperApiBaseURL,
+    timeout: 30000,
+    credentials: "include",
+    redirect: "follow",
+    hooks: {
+      beforeRequest: [
+        (request) => {
+          log.debug(`[Oathkeeper API] Request: ${request.method} ${request.url}`)
+        },
+      ],
+      afterResponse: [
+        (_request, _options, response) => {
+          log.debug(`[Oathkeeper API] Response: ${response.status}`)
+          return response
+        },
+      ],
+      beforeError: [
+        (error) => {
+          log.error(`[Oathkeeper API] Error:`, error.message)
+          return error
+        },
+      ],
+    },
+  })
+}
+
+let oathkeeperApiClient: ReturnType<typeof createOathkeeperApiClient> | null = null
+
+export function getOathkeeperApiClient() {
+  if (!oathkeeperApiClient) {
+    oathkeeperApiClient = createOathkeeperApiClient()
+  }
+  return oathkeeperApiClient
+}
+
+export function resetOathkeeperApiClient() {
+  oathkeeperApiClient = null
+}
