@@ -1,10 +1,12 @@
 {
   "local": {
-    "kratosAdminBaseURL": "http://localhost:4434",
-    "kratosPublicBaseURL": "http://localhost:4433"
+    "kratosAdminBaseURL": "http://localhost:14455",
+    "kratosPublicBaseURL": "http://localhost:4433",
+    "oathkeeperApiBaseURL": "http://localhost:24455"
   },
   "prod": {
     "kratosAdminBaseURL": "https://kratos-admin.example.com",
-    "kratosPublicBaseURL": "https://kratos-public.example.com"
+    "kratosPublicBaseURL": "https://kratos-public.example.com",
+    "oathkeeperApiBaseURL": "https://oathkeeper-api.example.com"
   }
 }
