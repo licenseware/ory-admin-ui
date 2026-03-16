@@ -8,6 +8,7 @@ vi.mock("@/config/loader", () => ({
 vi.mock("@/api/client", () => ({
   resetApiClient: vi.fn(),
   resetPublicApiClient: vi.fn(),
+  resetOathkeeperApiClient: vi.fn(),
 }))
 
 import { useProfileStore, nameToSlug } from "../profile"
