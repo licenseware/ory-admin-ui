@@ -16,6 +16,7 @@ import Textarea from "@/components/ui/Textarea.vue"
 import CopyButton from "@/components/common/CopyButton.vue"
 import BackButton from "@/components/common/BackButton.vue"
 import { Shield, Plus, Trash2, Download } from "lucide-vue-next"
+import { cn } from "@/lib/utils"
 
 const route = useRoute()
 
@@ -358,7 +359,7 @@ function downloadYaml() {
             <Textarea
               v-model="auth.config"
               :rows="3"
-              :class="['font-mono text-sm', !isValidJson(auth.config) && 'border-destructive']"
+              :class="cn('font-mono text-sm', !isValidJson(auth.config) && 'border-destructive')"
               placeholder="{}"
             />
             <p v-if="!isValidJson(auth.config)" class="text-xs text-destructive">Invalid JSON</p>
@@ -392,7 +393,9 @@ function downloadYaml() {
           <Textarea
             v-model="authorizer.config"
             :rows="3"
-            :class="['font-mono text-sm', !isValidJson(authorizer.config) && 'border-destructive']"
+            :class="
+              cn('font-mono text-sm', !isValidJson(authorizer.config) && 'border-destructive')
+            "
             placeholder="{}"
           />
           <p v-if="!isValidJson(authorizer.config)" class="text-xs text-destructive">
@@ -441,7 +444,7 @@ function downloadYaml() {
             <Textarea
               v-model="mut.config"
               :rows="3"
-              :class="['font-mono text-sm', !isValidJson(mut.config) && 'border-destructive']"
+              :class="cn('font-mono text-sm', !isValidJson(mut.config) && 'border-destructive')"
               placeholder="{}"
             />
             <p v-if="!isValidJson(mut.config)" class="text-xs text-destructive">Invalid JSON</p>
