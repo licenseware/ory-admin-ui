@@ -1,14 +1,19 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
-const mockJsonFn = vi.fn()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockJsonFn: any = vi.fn()
 const mockResponse = {
   json: mockJsonFn,
   headers: new Headers(),
 }
-const mockGetFn = vi.fn(() => mockResponse)
-const mockPostFn = vi.fn(() => ({ json: mockJsonFn }))
-const mockPutFn = vi.fn(() => ({ json: mockJsonFn }))
-const mockPatchFn = vi.fn(() => ({ json: mockJsonFn }))
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockGetFn: any = vi.fn(() => mockResponse)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockPostFn: any = vi.fn(() => ({ json: mockJsonFn }))
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockPutFn: any = vi.fn(() => ({ json: mockJsonFn }))
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockPatchFn: any = vi.fn(() => ({ json: mockJsonFn }))
 const mockDeleteFn = vi.fn(() => Promise.resolve())
 
 vi.mock("../client", () => ({
@@ -22,8 +27,8 @@ vi.mock("../client", () => ({
 }))
 
 vi.mock("@/lib/validation", () => ({
-  safeParseArrayWithLog: vi.fn((_schema, data) => data),
-  safeParseWithLog: vi.fn((_schema, data) => data),
+  safeParseArrayWithLog: vi.fn((_schema: unknown, data: unknown) => data),
+  safeParseWithLog: vi.fn((_schema: unknown, data: unknown) => data),
 }))
 
 vi.mock("../pagination", () => ({
@@ -81,8 +86,7 @@ describe("identitiesApi", () => {
   describe("get", () => {
     it("calls admin/identities/:id with no credentials", async () => {
       const identity = { id: "id-1" }
-      const jsonFn = vi.fn().mockResolvedValue(identity)
-      mockGetFn.mockReturnValue({ json: jsonFn })
+      mockGetFn.mockReturnValue({ json: vi.fn().mockResolvedValue(identity) })
       const result = await identitiesApi.get("id-1")
       expect(mockGetFn).toHaveBeenCalledWith("admin/identities/id-1", {
         searchParams: undefined,
@@ -91,8 +95,7 @@ describe("identitiesApi", () => {
     })
 
     it("passes include_credential params", async () => {
-      const jsonFn = vi.fn().mockResolvedValue({ id: "id-1" })
-      mockGetFn.mockReturnValue({ json: jsonFn })
+      mockGetFn.mockReturnValue({ json: vi.fn().mockResolvedValue({ id: "id-1" }) })
       await identitiesApi.get("id-1", ["password", "oidc"])
       const sp = mockGetFn.mock.calls[0][1].searchParams as URLSearchParams
       expect(sp.getAll("include_credential")).toEqual(["password", "oidc"])
@@ -148,8 +151,7 @@ describe("identitiesApi", () => {
 
   describe("getSessions", () => {
     it("calls admin/identities/:id/sessions with no params", async () => {
-      const jsonFn = vi.fn().mockResolvedValue([])
-      mockGetFn.mockReturnValue({ json: jsonFn })
+      mockGetFn.mockReturnValue({ json: vi.fn().mockResolvedValue([]) })
       const result = await identitiesApi.getSessions("id-1")
       expect(mockGetFn).toHaveBeenCalledWith("admin/identities/id-1/sessions", {
         searchParams: undefined,
@@ -158,8 +160,7 @@ describe("identitiesApi", () => {
     })
 
     it("passes active param", async () => {
-      const jsonFn = vi.fn().mockResolvedValue([])
-      mockGetFn.mockReturnValue({ json: jsonFn })
+      mockGetFn.mockReturnValue({ json: vi.fn().mockResolvedValue([]) })
       await identitiesApi.getSessions("id-1", { active: true })
       const sp = mockGetFn.mock.calls[0][1].searchParams as URLSearchParams
       expect(sp.get("active")).toBe("true")

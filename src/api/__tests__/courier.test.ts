@@ -1,19 +1,21 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
-const mockJsonFn = vi.fn()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockJsonFn: any = vi.fn()
 const mockResponse = {
   json: mockJsonFn,
   headers: new Headers(),
 }
-const mockGetFn = vi.fn(() => mockResponse)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockGetFn: any = vi.fn(() => mockResponse)
 
 vi.mock("../client", () => ({
   getApiClient: vi.fn(() => ({ get: mockGetFn })),
 }))
 
 vi.mock("@/lib/validation", () => ({
-  safeParseArrayWithLog: vi.fn((_schema, data) => data),
-  safeParseWithLog: vi.fn((_schema, data) => data),
+  safeParseArrayWithLog: vi.fn((_schema: unknown, data: unknown) => data),
+  safeParseWithLog: vi.fn((_schema: unknown, data: unknown) => data),
 }))
 
 vi.mock("../pagination", () => ({
@@ -66,8 +68,7 @@ describe("courierApi", () => {
   describe("getMessage", () => {
     it("calls correct endpoint with id", async () => {
       const msg = { id: "msg-1", type: "email", status: "sent" }
-      const jsonFn = vi.fn().mockResolvedValue(msg)
-      mockGetFn.mockReturnValue({ json: jsonFn })
+      mockGetFn.mockReturnValue({ json: vi.fn().mockResolvedValue(msg) })
       const result = await courierApi.getMessage("msg-1")
       expect(mockGetFn).toHaveBeenCalledWith("admin/courier/messages/msg-1")
       expect(result).toEqual(msg)

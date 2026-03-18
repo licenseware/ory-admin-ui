@@ -1,15 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
-const mockJsonFn = vi.fn()
-const mockGetFn = vi.fn(() => ({ json: mockJsonFn }))
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockJsonFn: any = vi.fn()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockGetFn: any = vi.fn(() => ({ json: mockJsonFn }))
 
 vi.mock("../client", () => ({
   getOathkeeperApiClient: vi.fn(() => ({ get: mockGetFn })),
 }))
 
 vi.mock("@/lib/validation", () => ({
-  safeParseWithLog: vi.fn((_schema, data) => data),
-  safeParseArrayWithLog: vi.fn((_schema, data) => data),
+  safeParseWithLog: vi.fn((_schema: unknown, data: unknown) => data),
+  safeParseArrayWithLog: vi.fn((_schema: unknown, data: unknown) => data),
 }))
 
 import { oathkeeperApi } from "../oathkeeper"

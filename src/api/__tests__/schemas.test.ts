@@ -1,14 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
-const mockJsonFn = vi.fn()
-const mockGetFn = vi.fn(() => ({ json: mockJsonFn }))
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockJsonFn: any = vi.fn()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockGetFn: any = vi.fn(() => ({ json: mockJsonFn }))
 
 vi.mock("../client", () => ({
   getPublicApiClient: vi.fn(() => ({ get: mockGetFn })),
 }))
 
 vi.mock("@/lib/validation", () => ({
-  safeParseArrayWithLog: vi.fn((_schema, data) => data),
+  safeParseArrayWithLog: vi.fn((_schema: unknown, data: unknown) => data),
 }))
 
 import { schemasApi } from "../schemas"
@@ -40,11 +42,10 @@ describe("schemasApi", () => {
 
   describe("get", () => {
     it("calls schemas/:id and returns JSON", async () => {
-      const schema = { type: "object", properties: {} }
-      mockJsonFn.mockResolvedValue(schema)
+      mockJsonFn.mockResolvedValue({ type: "object", properties: {} })
       const result = await schemasApi.get("default")
       expect(mockGetFn).toHaveBeenCalledWith("schemas/default")
-      expect(result).toEqual(schema)
+      expect(result).toEqual({ type: "object", properties: {} })
     })
   })
 })

@@ -1,13 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
-const mockJsonFn = vi.fn()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockJsonFn: any = vi.fn()
 const mockResponse = {
   json: mockJsonFn,
   headers: new Headers(),
 }
-const mockGetFn = vi.fn(() => mockResponse)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockGetFn: any = vi.fn(() => mockResponse)
 const mockDeleteFn = vi.fn(() => Promise.resolve())
-const mockPatchFn = vi.fn(() => ({ json: mockJsonFn }))
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockPatchFn: any = vi.fn(() => ({ json: mockJsonFn }))
 
 vi.mock("../client", () => ({
   getApiClient: vi.fn(() => ({
@@ -18,8 +21,8 @@ vi.mock("../client", () => ({
 }))
 
 vi.mock("@/lib/validation", () => ({
-  safeParseArrayWithLog: vi.fn((_schema, data) => data),
-  safeParseWithLog: vi.fn((_schema, data) => data),
+  safeParseArrayWithLog: vi.fn((_schema: unknown, data: unknown) => data),
+  safeParseWithLog: vi.fn((_schema: unknown, data: unknown) => data),
 }))
 
 vi.mock("../pagination", () => ({
@@ -66,8 +69,7 @@ describe("sessionsApi", () => {
   describe("get", () => {
     it("calls admin/sessions/:id with no expand", async () => {
       const session = { id: "s-1", active: true }
-      const jsonFn = vi.fn().mockResolvedValue(session)
-      mockGetFn.mockReturnValue({ json: jsonFn })
+      mockGetFn.mockReturnValue({ json: vi.fn().mockResolvedValue(session) })
       const result = await sessionsApi.get("s-1")
       expect(mockGetFn).toHaveBeenCalledWith("admin/sessions/s-1", {
         searchParams: undefined,
@@ -76,8 +78,7 @@ describe("sessionsApi", () => {
     })
 
     it("passes expand params", async () => {
-      const jsonFn = vi.fn().mockResolvedValue({ id: "s-1" })
-      mockGetFn.mockReturnValue({ json: jsonFn })
+      mockGetFn.mockReturnValue({ json: vi.fn().mockResolvedValue({ id: "s-1" }) })
       await sessionsApi.get("s-1", ["identity"])
       const sp = mockGetFn.mock.calls[0][1].searchParams as URLSearchParams
       expect(sp.getAll("expand")).toEqual(["identity"])
