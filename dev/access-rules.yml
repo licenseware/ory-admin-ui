@@ -17,3 +17,22 @@
     handler: allow
   mutators:
     - handler: noop
+- id: oathkeeper-admin
+  upstream:
+    preserveHost: true
+    url: http://oathkeeper:4456
+  match:
+    url: http://localhost:<2?>4455</?.*>
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+      - OPTIONS
+  authenticators:
+    - handler: anonymous
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop

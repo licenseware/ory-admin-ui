@@ -12,6 +12,8 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  Shield,
+  KeyRound,
 } from "lucide-vue-next"
 import Tooltip from "@/components/ui/Tooltip.vue"
 import { TooltipProvider } from "radix-vue"
@@ -32,6 +34,13 @@ const sections = [
       { name: "Sessions", href: "/sessions", icon: Key },
       { name: "Courier", href: "/courier", icon: Mail },
       { name: "Schemas", href: "/schemas", icon: FileJson },
+    ],
+  },
+  {
+    label: "Access Control",
+    items: [
+      { name: "Rules", href: "/rules", icon: Shield },
+      { name: "JWKS Keys", href: "/jwks", icon: KeyRound },
     ],
   },
 ]

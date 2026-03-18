@@ -9,6 +9,11 @@ export default mergeConfig(
       environment: "jsdom",
       setupFiles: ["./src/test/setup.ts"],
       include: ["src/**/*.test.ts"],
+      server: {
+        deps: {
+          inline: ["zod"],
+        },
+      },
       coverage: {
         provider: "v8",
         reporter: ["text", "lcov"],

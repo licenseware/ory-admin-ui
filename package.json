@@ -7,6 +7,7 @@
     "caniuse-lite": "^1.0.30001766",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "js-yaml": "^4.1.1",
     "ky": "^1.14.3",
     "loglevel": "^1.9.2",
     "lucide-vue-next": "^0.468.0",
@@ -20,6 +21,7 @@
   },
   "description": "Production-grade admin UI for Ory Kratos identity server",
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.19.7",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vitest/coverage-v8": "^4.0.18",

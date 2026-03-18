@@ -48,6 +48,26 @@ const router = createRouter({
           component: () => import("@/views/SchemasView.vue"),
         },
         {
+          path: "rules",
+          name: "rules",
+          component: () => import("@/views/RulesView.vue"),
+        },
+        {
+          path: "rules/new",
+          name: "rule-builder",
+          component: () => import("@/views/RuleBuilderView.vue"),
+        },
+        {
+          path: "rules/:id",
+          name: "rule-detail",
+          component: () => import("@/views/RuleDetailView.vue"),
+        },
+        {
+          path: "jwks",
+          name: "jwks",
+          component: () => import("@/views/JWKSView.vue"),
+        },
+        {
           path: "settings",
           name: "settings",
           component: () => import("@/views/SettingsView.vue"),
