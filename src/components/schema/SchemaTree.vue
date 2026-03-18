@@ -113,7 +113,7 @@ defineExpose({ expandAll, collapseAll, expandedPaths })
 
 <template>
   <div class="schema-tree" role="tree" aria-label="Schema properties">
-    <div v-if="!rootProperties.length" class="px-4 py-8 text-center text-sm text-text-muted">
+    <div v-if="!rootProperties.length" class="text-text-muted px-4 py-8 text-center text-sm">
       No traits defined in this schema
     </div>
     <SchemaTreeNode

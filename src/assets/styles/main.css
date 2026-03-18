@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../../tailwind.config.js";
 
 @layer base {
   :root {
@@ -57,7 +56,7 @@
   }
 
   body {
-    @apply bg-surface font-sans text-text-primary;
+    @apply bg-surface text-text-primary font-sans;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
@@ -73,7 +72,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-border;
+    @apply bg-border rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -82,7 +81,7 @@
 
   /* Focus visible styles */
   *:focus-visible {
-    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-surface;
+    @apply ring-accent ring-offset-surface ring-2 ring-offset-2 outline-none;
   }
 }
 

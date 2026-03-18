@@ -117,8 +117,8 @@ function generateTraitsTemplate() {
 
     <!-- Header -->
     <div>
-      <h1 class="text-2xl font-semibold text-text-primary">Create Identity</h1>
-      <p class="mt-1 text-sm text-text-muted">Create a new user identity in your Kratos instance</p>
+      <h1 class="text-text-primary text-2xl font-semibold">Create Identity</h1>
+      <p class="text-text-muted mt-1 text-sm">Create a new user identity in your Kratos instance</p>
     </div>
 
     <!-- Loading state -->
@@ -185,7 +185,7 @@ function generateTraitsTemplate() {
               placeholder="{}"
               @blur="validateJson(traitsJson)"
             />
-            <p v-if="jsonError" class="text-xs text-destructive">{{ jsonError }}</p>
+            <p v-if="jsonError" class="text-destructive text-xs">{{ jsonError }}</p>
           </div>
         </CardContent>
       </Card>

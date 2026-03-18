@@ -13,7 +13,7 @@ const props = defineProps<Props>()
   <TabsList
     :class="
       cn(
-        'inline-flex h-9 items-center justify-center rounded-lg border border-border-subtle bg-surface p-1',
+        'border-border-subtle bg-surface inline-flex h-9 items-center justify-center rounded-lg border p-1',
         props.class
       )
     "

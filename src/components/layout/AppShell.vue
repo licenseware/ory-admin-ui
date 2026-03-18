@@ -17,7 +17,7 @@ const mainMargin = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-surface">
+  <div class="bg-surface min-h-screen">
     <AppSidebar />
     <div :class="[mainMargin, 'flex min-h-screen flex-col transition-all duration-200']">
       <AppHeader />

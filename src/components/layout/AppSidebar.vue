@@ -85,19 +85,19 @@ function onNavClick() {
     <aside
       :class="[
         sidebarWidth,
-        'fixed left-0 top-0 flex h-screen flex-col border-r border-border-subtle bg-surface transition-all duration-200',
+        'border-border-subtle bg-surface fixed top-0 left-0 flex h-screen flex-col border-r transition-all duration-200',
         isMobile ? ['z-50', uiStore.sidebarOpen ? 'translate-x-0' : '-translate-x-full'] : 'z-40',
       ]"
     >
       <!-- Logo -->
-      <div class="flex h-14 items-center border-b border-border-subtle px-4">
+      <div class="border-border-subtle flex h-14 items-center border-b px-4">
         <RouterLink to="/" class="flex items-center gap-2" @click="onNavClick">
           <div
-            class="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground"
+            class="bg-accent text-accent-foreground flex h-8 w-8 items-center justify-center rounded-lg"
           >
             <span class="text-lg font-bold">O</span>
           </div>
-          <span v-if="!isCollapsed" class="whitespace-nowrap font-medium text-text-primary">
+          <span v-if="!isCollapsed" class="text-text-primary font-medium whitespace-nowrap">
             Ory Admin
           </span>
         </RouterLink>
@@ -108,7 +108,7 @@ function onNavClick() {
         <div v-for="section in sections" :key="section.label ?? 'default'" class="space-y-1">
           <p
             v-if="!isCollapsed && section.label"
-            class="px-3 pb-1 pt-4 text-[10px] font-semibold uppercase tracking-wider text-text-muted"
+            class="text-text-muted px-3 pt-4 pb-1 text-[10px] font-semibold tracking-wider uppercase"
           >
             {{ section.label }}
           </p>
@@ -119,7 +119,7 @@ function onNavClick() {
                 :class="[
                   isActive(item.href)
                     ? 'border-accent/30 bg-accent/10 text-accent'
-                    : 'border-transparent text-text-secondary hover:bg-surface-raised hover:text-text-primary',
+                    : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary border-transparent',
                   'group flex items-center gap-3 rounded-lg border px-3 py-2 text-sm font-medium transition-colors',
                   isCollapsed ? 'justify-center' : '',
                 ]"
@@ -135,7 +135,7 @@ function onNavClick() {
               :class="[
                 isActive(item.href)
                   ? 'border-accent/30 bg-accent/10 text-accent'
-                  : 'border-transparent text-text-secondary hover:bg-surface-raised hover:text-text-primary',
+                  : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary border-transparent',
                 'group flex items-center gap-3 rounded-lg border px-3 py-2 text-sm font-medium transition-colors',
               ]"
               @click="onNavClick"
@@ -148,7 +148,7 @@ function onNavClick() {
       </nav>
 
       <!-- Bottom navigation -->
-      <div class="border-t border-border-subtle p-2">
+      <div class="border-border-subtle border-t p-2">
         <template v-for="item in bottomNavigation" :key="item.name">
           <Tooltip v-if="isCollapsed" :content="item.name" side="right">
             <RouterLink
@@ -156,7 +156,7 @@ function onNavClick() {
               :class="[
                 isActive(item.href)
                   ? 'border-accent/30 bg-accent/10 text-accent'
-                  : 'border-transparent text-text-secondary hover:bg-surface-raised hover:text-text-primary',
+                  : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary border-transparent',
                 'group flex items-center gap-3 rounded-lg border px-3 py-2 text-sm font-medium transition-colors',
                 isCollapsed ? 'justify-center' : '',
               ]"
@@ -172,7 +172,7 @@ function onNavClick() {
             :class="[
               isActive(item.href)
                 ? 'border-accent/30 bg-accent/10 text-accent'
-                : 'border-transparent text-text-secondary hover:bg-surface-raised hover:text-text-primary',
+                : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary border-transparent',
               'group flex items-center gap-3 rounded-lg border px-3 py-2 text-sm font-medium transition-colors',
             ]"
             @click="onNavClick"
@@ -186,7 +186,7 @@ function onNavClick() {
         <button
           v-if="!isMobile"
           @click="uiStore.toggleSidebar"
-          class="mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors hover:bg-surface-raised hover:text-text-primary"
+          class="text-text-muted hover:bg-surface-raised hover:text-text-primary mt-2 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors"
         >
           <ChevronLeft v-if="!uiStore.sidebarCollapsed" class="h-4 w-4" />
           <ChevronRight v-else class="h-4 w-4" />

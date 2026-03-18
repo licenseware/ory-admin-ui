@@ -149,13 +149,13 @@ function handleRevokeSession() {
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div class="flex items-start gap-4">
               <div
-                class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-xl font-medium text-accent"
+                class="bg-accent/10 text-accent flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full text-xl font-medium"
               >
                 {{ getIdentityName().charAt(0).toUpperCase() }}
               </div>
               <div>
                 <div class="flex items-center gap-2">
-                  <h1 class="text-xl font-semibold text-text-primary">
+                  <h1 class="text-text-primary text-xl font-semibold">
                     {{ getIdentityName() }}
                   </h1>
                   <Badge :variant="isBlocked ? 'destructive' : 'success'">
@@ -163,10 +163,10 @@ function handleRevokeSession() {
                   </Badge>
                 </div>
                 <div class="mt-1 flex items-center gap-2">
-                  <code class="font-mono text-xs text-text-muted">{{ identity.id }}</code>
+                  <code class="text-text-muted font-mono text-xs">{{ identity.id }}</code>
                   <CopyButton :text="identity.id" />
                 </div>
-                <div class="mt-2 flex items-center gap-4 text-sm text-text-muted">
+                <div class="text-text-muted mt-2 flex items-center gap-4 text-sm">
                   <span class="flex items-center gap-1">
                     <Clock class="h-3 w-3" />
                     Created
@@ -205,16 +205,16 @@ function handleRevokeSession() {
           <!-- Recovery link display -->
           <div
             v-if="recoveryLink"
-            class="mt-4 rounded-lg border border-success/30 bg-success/10 p-4"
+            class="border-success/30 bg-success/10 mt-4 rounded-lg border p-4"
           >
-            <p class="mb-2 text-sm font-medium text-success">Recovery Link Generated</p>
+            <p class="text-success mb-2 text-sm font-medium">Recovery Link Generated</p>
             <div class="flex items-center gap-2">
-              <code class="flex-1 break-all font-mono text-xs text-text-primary">
+              <code class="text-text-primary flex-1 font-mono text-xs break-all">
                 {{ recoveryLink }}
               </code>
               <CopyButton :text="recoveryLink" />
             </div>
-            <p class="mt-2 text-xs text-text-muted">
+            <p class="text-text-muted mt-2 text-xs">
               This link will expire. Share it securely with the user.
             </p>
           </div>
@@ -258,17 +258,17 @@ function handleRevokeSession() {
                   <div
                     v-for="(value, key) in identity.traits"
                     :key="key"
-                    class="flex items-start justify-between border-b border-border-subtle py-2 last:border-0"
+                    class="border-border-subtle flex items-start justify-between border-b py-2 last:border-0"
                   >
-                    <span class="text-sm capitalize text-text-muted">{{ key }}</span>
+                    <span class="text-text-muted text-sm capitalize">{{ key }}</span>
                     <span
-                      class="max-w-[60%] break-all text-right font-mono text-sm text-text-primary"
+                      class="text-text-primary max-w-[60%] text-right font-mono text-sm break-all"
                     >
                       {{ typeof value === "object" ? JSON.stringify(value) : value }}
                     </span>
                   </div>
                 </div>
-                <p v-else class="text-sm text-text-muted">No traits defined</p>
+                <p v-else class="text-text-muted text-sm">No traits defined</p>
               </CardContent>
             </Card>
 
@@ -283,23 +283,23 @@ function handleRevokeSession() {
               </CardHeader>
               <CardContent>
                 <div class="space-y-3">
-                  <div class="flex items-center justify-between border-b border-border-subtle py-2">
-                    <span class="text-sm text-text-muted">Schema</span>
+                  <div class="border-border-subtle flex items-center justify-between border-b py-2">
+                    <span class="text-text-muted text-sm">Schema</span>
                     <Badge variant="outline">{{ identity.schema_id }}</Badge>
                   </div>
-                  <div class="flex items-center justify-between border-b border-border-subtle py-2">
-                    <span class="text-sm text-text-muted">State</span>
+                  <div class="border-border-subtle flex items-center justify-between border-b py-2">
+                    <span class="text-text-muted text-sm">State</span>
                     <StatusBadge :status="identity.state || 'active'" />
                   </div>
-                  <div class="flex items-center justify-between border-b border-border-subtle py-2">
-                    <span class="text-sm text-text-muted">Created</span>
-                    <span class="text-sm text-text-primary">
+                  <div class="border-border-subtle flex items-center justify-between border-b py-2">
+                    <span class="text-text-muted text-sm">Created</span>
+                    <span class="text-text-primary text-sm">
                       {{ new Date(identity.created_at).toLocaleString() }}
                     </span>
                   </div>
                   <div class="flex items-center justify-between py-2">
-                    <span class="text-sm text-text-muted">Updated</span>
-                    <span class="text-sm text-text-primary">
+                    <span class="text-text-muted text-sm">Updated</span>
+                    <span class="text-text-primary text-sm">
                       {{ new Date(identity.updated_at).toLocaleString() }}
                     </span>
                   </div>
@@ -329,23 +329,23 @@ function handleRevokeSession() {
                 description="This identity has no active sessions."
               >
                 <template #icon>
-                  <Key class="h-8 w-8 text-text-muted" />
+                  <Key class="text-text-muted h-8 w-8" />
                 </template>
               </EmptyState>
               <div v-else class="space-y-3">
                 <div
                   v-for="session in sessions"
                   :key="session.id"
-                  class="flex items-center justify-between rounded-lg bg-surface-raised p-3"
+                  class="bg-surface-raised flex items-center justify-between rounded-lg p-3"
                 >
                   <div>
                     <div class="flex items-center gap-2">
-                      <code class="font-mono text-xs text-text-primary">
+                      <code class="text-text-primary font-mono text-xs">
                         {{ session.id.slice(0, 8) }}...
                       </code>
                       <StatusBadge :status="session.active ? 'active' : 'inactive'" />
                     </div>
-                    <div class="mt-1 flex items-center gap-4 text-xs text-text-muted">
+                    <div class="text-text-muted mt-1 flex items-center gap-4 text-xs">
                       <span
                         >Authenticated
                         <TimeAgo :date="session.authenticated_at" />
@@ -356,7 +356,7 @@ function handleRevokeSession() {
                     </div>
                   </div>
                   <Button variant="ghost" size="sm" @click="confirmRevokeSession(session.id)">
-                    <AlertTriangle class="mr-1 h-4 w-4 text-destructive" />
+                    <AlertTriangle class="text-destructive mr-1 h-4 w-4" />
                     Revoke
                   </Button>
                 </div>
@@ -383,19 +383,19 @@ function handleRevokeSession() {
                 <div
                   v-for="(cred, type) in identity.credentials"
                   :key="type"
-                  class="rounded-lg bg-surface-raised p-4"
+                  class="bg-surface-raised rounded-lg p-4"
                 >
                   <div class="mb-2 flex items-center justify-between">
                     <Badge variant="outline">{{ type }}</Badge>
-                    <span class="text-xs text-text-muted"> Version {{ cred.version }} </span>
+                    <span class="text-text-muted text-xs"> Version {{ cred.version }} </span>
                   </div>
                   <div v-if="cred.identifiers?.length" class="mt-2">
-                    <p class="mb-1 text-xs text-text-muted">Identifiers:</p>
+                    <p class="text-text-muted mb-1 text-xs">Identifiers:</p>
                     <div class="flex flex-wrap gap-1">
                       <code
                         v-for="identifier in cred.identifiers"
                         :key="identifier"
-                        class="rounded bg-surface px-2 py-1 font-mono text-xs"
+                        class="bg-surface rounded px-2 py-1 font-mono text-xs"
                       >
                         {{ identifier }}
                       </code>
@@ -403,7 +403,7 @@ function handleRevokeSession() {
                   </div>
                 </div>
               </div>
-              <p v-else class="text-sm text-text-muted">No credentials found</p>
+              <p v-else class="text-text-muted text-sm">No credentials found</p>
             </CardContent>
           </Card>
         </template>

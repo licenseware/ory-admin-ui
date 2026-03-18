@@ -6,9 +6,9 @@ import { Home, ArrowLeft } from "lucide-vue-next"
 
 <template>
   <div class="flex min-h-[60vh] flex-col items-center justify-center text-center">
-    <div class="mb-4 text-8xl font-bold text-accent/20">404</div>
-    <h1 class="mb-2 text-2xl font-semibold text-text-primary">Page not found</h1>
-    <p class="mb-8 max-w-md text-text-muted">
+    <div class="text-accent/20 mb-4 text-8xl font-bold">404</div>
+    <h1 class="text-text-primary mb-2 text-2xl font-semibold">Page not found</h1>
+    <p class="text-text-muted mb-8 max-w-md">
       The page you're looking for doesn't exist or has been moved.
     </p>
     <div class="flex gap-4">

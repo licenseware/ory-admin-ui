@@ -73,8 +73,8 @@ function viewMessage(message: Message) {
     <!-- Page header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-semibold text-text-primary">Courier Messages</h1>
-        <p class="mt-1 text-sm text-text-muted">View email and SMS messages sent by Kratos</p>
+        <h1 class="text-text-primary text-2xl font-semibold">Courier Messages</h1>
+        <p class="text-text-muted mt-1 text-sm">View email and SMS messages sent by Kratos</p>
       </div>
       <ReloadButton :is-fetching="isFetching" @reload="refetch" />
     </div>
@@ -84,7 +84,7 @@ function viewMessage(message: Message) {
       <CardContent class="p-4">
         <div class="flex flex-col gap-4 sm:flex-row">
           <div class="relative flex-1">
-            <Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+            <Search class="text-text-muted absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
               v-model="searchQuery"
               placeholder="Search by recipient, subject, or template..."
@@ -93,7 +93,7 @@ function viewMessage(message: Message) {
             />
           </div>
           <div class="flex w-full items-center gap-2 sm:w-48">
-            <Filter class="h-4 w-4 flex-shrink-0 text-text-muted" />
+            <Filter class="text-text-muted h-4 w-4 flex-shrink-0" />
             <Select
               v-model="statusFilter"
               :options="statusOptions"
@@ -134,34 +134,34 @@ function viewMessage(message: Message) {
           "
         >
           <template #icon>
-            <Mail class="h-8 w-8 text-text-muted" />
+            <Mail class="text-text-muted h-8 w-8" />
           </template>
         </EmptyState>
 
         <!-- Message list -->
-        <div v-else class="divide-y divide-border-subtle">
+        <div v-else class="divide-border-subtle divide-y">
           <div
             v-for="message in filteredMessages"
             :key="message.id"
-            class="flex cursor-pointer items-center justify-between p-4 transition-colors hover:bg-surface-raised"
+            class="hover:bg-surface-raised flex cursor-pointer items-center justify-between p-4 transition-colors"
             @click="viewMessage(message)"
           >
             <div class="flex min-w-0 flex-1 items-center gap-4">
               <div
-                class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-warning/10 text-warning"
+                class="bg-warning/10 text-warning flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full"
               >
                 <Mail class="h-5 w-5" />
               </div>
               <div class="min-w-0">
                 <div class="mb-1 flex items-center gap-2">
-                  <p class="truncate text-sm font-medium text-text-primary">
+                  <p class="text-text-primary truncate text-sm font-medium">
                     {{ message.recipient }}
                   </p>
                   <Badge variant="outline" class="text-xs">
                     {{ message.type || "email" }}
                   </Badge>
                 </div>
-                <p class="truncate text-xs text-text-muted">
+                <p class="text-text-muted truncate text-xs">
                   {{ message.subject || message.template_type || "No subject" }}
                 </p>
               </div>
@@ -169,8 +169,8 @@ function viewMessage(message: Message) {
 
             <div class="flex items-center gap-4">
               <div class="hidden text-right sm:block">
-                <p class="text-xs text-text-muted">Sent</p>
-                <p class="text-xs text-text-secondary">
+                <p class="text-text-muted text-xs">Sent</p>
+                <p class="text-text-secondary text-xs">
                   <TimeAgo :date="message.created_at" />
                 </p>
               </div>
@@ -188,7 +188,7 @@ function viewMessage(message: Message) {
         </div>
 
         <!-- Pagination -->
-        <div v-if="filteredMessages?.length" class="border-t border-border-subtle p-4">
+        <div v-if="filteredMessages?.length" class="border-border-subtle border-t p-4">
           <Pagination
             :has-next="false"
             :has-prev="false"
@@ -206,52 +206,52 @@ function viewMessage(message: Message) {
 
       <div v-if="selectedMessage" class="space-y-4">
         <!-- Message header -->
-        <div class="flex items-center justify-between rounded-lg bg-surface-raised p-4">
+        <div class="bg-surface-raised flex items-center justify-between rounded-lg p-4">
           <div>
-            <p class="text-sm font-medium text-text-primary">{{ selectedMessage.recipient }}</p>
-            <p class="text-xs text-text-muted">{{ selectedMessage.subject || "No subject" }}</p>
+            <p class="text-text-primary text-sm font-medium">{{ selectedMessage.recipient }}</p>
+            <p class="text-text-muted text-xs">{{ selectedMessage.subject || "No subject" }}</p>
           </div>
           <StatusBadge :status="selectedMessage.status" />
         </div>
 
         <!-- Message info -->
         <div class="space-y-2">
-          <div class="flex justify-between border-b border-border-subtle py-2">
-            <span class="text-sm text-text-muted">Type</span>
+          <div class="border-border-subtle flex justify-between border-b py-2">
+            <span class="text-text-muted text-sm">Type</span>
             <Badge variant="outline">{{ selectedMessage.type || "email" }}</Badge>
           </div>
-          <div class="flex justify-between border-b border-border-subtle py-2">
-            <span class="text-sm text-text-muted">Template</span>
-            <span class="text-sm text-text-primary">{{
+          <div class="border-border-subtle flex justify-between border-b py-2">
+            <span class="text-text-muted text-sm">Template</span>
+            <span class="text-text-primary text-sm">{{
               selectedMessage.template_type || "N/A"
             }}</span>
           </div>
-          <div class="flex justify-between border-b border-border-subtle py-2">
-            <span class="text-sm text-text-muted">Created</span>
-            <span class="text-sm text-text-primary">
+          <div class="border-border-subtle flex justify-between border-b py-2">
+            <span class="text-text-muted text-sm">Created</span>
+            <span class="text-text-primary text-sm">
               {{ new Date(selectedMessage.created_at).toLocaleString() }}
             </span>
           </div>
           <div
             v-if="selectedMessage.updated_at"
-            class="flex justify-between border-b border-border-subtle py-2"
+            class="border-border-subtle flex justify-between border-b py-2"
           >
-            <span class="text-sm text-text-muted">Updated</span>
-            <span class="text-sm text-text-primary">
+            <span class="text-text-muted text-sm">Updated</span>
+            <span class="text-text-primary text-sm">
               {{ new Date(selectedMessage.updated_at).toLocaleString() }}
             </span>
           </div>
           <div v-if="selectedMessage.send_count !== undefined" class="flex justify-between py-2">
-            <span class="text-sm text-text-muted">Send attempts</span>
-            <span class="text-sm text-text-primary">{{ selectedMessage.send_count }}</span>
+            <span class="text-text-muted text-sm">Send attempts</span>
+            <span class="text-text-primary text-sm">{{ selectedMessage.send_count }}</span>
           </div>
         </div>
 
         <!-- Message body preview -->
         <div v-if="selectedMessage.body">
-          <h4 class="mb-2 text-sm font-medium text-text-secondary">Message Body</h4>
-          <div class="max-h-48 overflow-auto rounded-lg bg-surface-raised p-4">
-            <pre class="whitespace-pre-wrap text-xs text-text-primary">{{
+          <h4 class="text-text-secondary mb-2 text-sm font-medium">Message Body</h4>
+          <div class="bg-surface-raised max-h-48 overflow-auto rounded-lg p-4">
+            <pre class="text-text-primary text-xs whitespace-pre-wrap">{{
               selectedMessage.body
             }}</pre>
           </div>
@@ -259,7 +259,7 @@ function viewMessage(message: Message) {
 
         <!-- Raw JSON -->
         <div>
-          <h4 class="mb-2 text-sm font-medium text-text-secondary">Raw Data</h4>
+          <h4 class="text-text-secondary mb-2 text-sm font-medium">Raw Data</h4>
           <JsonViewer :data="selectedMessage" :initial-expanded="false" max-height="200px" />
         </div>
       </div>

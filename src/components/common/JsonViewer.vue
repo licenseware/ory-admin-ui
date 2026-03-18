@@ -68,18 +68,18 @@ function syntaxHighlight(json: string): string {
 </script>
 
 <template>
-  <div class="rounded-lg border border-border-subtle bg-surface-raised">
-    <div class="flex items-center justify-between border-b border-border-subtle px-3 py-2">
+  <div class="border-border-subtle bg-surface-raised rounded-lg border">
+    <div class="border-border-subtle flex items-center justify-between border-b px-3 py-2">
       <button
         @click="expanded = !expanded"
-        class="flex items-center gap-1 text-sm text-text-secondary transition-colors hover:text-text-primary"
+        class="text-text-secondary hover:text-text-primary flex items-center gap-1 text-sm transition-colors"
       >
         <ChevronDown v-if="expanded" class="h-4 w-4" />
         <ChevronRight v-else class="h-4 w-4" />
         <span>JSON</span>
       </button>
       <Button variant="ghost" size="icon" @click="copyToClipboard" title="Copy JSON">
-        <Check v-if="copied" class="h-4 w-4 text-success" />
+        <Check v-if="copied" class="text-success h-4 w-4" />
         <Copy v-else class="h-4 w-4" />
       </Button>
     </div>

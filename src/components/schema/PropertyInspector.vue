@@ -202,7 +202,7 @@ const oryExtensions = computed(() => {
 <template>
   <div class="flex h-full flex-col overflow-hidden">
     <!-- Empty state -->
-    <div v-if="!schema" class="flex flex-1 items-center justify-center text-text-muted">
+    <div v-if="!schema" class="text-text-muted flex flex-1 items-center justify-center">
       <div class="space-y-2 text-center">
         <Info class="mx-auto h-8 w-8 opacity-50" />
         <p class="text-sm">Select a property to view details</p>
@@ -211,15 +211,15 @@ const oryExtensions = computed(() => {
 
     <template v-else>
       <!-- Header with path breadcrumb -->
-      <div class="border-b border-border-subtle bg-surface-overlay/50 px-4 py-3">
+      <div class="border-border-subtle bg-surface-overlay/50 border-b px-4 py-3">
         <div class="mb-2 flex items-center gap-2">
           <component :is="typeIcon" :class="cn('h-5 w-5', typeColor)" />
-          <h3 class="font-semibold text-text-primary">
+          <h3 class="text-text-primary font-semibold">
             {{ pathParts[pathParts.length - 1] || "Root" }}
           </h3>
           <Badge v-if="required" variant="warning" class="text-[10px]">required</Badge>
         </div>
-        <nav class="flex flex-wrap items-center gap-1 text-xs text-text-muted">
+        <nav class="text-text-muted flex flex-wrap items-center gap-1 text-xs">
           <template v-for="(part, i) in pathParts" :key="i">
             <span v-if="i > 0" class="text-text-muted/50">/</span>
             <span :class="i === pathParts.length - 1 ? 'text-text-secondary' : ''">{{ part }}</span>
@@ -236,15 +236,15 @@ const oryExtensions = computed(() => {
           </CardHeader>
           <CardContent class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="text-sm text-text-muted">Type</span>
+              <span class="text-text-muted text-sm">Type</span>
               <Badge :class="typeColor" variant="outline">{{ getType(schema) }}</Badge>
             </div>
             <div v-if="schema.title" class="flex min-w-0 items-center justify-between gap-2">
-              <span class="text-sm text-text-muted">Title</span>
-              <span class="ml-2 truncate text-sm text-text-primary">{{ schema.title }}</span>
+              <span class="text-text-muted text-sm">Title</span>
+              <span class="text-text-primary ml-2 truncate text-sm">{{ schema.title }}</span>
             </div>
-            <div v-if="schema.description" class="border-t border-border-subtle pt-2">
-              <p class="text-sm text-text-secondary">{{ schema.description }}</p>
+            <div v-if="schema.description" class="border-border-subtle border-t pt-2">
+              <p class="text-text-secondary text-sm">{{ schema.description }}</p>
             </div>
           </CardContent>
         </Card>
@@ -261,9 +261,9 @@ const oryExtensions = computed(() => {
                 :key="constraint.key"
                 class="flex items-center justify-between"
               >
-                <span class="text-sm text-text-muted">{{ constraint.label }}</span>
+                <span class="text-text-muted text-sm">{{ constraint.label }}</span>
                 <code
-                  class="max-w-[50%] truncate rounded bg-surface-overlay px-2 py-0.5 font-mono text-xs text-text-primary"
+                  class="bg-surface-overlay text-text-primary max-w-[50%] truncate rounded px-2 py-0.5 font-mono text-xs"
                 >
                   {{ constraint.value }}
                 </code>
@@ -294,9 +294,9 @@ const oryExtensions = computed(() => {
         <!-- Ory Extensions -->
         <template v-if="oryExtensions.length">
           <div class="space-y-2">
-            <h4 class="flex items-center gap-2 text-sm font-medium text-text-secondary">
-              <span class="flex h-4 w-4 items-center justify-center rounded-full bg-accent">
-                <span class="text-[8px] font-bold text-surface">ORY</span>
+            <h4 class="text-text-secondary flex items-center gap-2 text-sm font-medium">
+              <span class="bg-accent flex h-4 w-4 items-center justify-center rounded-full">
+                <span class="text-surface text-[8px] font-bold">ORY</span>
               </span>
               Ory Kratos Extensions
             </h4>
@@ -308,8 +308,8 @@ const oryExtensions = computed(() => {
               <div class="flex items-start gap-3">
                 <component :is="ext.icon" class="mt-0.5 h-5 w-5 flex-shrink-0" />
                 <div class="min-w-0">
-                  <p class="text-sm font-medium text-text-primary">{{ ext.title }}</p>
-                  <p class="mt-0.5 text-xs text-text-secondary">{{ ext.description }}</p>
+                  <p class="text-text-primary text-sm font-medium">{{ ext.title }}</p>
+                  <p class="text-text-secondary mt-0.5 text-xs">{{ ext.description }}</p>
                 </div>
               </div>
             </div>
@@ -318,7 +318,7 @@ const oryExtensions = computed(() => {
 
         <!-- Raw JSON -->
         <div>
-          <h4 class="mb-2 text-sm font-medium text-text-secondary">Raw Schema</h4>
+          <h4 class="text-text-secondary mb-2 text-sm font-medium">Raw Schema</h4>
           <JsonViewer :data="schema" :initial-expanded="false" max-height="200px" />
         </div>
       </div>

@@ -40,7 +40,7 @@ function selectProfile(slug: string) {
           <span class="max-w-[120px] truncate text-xs">
             {{ profileStore.activeProfile?.name || profileStore.activeSlug }}
           </span>
-          <ChevronDown class="h-3 w-3 text-text-muted" />
+          <ChevronDown class="text-text-muted h-3 w-3" />
         </template>
       </Button>
     </template>
@@ -56,7 +56,7 @@ function selectProfile(slug: string) {
         <button
           v-for="profile in filteredProfiles"
           :key="profile.slug"
-          class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-surface-raised"
+          class="hover:bg-surface-raised flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors"
           @click="selectProfile(profile.slug)"
         >
           <Check
@@ -67,7 +67,7 @@ function selectProfile(slug: string) {
           />
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-1.5">
-              <span class="truncate text-text-primary">{{ profile.name }}</span>
+              <span class="text-text-primary truncate">{{ profile.name }}</span>
               <Badge
                 :variant="
                   profileStore.getProfileSource(profile.slug) === 'config' ? 'secondary' : 'outline'
@@ -77,22 +77,22 @@ function selectProfile(slug: string) {
                 {{ profileStore.getProfileSource(profile.slug) }}
               </Badge>
             </div>
-            <p class="truncate text-xs text-text-muted">{{ profile.slug }}</p>
+            <p class="text-text-muted truncate text-xs">{{ profile.slug }}</p>
           </div>
         </button>
         <p
           v-if="filteredProfiles.length === 0"
-          class="px-2 py-4 text-center text-xs text-text-muted"
+          class="text-text-muted px-2 py-4 text-center text-xs"
         >
           No profiles found
         </p>
       </div>
 
       <!-- Divider + Manage link -->
-      <div class="mt-2 border-t border-border-subtle pt-2">
+      <div class="border-border-subtle mt-2 border-t pt-2">
         <RouterLink
           to="/settings"
-          class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary"
+          class="text-text-secondary hover:bg-surface-raised hover:text-text-primary flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors"
           @click="open = false"
         >
           <Settings class="h-3.5 w-3.5" />

@@ -14,13 +14,13 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <div class="flex flex-col items-center justify-center py-12 text-center">
-    <div class="mb-4 rounded-full bg-surface-raised p-4">
+    <div class="bg-surface-raised mb-4 rounded-full p-4">
       <slot name="icon">
-        <Inbox class="h-8 w-8 text-text-muted" />
+        <Inbox class="text-text-muted h-8 w-8" />
       </slot>
     </div>
-    <h3 class="mb-1 text-lg font-medium text-text-primary">{{ title }}</h3>
-    <p class="max-w-sm text-sm text-text-muted">{{ description }}</p>
+    <h3 class="text-text-primary mb-1 text-lg font-medium">{{ title }}</h3>
+    <p class="text-text-muted max-w-sm text-sm">{{ description }}</p>
     <div v-if="$slots.action" class="mt-4">
       <slot name="action" />
     </div>

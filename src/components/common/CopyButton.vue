@@ -31,7 +31,7 @@ async function copyToClipboard() {
 
 <template>
   <Button variant="ghost" size="icon" @click="copyToClipboard" :title="label">
-    <Check v-if="copied" class="h-4 w-4 text-success" />
+    <Check v-if="copied" class="text-success h-4 w-4" />
     <Copy v-else class="h-4 w-4" />
   </Button>
 </template>

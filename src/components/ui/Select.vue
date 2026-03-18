@@ -45,14 +45,14 @@ onBeforeUnmount(() => {
   <SelectRoot :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)">
     <SelectTrigger
       :disabled="disabled"
-      class="flex h-9 w-full items-center justify-between rounded-md border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50"
+      class="border-border bg-surface-raised text-text-primary placeholder:text-text-muted focus:ring-accent focus:ring-offset-surface flex h-9 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
     >
       <SelectValue :placeholder="placeholder" />
-      <ChevronDown class="h-4 w-4 text-text-muted" />
+      <ChevronDown class="text-text-muted h-4 w-4" />
     </SelectTrigger>
     <SelectPortal v-if="isMounted">
       <SelectContent
-        class="relative z-50 min-w-[8rem] animate-fade-in overflow-hidden rounded-md border border-border bg-surface-raised shadow-lg"
+        class="animate-fade-in border-border bg-surface-raised relative z-50 min-w-[8rem] overflow-hidden rounded-md border shadow-lg"
         position="popper"
         :side-offset="4"
       >
@@ -61,12 +61,12 @@ onBeforeUnmount(() => {
             v-for="option in options"
             :key="option.value"
             :value="option.value"
-            class="relative flex cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm text-text-primary outline-none focus:bg-surface-overlay data-[disabled]:pointer-events-none data-[highlighted]:bg-surface-overlay data-[disabled]:opacity-50"
+            class="text-text-primary focus:bg-surface-overlay data-[highlighted]:bg-surface-overlay relative flex cursor-pointer items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
           >
             <SelectItemIndicator
               class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center"
             >
-              <Check class="h-4 w-4 text-accent" />
+              <Check class="text-accent h-4 w-4" />
             </SelectItemIndicator>
             <SelectItemText>{{ option.label }}</SelectItemText>
           </SelectItem>

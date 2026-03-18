@@ -126,11 +126,11 @@ function getIdentityName(identity: any): string {
     <!-- Page header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-semibold text-text-primary">Dashboard</h1>
+        <h1 class="text-text-primary text-2xl font-semibold">Dashboard</h1>
         <div class="mt-1 flex items-center gap-2">
-          <p class="text-sm text-text-muted">Overview of your Ory Kratos instance</p>
+          <p class="text-text-muted text-sm">Overview of your Ory Kratos instance</p>
           <Badge variant="outline" class="gap-1">
-            <Circle class="h-1.5 w-1.5 fill-accent text-accent" />
+            <Circle class="fill-accent text-accent h-1.5 w-1.5" />
             {{ profileStore.activeProfile?.slug }}
           </Badge>
         </div>
@@ -145,8 +145,8 @@ function getIdentityName(identity: any): string {
           <CardContent class="p-4">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-sm text-text-muted">{{ stat.name }}</p>
-                <p class="mt-1 text-2xl font-semibold text-text-primary">
+                <p class="text-text-muted text-sm">{{ stat.name }}</p>
+                <p class="text-text-primary mt-1 text-2xl font-semibold">
                   {{ stat.value }}
                 </p>
               </div>
@@ -167,7 +167,7 @@ function getIdentityName(identity: any): string {
           <CardTitle class="text-base">Recent Identities</CardTitle>
           <RouterLink
             to="/identities"
-            class="flex items-center gap-1 text-sm text-accent hover:text-accent-hover"
+            class="text-accent hover:text-accent-hover flex items-center gap-1 text-sm"
           >
             View all
             <ArrowRight class="h-3 w-3" />
@@ -188,24 +188,24 @@ function getIdentityName(identity: any): string {
               v-for="identity in recentIdentities"
               :key="identity.id"
               :to="`/identities/${identity.id}`"
-              class="flex items-center justify-between rounded-lg p-2 transition-colors hover:bg-surface-raised"
+              class="hover:bg-surface-raised flex items-center justify-between rounded-lg p-2 transition-colors"
             >
               <div class="flex min-w-0 items-center gap-3">
                 <div
-                  class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-medium text-accent"
+                  class="bg-accent/10 text-accent flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-medium"
                 >
                   {{ getIdentityName(identity).charAt(0).toUpperCase() }}
                 </div>
                 <div class="min-w-0">
-                  <p class="mb-1 truncate text-sm font-medium text-text-primary">
+                  <p class="text-text-primary mb-1 truncate text-sm font-medium">
                     {{ getIdentityName(identity) }}
                   </p>
-                  <p class="truncate text-xs text-text-muted">
+                  <p class="text-text-muted truncate text-xs">
                     {{ identity.id }}
                   </p>
                 </div>
               </div>
-              <div class="flex-shrink-0 text-xs text-text-muted">
+              <div class="text-text-muted flex-shrink-0 text-xs">
                 <TimeAgo :date="identity.created_at" />
               </div>
             </RouterLink>
@@ -216,7 +216,7 @@ function getIdentityName(identity: any): string {
             description="No identities have been created yet"
           >
             <template #icon>
-              <Users class="h-8 w-8 text-text-muted" />
+              <Users class="text-text-muted h-8 w-8" />
             </template>
           </EmptyState>
         </CardContent>
@@ -228,7 +228,7 @@ function getIdentityName(identity: any): string {
           <CardTitle class="text-base">Recent Sessions</CardTitle>
           <RouterLink
             to="/sessions"
-            class="flex items-center gap-1 text-sm text-accent hover:text-accent-hover"
+            class="text-accent hover:text-accent-hover flex items-center gap-1 text-sm"
           >
             View all
             <ArrowRight class="h-3 w-3" />
@@ -249,19 +249,19 @@ function getIdentityName(identity: any): string {
               v-for="session in recentSessions"
               :key="session.id"
               :to="`/sessions/${session.id}`"
-              class="flex items-center justify-between rounded-lg p-2 transition-colors hover:bg-surface-raised"
+              class="hover:bg-surface-raised flex items-center justify-between rounded-lg p-2 transition-colors"
             >
               <div class="flex min-w-0 items-center gap-3">
                 <div
-                  class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-success/10 text-success"
+                  class="bg-success/10 text-success flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full"
                 >
                   <Key class="h-4 w-4" />
                 </div>
                 <div class="min-w-0">
-                  <p class="mb-1 truncate text-sm font-medium text-text-primary">
+                  <p class="text-text-primary mb-1 truncate text-sm font-medium">
                     {{ session.id.slice(0, 8) }}...
                   </p>
-                  <p class="text-xs text-text-muted">
+                  <p class="text-text-muted text-xs">
                     {{ session.identity?.traits?.email || "Unknown user" }}
                   </p>
                 </div>
@@ -273,7 +273,7 @@ function getIdentityName(identity: any): string {
           </div>
           <EmptyState v-else title="No sessions" description="No active sessions at the moment">
             <template #icon>
-              <Key class="h-8 w-8 text-text-muted" />
+              <Key class="text-text-muted h-8 w-8" />
             </template>
           </EmptyState>
         </CardContent>
@@ -285,7 +285,7 @@ function getIdentityName(identity: any): string {
           <CardTitle class="text-base">Recent Courier Messages</CardTitle>
           <RouterLink
             to="/courier"
-            class="flex items-center gap-1 text-sm text-accent hover:text-accent-hover"
+            class="text-accent hover:text-accent-hover flex items-center gap-1 text-sm"
           >
             View all
             <ArrowRight class="h-3 w-3" />
@@ -305,26 +305,26 @@ function getIdentityName(identity: any): string {
             <div
               v-for="message in recentMessages"
               :key="message.id"
-              class="flex items-center justify-between rounded-lg p-2 transition-colors hover:bg-surface-raised"
+              class="hover:bg-surface-raised flex items-center justify-between rounded-lg p-2 transition-colors"
             >
               <div class="flex min-w-0 items-center gap-3">
                 <div
-                  class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-warning/10 text-warning"
+                  class="bg-warning/10 text-warning flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full"
                 >
                   <Mail class="h-4 w-4" />
                 </div>
                 <div class="min-w-0">
-                  <p class="truncate text-sm font-medium text-text-primary">
+                  <p class="text-text-primary truncate text-sm font-medium">
                     {{ message.recipient }}
                   </p>
-                  <p class="truncate text-xs text-text-muted">
+                  <p class="text-text-muted truncate text-xs">
                     {{ message.subject || message.template_type || "No subject" }}
                   </p>
                 </div>
               </div>
               <div class="flex flex-shrink-0 items-center gap-2">
                 <StatusBadge :status="message.status" />
-                <span class="text-xs text-text-muted">
+                <span class="text-text-muted text-xs">
                   <TimeAgo :date="message.created_at" />
                 </span>
               </div>
@@ -336,7 +336,7 @@ function getIdentityName(identity: any): string {
             description="No courier messages have been sent yet"
           >
             <template #icon>
-              <Mail class="h-8 w-8 text-text-muted" />
+              <Mail class="text-text-muted h-8 w-8" />
             </template>
           </EmptyState>
         </CardContent>

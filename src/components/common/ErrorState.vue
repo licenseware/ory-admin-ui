@@ -22,12 +22,12 @@ const emit = defineEmits<{
 
 <template>
   <div class="flex flex-col items-center justify-center py-12 text-center">
-    <div class="mb-4 rounded-full bg-destructive/10 p-4">
-      <AlertTriangle class="h-8 w-8 text-destructive" />
+    <div class="bg-destructive/10 mb-4 rounded-full p-4">
+      <AlertTriangle class="text-destructive h-8 w-8" />
     </div>
-    <h3 class="mb-1 text-lg font-medium text-text-primary">{{ title }}</h3>
-    <p class="mb-2 max-w-sm text-sm text-text-muted">{{ description }}</p>
-    <p v-if="error" class="mb-4 font-mono text-xs text-destructive">
+    <h3 class="text-text-primary mb-1 text-lg font-medium">{{ title }}</h3>
+    <p class="text-text-muted mb-2 max-w-sm text-sm">{{ description }}</p>
+    <p v-if="error" class="text-destructive mb-4 font-mono text-xs">
       {{ error.message }}
     </p>
     <Button v-if="retryable" variant="outline" @click="emit('retry')">

@@ -127,8 +127,8 @@ function getRuleMethods(rule: Rule): string[] {
     <!-- Page header -->
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 class="text-2xl font-semibold text-text-primary">Access Rules</h1>
-        <p class="mt-1 text-sm text-text-muted">Manage Oathkeeper access rules</p>
+        <h1 class="text-text-primary text-2xl font-semibold">Access Rules</h1>
+        <p class="text-text-muted mt-1 text-sm">Manage Oathkeeper access rules</p>
       </div>
       <div class="flex items-center gap-2">
         <ReloadButton :is-fetching="isAnyFetching" @reload="reloadAll" />
@@ -147,8 +147,8 @@ function getRuleMethods(rule: Rule): string[] {
         <CardContent class="p-4">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-text-muted">{{ stat.name }}</p>
-              <p class="mt-1 text-2xl font-semibold text-text-primary">
+              <p class="text-text-muted text-sm">{{ stat.name }}</p>
+              <p class="text-text-primary mt-1 text-2xl font-semibold">
                 {{ stat.value }}
               </p>
             </div>
@@ -164,7 +164,7 @@ function getRuleMethods(rule: Rule): string[] {
     <Card>
       <CardContent class="p-4">
         <div class="relative">
-          <Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+          <Search class="text-text-muted absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
           <Input
             v-model="searchQuery"
             placeholder="Search by rule ID or description..."
@@ -208,7 +208,7 @@ function getRuleMethods(rule: Rule): string[] {
           "
         >
           <template #icon>
-            <Shield class="h-8 w-8 text-text-muted" />
+            <Shield class="text-text-muted h-8 w-8" />
           </template>
           <template v-if="!debouncedSearch" #action>
             <RouterLink to="/rules/new">
@@ -221,23 +221,23 @@ function getRuleMethods(rule: Rule): string[] {
         </EmptyState>
 
         <!-- Rules list -->
-        <div v-else class="divide-y divide-border-subtle">
+        <div v-else class="divide-border-subtle divide-y">
           <div
             v-for="rule in filteredRules"
             :key="rule.id"
-            class="group flex items-center justify-between p-4 transition-colors hover:bg-surface-raised"
+            class="group hover:bg-surface-raised flex items-center justify-between p-4 transition-colors"
           >
             <RouterLink :to="`/rules/${rule.id}`" class="flex min-w-0 flex-1 items-center gap-4">
               <div
-                class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent"
+                class="bg-accent/10 text-accent flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full"
               >
                 <Shield class="h-5 w-5" />
               </div>
               <div class="min-w-0">
-                <p class="truncate text-sm font-bold text-text-primary">
+                <p class="text-text-primary truncate text-sm font-bold">
                   {{ rule.id ?? "Unnamed rule" }}
                 </p>
-                <p class="truncate text-xs text-text-muted">
+                <p class="text-text-muted truncate text-xs">
                   {{ rule.match?.url ?? "No match URL" }}
                 </p>
               </div>
@@ -274,13 +274,13 @@ function getRuleMethods(rule: Rule): string[] {
         <!-- Pagination -->
         <div
           v-if="filteredRules.length && !debouncedSearch"
-          class="flex items-center justify-between border-t border-border-subtle p-4"
+          class="border-border-subtle flex items-center justify-between border-t p-4"
         >
           <Button variant="outline" size="sm" :disabled="!hasPrev" @click="goPrev">
             <ArrowLeft class="mr-2 h-4 w-4" />
             Previous
           </Button>
-          <span class="text-sm text-text-muted">Page {{ currentPage }}</span>
+          <span class="text-text-muted text-sm">Page {{ currentPage }}</span>
           <Button variant="outline" size="sm" :disabled="!hasNext" @click="goNext">
             Next
             <ArrowRight class="ml-2 h-4 w-4" />

@@ -6,7 +6,7 @@ const { data: versionData } = useVersion()
 </script>
 
 <template>
-  <footer class="border-t border-border-subtle px-3 py-3 text-sm text-text-muted md:px-6 md:py-4">
+  <footer class="border-border-subtle text-text-muted border-t px-3 py-3 text-sm md:px-6 md:py-4">
     <div
       class="mx-auto flex max-w-screen-2xl flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left"
     >
@@ -15,7 +15,7 @@ const { data: versionData } = useVersion()
           :href="`https://github.com/licenseware/ory-admin-ui/releases/tag/v${appVersion}`"
           target="_blank"
           rel="noopener noreferrer"
-          class="transition-colors hover:text-text-secondary"
+          class="hover:text-text-secondary transition-colors"
         >
           Ory Admin UI v{{ appVersion }}
         </a>
@@ -25,7 +25,7 @@ const { data: versionData } = useVersion()
             :href="`https://github.com/ory/kratos/releases/tag/${versionData.version}`"
             target="_blank"
             rel="noopener noreferrer"
-            class="transition-colors hover:text-text-secondary"
+            class="hover:text-text-secondary transition-colors"
           >
             Kratos {{ versionData.version }}
           </a>
@@ -36,7 +36,7 @@ const { data: versionData } = useVersion()
           href="https://github.com/licenseware/ory-admin-ui"
           target="_blank"
           rel="noopener noreferrer"
-          class="transition-colors hover:text-text-secondary"
+          class="hover:text-text-secondary transition-colors"
         >
           GitHub
         </a>
@@ -44,7 +44,7 @@ const { data: versionData } = useVersion()
           href="https://www.ory.sh/docs/kratos"
           target="_blank"
           rel="noopener noreferrer"
-          class="transition-colors hover:text-text-secondary"
+          class="hover:text-text-secondary transition-colors"
         >
           Kratos Docs
         </a>

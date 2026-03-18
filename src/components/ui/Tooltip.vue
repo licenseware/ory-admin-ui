@@ -29,7 +29,7 @@ onBeforeUnmount(() => {
       <TooltipContent
         :side="side"
         :side-offset="4"
-        class="z-50 animate-fade-in rounded-md border border-border-subtle bg-surface-overlay px-3 py-1.5 text-xs text-text-primary shadow-md"
+        class="animate-fade-in border-border-subtle bg-surface-overlay text-text-primary z-50 rounded-md border px-3 py-1.5 text-xs shadow-md"
       >
         {{ content }}
         <TooltipArrow class="fill-surface-overlay" />

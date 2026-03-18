@@ -302,8 +302,8 @@ function handleDelete() {
     <!-- Page header -->
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 class="text-2xl font-semibold text-text-primary">Identities</h1>
-        <p class="mt-1 text-sm text-text-muted">Manage user identities in your Kratos instance</p>
+        <h1 class="text-text-primary text-2xl font-semibold">Identities</h1>
+        <p class="text-text-muted mt-1 text-sm">Manage user identities in your Kratos instance</p>
       </div>
       <div class="flex items-center gap-2">
         <ReloadButton :is-fetching="isFetching" @reload="refetch" />
@@ -322,7 +322,7 @@ function handleDelete() {
         <div class="flex flex-col gap-4">
           <!-- Search -->
           <div class="relative">
-            <Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+            <Search class="text-text-muted absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
               v-model="searchQuery"
               placeholder="Search by email, username, or ID..."
@@ -333,7 +333,7 @@ function handleDelete() {
           <!-- Filters row -->
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div class="flex items-center gap-2 sm:w-44">
-              <Filter class="h-4 w-4 flex-shrink-0 text-text-muted" />
+              <Filter class="text-text-muted h-4 w-4 flex-shrink-0" />
               <Select
                 v-model="stateFilter"
                 :options="stateOptions"
@@ -342,7 +342,7 @@ function handleDelete() {
               />
             </div>
             <div class="flex items-center gap-2 sm:w-44">
-              <Filter class="h-4 w-4 flex-shrink-0 text-text-muted" />
+              <Filter class="text-text-muted h-4 w-4 flex-shrink-0" />
               <Select
                 v-model="schemaFilter"
                 :options="schemaOptions"
@@ -351,7 +351,7 @@ function handleDelete() {
               />
             </div>
             <div class="flex items-center gap-2 sm:ml-auto sm:w-44">
-              <ArrowUpDown class="h-4 w-4 flex-shrink-0 text-text-muted" />
+              <ArrowUpDown class="text-text-muted h-4 w-4 flex-shrink-0" />
               <Select
                 v-model="sortValue"
                 :options="sortOptions"
@@ -389,7 +389,7 @@ function handleDelete() {
           description="Server search returned no results. Try an alternative search method."
         >
           <template #icon>
-            <SearchX class="h-8 w-8 text-text-muted" />
+            <SearchX class="text-text-muted h-8 w-8" />
           </template>
           <template #action>
             <div class="flex flex-col items-center gap-2 sm:flex-row">
@@ -412,7 +412,7 @@ function handleDelete() {
           description="The experimental fuzzy search also returned no results. Try a different search term."
         >
           <template #icon>
-            <SearchX class="h-8 w-8 text-text-muted" />
+            <SearchX class="text-text-muted h-8 w-8" />
           </template>
         </EmptyState>
 
@@ -427,7 +427,7 @@ function handleDelete() {
           "
         >
           <template #icon>
-            <Users class="h-8 w-8 text-text-muted" />
+            <Users class="text-text-muted h-8 w-8" />
           </template>
           <template v-if="!searchQuery && stateFilter === 'all' && schemaFilter === 'all'" #action>
             <RouterLink to="/identities/new">
@@ -440,31 +440,31 @@ function handleDelete() {
         </EmptyState>
 
         <!-- Identity list -->
-        <div v-else class="divide-y divide-border-subtle">
+        <div v-else class="divide-border-subtle divide-y">
           <div
             v-for="identity in displayIdentities"
             :key="identity.id"
-            class="group flex items-center justify-between p-4 transition-colors hover:bg-surface-raised"
+            class="group hover:bg-surface-raised flex items-center justify-between p-4 transition-colors"
           >
             <RouterLink
               :to="`/identities/${identity.id}`"
               class="flex min-w-0 flex-1 items-center gap-4"
             >
               <div
-                class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 font-medium text-accent"
+                class="bg-accent/10 text-accent flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full font-medium"
               >
                 {{ getIdentityName(identity).charAt(0).toUpperCase() }}
               </div>
               <div class="min-w-0">
                 <div class="mb-1 flex items-center gap-2">
-                  <p class="truncate text-sm font-medium text-text-primary">
+                  <p class="text-text-primary truncate text-sm font-medium">
                     {{ getIdentityName(identity) }}
                   </p>
                   <Badge variant="outline" class="text-xs">
                     {{ identity.schema_id }}
                   </Badge>
                 </div>
-                <p class="truncate text-xs text-text-muted">
+                <p class="text-text-muted truncate text-xs">
                   {{ identity.id }}
                 </p>
               </div>
@@ -472,8 +472,8 @@ function handleDelete() {
 
             <div class="flex items-center gap-4">
               <div class="hidden text-right sm:block">
-                <p class="text-xs text-text-muted">Created</p>
-                <p class="text-xs text-text-secondary">
+                <p class="text-text-muted text-xs">Created</p>
+                <p class="text-text-secondary text-xs">
                   <TimeAgo :date="identity.created_at" />
                 </p>
               </div>
@@ -490,7 +490,7 @@ function handleDelete() {
                   title="Delete"
                   @click.prevent="confirmDelete(identity)"
                 >
-                  <Trash2 class="h-4 w-4 text-destructive" />
+                  <Trash2 class="text-destructive h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -500,7 +500,7 @@ function handleDelete() {
         <!-- Pagination (only for idle/server-results tiers) -->
         <div
           v-if="showPagination && displayIdentities.length"
-          class="border-t border-border-subtle p-4"
+          class="border-border-subtle border-t p-4"
         >
           <Pagination
             :has-next="hasNext"

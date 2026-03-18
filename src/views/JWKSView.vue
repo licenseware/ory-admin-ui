@@ -35,8 +35,8 @@ function getUseBadgeVariant(use?: string): "default" | "secondary" | "success" |
     <!-- Page header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-semibold text-text-primary">JWKS Keys</h1>
-        <p class="mt-1 text-sm text-text-muted">
+        <h1 class="text-text-primary text-2xl font-semibold">JWKS Keys</h1>
+        <p class="text-text-muted mt-1 text-sm">
           Cryptographic keys used by Oathkeeper for token verification
         </p>
       </div>
@@ -64,7 +64,7 @@ function getUseBadgeVariant(use?: string): "default" | "secondary" | "success" |
       description="No JWKS keys are configured in the Oathkeeper instance"
     >
       <template #icon>
-        <KeyRound class="h-8 w-8 text-text-muted" />
+        <KeyRound class="text-text-muted h-8 w-8" />
       </template>
     </EmptyState>
 
@@ -76,7 +76,7 @@ function getUseBadgeVariant(use?: string): "default" | "secondary" | "success" |
             <div class="flex items-start justify-between">
               <div class="flex min-w-0 items-center gap-2">
                 <div
-                  class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent"
+                  class="bg-accent/10 text-accent flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg"
                 >
                   <KeyRound class="h-5 w-5" />
                 </div>
@@ -92,26 +92,26 @@ function getUseBadgeVariant(use?: string): "default" | "secondary" | "success" |
             <div class="space-y-3">
               <!-- Key type -->
               <div class="flex items-center gap-2">
-                <span class="text-xs text-text-muted">Type</span>
+                <span class="text-text-muted text-xs">Type</span>
                 <Badge v-if="key.kty" variant="default">{{ key.kty }}</Badge>
-                <span v-else class="text-xs text-text-muted">-</span>
+                <span v-else class="text-text-muted text-xs">-</span>
               </div>
 
               <!-- Algorithm -->
               <div v-if="key.alg" class="flex items-center gap-2">
-                <span class="text-xs text-text-muted">Algorithm</span>
+                <span class="text-text-muted text-xs">Algorithm</span>
                 <Badge variant="secondary">{{ key.alg }}</Badge>
               </div>
 
               <!-- Usage -->
               <div v-if="key.use" class="flex items-center gap-2">
-                <span class="text-xs text-text-muted">Usage</span>
+                <span class="text-text-muted text-xs">Usage</span>
                 <Badge :variant="getUseBadgeVariant(key.use)">{{ key.use }}</Badge>
               </div>
 
               <!-- Curve (for EC keys) -->
               <div v-if="key.crv" class="flex items-center gap-2">
-                <span class="text-xs text-text-muted">Curve</span>
+                <span class="text-text-muted text-xs">Curve</span>
                 <Badge variant="outline">{{ key.crv }}</Badge>
               </div>
             </div>
@@ -120,10 +120,10 @@ function getUseBadgeVariant(use?: string): "default" | "secondary" | "success" |
       </div>
 
       <!-- Raw JSON section -->
-      <div class="mt-6 border-t border-border-subtle pt-4">
+      <div class="border-border-subtle mt-6 border-t pt-4">
         <div class="flex items-center justify-between">
           <button
-            class="flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-text-primary"
+            class="text-text-secondary hover:text-text-primary flex items-center gap-2 text-sm transition-colors"
             :aria-expanded="showRawJson"
             @click="showRawJson = !showRawJson"
           >

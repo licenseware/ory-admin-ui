@@ -62,15 +62,15 @@ function handleCancel() {
     </AlertDialogTrigger>
     <AlertDialogPortal v-if="isMounted">
       <AlertDialogOverlay
-        class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-fade-in"
+        class="data-[state=open]:animate-fade-in fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
       />
       <AlertDialogContent
-        class="fixed left-1/2 top-1/2 z-50 w-full max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-surface-raised p-4 shadow-2xl data-[state=open]:animate-scale-in sm:max-w-md sm:p-6"
+        class="border-border bg-surface-raised data-[state=open]:animate-scale-in fixed top-1/2 left-1/2 z-50 w-full max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-lg border p-4 shadow-2xl sm:max-w-md sm:p-6"
       >
-        <AlertDialogTitle class="text-lg font-medium text-text-primary">
+        <AlertDialogTitle class="text-text-primary text-lg font-medium">
           {{ title }}
         </AlertDialogTitle>
-        <AlertDialogDescription v-if="description" class="mt-2 text-sm text-text-muted">
+        <AlertDialogDescription v-if="description" class="text-text-muted mt-2 text-sm">
           {{ description }}
         </AlertDialogDescription>
         <div class="mt-6 flex justify-end gap-3">

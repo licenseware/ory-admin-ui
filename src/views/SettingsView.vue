@@ -272,8 +272,8 @@ watch(theme, (newTheme) => {
   <div class="max-w-2xl space-y-6">
     <!-- Page header -->
     <div>
-      <h1 class="text-2xl font-semibold text-text-primary">Settings</h1>
-      <p class="mt-1 text-sm text-text-muted">Manage profiles and configure the Ory Admin UI</p>
+      <h1 class="text-text-primary text-2xl font-semibold">Settings</h1>
+      <p class="text-text-muted mt-1 text-sm">Manage profiles and configure the Ory Admin UI</p>
     </div>
 
     <!-- Card 1: Profile Management -->
@@ -312,7 +312,7 @@ watch(theme, (newTheme) => {
           <button
             v-for="profile in profileStore.allProfiles"
             :key="profile.slug"
-            class="flex w-full items-center justify-between rounded-lg border border-border-subtle px-3 py-2 text-left transition-colors hover:bg-surface-raised"
+            class="border-border-subtle hover:bg-surface-raised flex w-full items-center justify-between rounded-lg border px-3 py-2 text-left transition-colors"
             :class="profile.slug === profileStore.activeSlug ? 'border-accent/30 bg-accent/5' : ''"
             @click="profileStore.switchProfile(profile.slug)"
           >
@@ -325,7 +325,7 @@ watch(theme, (newTheme) => {
               />
               <div>
                 <div class="flex items-center gap-1.5">
-                  <span class="text-sm font-medium text-text-primary">{{ profile.name }}</span>
+                  <span class="text-text-primary text-sm font-medium">{{ profile.name }}</span>
                   <Badge
                     :variant="
                       profileStore.getProfileSource(profile.slug) === 'config'
@@ -337,7 +337,7 @@ watch(theme, (newTheme) => {
                     {{ profileStore.getProfileSource(profile.slug) }}
                   </Badge>
                 </div>
-                <p class="text-xs text-text-muted">{{ profile.slug }}</p>
+                <p class="text-text-muted text-xs">{{ profile.slug }}</p>
               </div>
             </div>
             <div class="flex gap-1">
@@ -357,7 +357,7 @@ watch(theme, (newTheme) => {
                 "
                 variant="ghost"
                 size="icon"
-                class="h-7 w-7 text-destructive hover:text-destructive"
+                class="text-destructive hover:text-destructive h-7 w-7"
                 @click.stop="profileStore.deleteProfile(profile.slug)"
               >
                 <Trash2 class="h-3.5 w-3.5" />
@@ -367,7 +367,7 @@ watch(theme, (newTheme) => {
         </div>
 
         <!-- New Profile form -->
-        <div v-if="showNewProfileForm" class="space-y-3 rounded-lg border border-border-subtle p-3">
+        <div v-if="showNewProfileForm" class="border-border-subtle space-y-3 rounded-lg border p-3">
           <div class="space-y-2">
             <Label for="new-profile-name">Profile Name</Label>
             <Input
@@ -375,8 +375,8 @@ watch(theme, (newTheme) => {
               v-model="newProfileName"
               placeholder="e.g. Production EU"
             />
-            <p v-if="newProfileName" class="text-xs text-text-muted">
-              Slug: <code class="rounded bg-surface-raised px-1">{{ newProfileSlug }}</code>
+            <p v-if="newProfileName" class="text-text-muted text-xs">
+              Slug: <code class="bg-surface-raised rounded px-1">{{ newProfileSlug }}</code>
             </p>
           </div>
           <div class="space-y-2">
@@ -435,9 +435,9 @@ watch(theme, (newTheme) => {
       <CardContent class="space-y-4">
         <div
           v-if="isActiveConfigProfile"
-          class="rounded-lg border border-warning/30 bg-warning/5 p-3"
+          class="border-warning/30 bg-warning/5 rounded-lg border p-3"
         >
-          <p class="text-xs text-warning">
+          <p class="text-warning text-xs">
             This profile is loaded from config.json and cannot be edited directly.
           </p>
           <Button variant="outline" size="sm" class="mt-2" @click="overrideLocally">
@@ -465,17 +465,17 @@ watch(theme, (newTheme) => {
             </Button>
             <CheckCircle
               v-if="adminTestResult === 'success'"
-              class="h-4 w-4 flex-shrink-0 text-success"
+              class="text-success h-4 w-4 flex-shrink-0"
             />
             <XCircle
               v-else-if="adminTestResult === 'error'"
-              class="h-4 w-4 flex-shrink-0 text-destructive"
+              class="text-destructive h-4 w-4 flex-shrink-0"
             />
           </div>
-          <p v-if="!isValidAdminUrl && adminUrl" class="text-xs text-destructive">
+          <p v-if="!isValidAdminUrl && adminUrl" class="text-destructive text-xs">
             Please enter a valid URL
           </p>
-          <p class="text-xs text-text-muted">
+          <p class="text-text-muted text-xs">
             The URL of your Kratos Admin API. This is typically port 4434.
           </p>
         </div>
@@ -500,17 +500,17 @@ watch(theme, (newTheme) => {
             </Button>
             <CheckCircle
               v-if="publicTestResult === 'success'"
-              class="h-4 w-4 flex-shrink-0 text-success"
+              class="text-success h-4 w-4 flex-shrink-0"
             />
             <XCircle
               v-else-if="publicTestResult === 'error'"
-              class="h-4 w-4 flex-shrink-0 text-destructive"
+              class="text-destructive h-4 w-4 flex-shrink-0"
             />
           </div>
-          <p v-if="!isValidPublicUrl && publicUrl" class="text-xs text-destructive">
+          <p v-if="!isValidPublicUrl && publicUrl" class="text-destructive text-xs">
             Please enter a valid URL
           </p>
-          <p class="text-xs text-text-muted">
+          <p class="text-text-muted text-xs">
             The URL of your Kratos Public API. This is typically port 4433.
           </p>
         </div>
@@ -535,17 +535,17 @@ watch(theme, (newTheme) => {
             </Button>
             <CheckCircle
               v-if="oathkeeperTestResult === 'success'"
-              class="h-4 w-4 flex-shrink-0 text-success"
+              class="text-success h-4 w-4 flex-shrink-0"
             />
             <XCircle
               v-else-if="oathkeeperTestResult === 'error'"
-              class="h-4 w-4 flex-shrink-0 text-destructive"
+              class="text-destructive h-4 w-4 flex-shrink-0"
             />
           </div>
-          <p v-if="!isValidOathkeeperUrl && oathkeeperUrl" class="text-xs text-destructive">
+          <p v-if="!isValidOathkeeperUrl && oathkeeperUrl" class="text-destructive text-xs">
             Please enter a valid URL
           </p>
-          <p class="text-xs text-text-muted">
+          <p class="text-text-muted text-xs">
             The URL of your Oathkeeper API. Leave empty if not using Oathkeeper. Typically port
             4456.
           </p>
@@ -619,7 +619,7 @@ watch(theme, (newTheme) => {
               <span class="text-sm">System</span>
             </button>
           </div>
-          <p class="text-xs text-text-muted">
+          <p class="text-text-muted text-xs">
             Choose your preferred color scheme or use system settings
           </p>
         </div>
@@ -635,50 +635,50 @@ watch(theme, (newTheme) => {
         </CardTitle>
       </CardHeader>
       <CardContent class="space-y-3">
-        <div class="flex justify-between border-b border-border-subtle py-2">
-          <span class="text-sm text-text-muted">Admin UI Version</span>
+        <div class="border-border-subtle flex justify-between border-b py-2">
+          <span class="text-text-muted text-sm">Admin UI Version</span>
           <a
             :href="`https://github.com/licenseware/ory-admin-ui/releases/tag/v${appVersion}`"
             target="_blank"
             rel="noopener noreferrer"
-            class="font-mono text-sm text-accent hover:text-accent-hover"
+            class="text-accent hover:text-accent-hover font-mono text-sm"
           >
             {{ appVersion }}
           </a>
         </div>
-        <div class="flex justify-between border-b border-border-subtle py-2">
-          <span class="text-sm text-text-muted">Kratos Version</span>
+        <div class="border-border-subtle flex justify-between border-b py-2">
+          <span class="text-text-muted text-sm">Kratos Version</span>
           <a
             v-if="version?.version"
             :href="`https://github.com/ory/kratos/releases/tag/${version.version}`"
             target="_blank"
             rel="noopener noreferrer"
-            class="font-mono text-sm text-accent hover:text-accent-hover"
+            class="text-accent hover:text-accent-hover font-mono text-sm"
           >
             {{ version.version }}
           </a>
-          <span v-else class="font-mono text-sm text-text-primary">Unknown</span>
+          <span v-else class="text-text-primary font-mono text-sm">Unknown</span>
         </div>
-        <div class="flex justify-between border-b border-border-subtle py-2">
-          <span class="text-sm text-text-muted">Oathkeeper Version</span>
+        <div class="border-border-subtle flex justify-between border-b py-2">
+          <span class="text-text-muted text-sm">Oathkeeper Version</span>
           <a
             v-if="oathkeeperVersion?.version"
             :href="`https://github.com/ory/oathkeeper/releases/tag/v${oathkeeperVersion.version}`"
             target="_blank"
             rel="noopener noreferrer"
-            class="font-mono text-sm text-accent hover:text-accent-hover"
+            class="text-accent hover:text-accent-hover font-mono text-sm"
           >
             {{ oathkeeperVersion.version }}
           </a>
-          <span v-else class="font-mono text-sm text-text-primary">Unknown</span>
+          <span v-else class="text-text-primary font-mono text-sm">Unknown</span>
         </div>
         <div class="flex justify-between py-2">
-          <span class="text-sm text-text-muted">Documentation</span>
+          <span class="text-text-muted text-sm">Documentation</span>
           <a
             href="https://www.ory.sh/docs/kratos"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-sm text-accent hover:text-accent-hover"
+            class="text-accent hover:text-accent-hover text-sm"
           >
             Ory Kratos Docs
           </a>

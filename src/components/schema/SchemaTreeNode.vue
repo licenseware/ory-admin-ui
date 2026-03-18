@@ -175,8 +175,8 @@ function handleKeydown(e: KeyboardEvent) {
         cn(
           'flex cursor-pointer items-center gap-2 overflow-hidden rounded-md px-2 py-1.5 transition-colors',
           'hover:bg-surface-overlay',
-          isSelected && 'border-l-2 border-accent bg-accent/10',
-          isFocused && 'ring-1 ring-inset ring-accent'
+          isSelected && 'border-accent bg-accent/10 border-l-2',
+          isFocused && 'ring-accent ring-1 ring-inset'
         )
       "
       :style="{ paddingLeft: `${depth * 16 + 8}px` }"
@@ -190,12 +190,12 @@ function handleKeydown(e: KeyboardEvent) {
       <!-- Expand/collapse chevron -->
       <button
         v-if="isExpandable"
-        class="flex-shrink-0 rounded p-0.5 transition-colors hover:bg-surface-raised"
+        class="hover:bg-surface-raised flex-shrink-0 rounded p-0.5 transition-colors"
         @click="handleToggle"
         :aria-label="isExpanded ? 'Collapse' : 'Expand'"
       >
-        <ChevronDown v-if="isExpanded" class="h-3.5 w-3.5 text-text-muted" />
-        <ChevronRight v-else class="h-3.5 w-3.5 text-text-muted" />
+        <ChevronDown v-if="isExpanded" class="text-text-muted h-3.5 w-3.5" />
+        <ChevronRight v-else class="text-text-muted h-3.5 w-3.5" />
       </button>
       <span v-else class="w-5" />
 
@@ -203,10 +203,10 @@ function handleKeydown(e: KeyboardEvent) {
       <component :is="typeIcon" :class="cn('h-4 w-4 flex-shrink-0', typeColor)" />
 
       <!-- Property name -->
-      <span class="truncate font-mono text-sm text-text-primary">{{ name }}</span>
+      <span class="text-text-primary truncate font-mono text-sm">{{ name }}</span>
 
       <!-- Type label -->
-      <span class="text-xs text-text-muted">{{ getType(schema) }}</span>
+      <span class="text-text-muted text-xs">{{ getType(schema) }}</span>
 
       <!-- Required badge -->
       <Badge v-if="required" variant="warning" class="px-1.5 py-0 text-[10px]">required</Badge>
@@ -214,7 +214,7 @@ function handleKeydown(e: KeyboardEvent) {
       <!-- Ory extension indicator -->
       <span
         v-if="hasOryExtensions"
-        class="h-2 w-2 flex-shrink-0 rounded-full bg-accent"
+        class="bg-accent h-2 w-2 flex-shrink-0 rounded-full"
         title="Has Ory extensions"
       />
 
@@ -228,7 +228,7 @@ function handleKeydown(e: KeyboardEvent) {
         >
           {{ constraint.label }}
         </Badge>
-        <span v-if="constraints.length > 3" class="text-[10px] text-text-muted">
+        <span v-if="constraints.length > 3" class="text-text-muted text-[10px]">
           +{{ constraints.length - 3 }}
         </span>
       </div>

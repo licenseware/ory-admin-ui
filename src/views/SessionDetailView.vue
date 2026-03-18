@@ -83,24 +83,24 @@ function formatAuthMethod(method: AuthenticationMethod): string {
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div class="flex items-start gap-4">
               <div
-                class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-success/10 text-success"
+                class="bg-success/10 text-success flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full"
               >
                 <Key class="h-6 w-6" />
               </div>
               <div>
                 <div class="flex items-center gap-2">
-                  <h1 class="text-xl font-semibold text-text-primary">Session</h1>
+                  <h1 class="text-text-primary text-xl font-semibold">Session</h1>
                   <StatusBadge :status="session.active ? 'active' : 'inactive'" />
                 </div>
                 <div class="mt-1 flex items-center gap-2">
-                  <code class="font-mono text-xs text-text-muted">{{ session.id }}</code>
+                  <code class="text-text-muted font-mono text-xs">{{ session.id }}</code>
                   <CopyButton :text="session.id" />
                 </div>
-                <div class="mt-2 flex items-center gap-4 text-sm text-text-muted">
+                <div class="text-text-muted mt-2 flex items-center gap-4 text-sm">
                   <RouterLink
                     v-if="session.identity"
                     :to="`/identities/${session.identity.id}`"
-                    class="flex items-center gap-1 transition-colors hover:text-accent"
+                    class="hover:text-accent flex items-center gap-1 transition-colors"
                   >
                     <User class="h-3 w-3" />
                     {{ getSessionUser() }}
@@ -147,25 +147,25 @@ function formatAuthMethod(method: AuthenticationMethod): string {
               </CardHeader>
               <CardContent>
                 <div class="space-y-3">
-                  <div class="flex items-center justify-between border-b border-border-subtle py-2">
-                    <span class="text-sm text-text-muted">Status</span>
+                  <div class="border-border-subtle flex items-center justify-between border-b py-2">
+                    <span class="text-text-muted text-sm">Status</span>
                     <StatusBadge :status="session.active ? 'active' : 'inactive'" />
                   </div>
-                  <div class="flex items-center justify-between border-b border-border-subtle py-2">
-                    <span class="text-sm text-text-muted">Authenticated At</span>
-                    <span class="text-sm text-text-primary">
+                  <div class="border-border-subtle flex items-center justify-between border-b py-2">
+                    <span class="text-text-muted text-sm">Authenticated At</span>
+                    <span class="text-text-primary text-sm">
                       {{ new Date(session.authenticated_at).toLocaleString() }}
                     </span>
                   </div>
-                  <div class="flex items-center justify-between border-b border-border-subtle py-2">
-                    <span class="text-sm text-text-muted">Issued At</span>
-                    <span class="text-sm text-text-primary">
+                  <div class="border-border-subtle flex items-center justify-between border-b py-2">
+                    <span class="text-text-muted text-sm">Issued At</span>
+                    <span class="text-text-primary text-sm">
                       {{ new Date(session.issued_at).toLocaleString() }}
                     </span>
                   </div>
                   <div class="flex items-center justify-between py-2">
-                    <span class="text-sm text-text-muted">Expires At</span>
-                    <span class="text-sm text-text-primary">
+                    <span class="text-text-muted text-sm">Expires At</span>
+                    <span class="text-text-primary text-sm">
                       {{
                         session.expires_at ? new Date(session.expires_at).toLocaleString() : "Never"
                       }}
@@ -188,17 +188,17 @@ function formatAuthMethod(method: AuthenticationMethod): string {
                   <div
                     v-for="(method, index) in session.authentication_methods"
                     :key="index"
-                    class="flex items-center justify-between rounded-lg bg-surface-raised p-3"
+                    class="bg-surface-raised flex items-center justify-between rounded-lg p-3"
                   >
                     <div class="flex items-center gap-2">
                       <Badge variant="outline">{{ formatAuthMethod(method) }}</Badge>
                     </div>
-                    <span v-if="method.completed_at" class="text-xs text-text-muted">
+                    <span v-if="method.completed_at" class="text-text-muted text-xs">
                       {{ new Date(method.completed_at).toLocaleString() }}
                     </span>
                   </div>
                 </div>
-                <p v-else class="text-sm text-text-muted">No authentication methods recorded</p>
+                <p v-else class="text-text-muted text-sm">No authentication methods recorded</p>
               </CardContent>
             </Card>
           </div>
@@ -219,13 +219,13 @@ function formatAuthMethod(method: AuthenticationMethod): string {
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
                     <div
-                      class="flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 font-medium text-accent"
+                      class="bg-accent/10 text-accent flex h-10 w-10 items-center justify-center rounded-full font-medium"
                     >
                       {{ getSessionUser().charAt(0).toUpperCase() }}
                     </div>
                     <div>
-                      <p class="text-sm font-medium text-text-primary">{{ getSessionUser() }}</p>
-                      <code class="text-xs text-text-muted">{{ session.identity.id }}</code>
+                      <p class="text-text-primary text-sm font-medium">{{ getSessionUser() }}</p>
+                      <code class="text-text-muted text-xs">{{ session.identity.id }}</code>
                     </div>
                   </div>
                   <RouterLink :to="`/identities/${session.identity.id}`">
@@ -235,22 +235,22 @@ function formatAuthMethod(method: AuthenticationMethod): string {
 
                 <!-- Identity traits -->
                 <div class="mt-4">
-                  <h4 class="mb-2 text-sm font-medium text-text-secondary">Traits</h4>
-                  <div class="rounded-lg bg-surface-raised p-3">
+                  <h4 class="text-text-secondary mb-2 text-sm font-medium">Traits</h4>
+                  <div class="bg-surface-raised rounded-lg p-3">
                     <div
                       v-for="(value, key) in session.identity.traits"
                       :key="key"
                       class="flex items-center justify-between py-1"
                     >
-                      <span class="text-sm capitalize text-text-muted">{{ key }}</span>
-                      <span class="font-mono text-sm text-text-primary">
+                      <span class="text-text-muted text-sm capitalize">{{ key }}</span>
+                      <span class="text-text-primary font-mono text-sm">
                         {{ typeof value === "object" ? JSON.stringify(value) : value }}
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p v-else class="text-sm text-text-muted">No identity information available</p>
+              <p v-else class="text-text-muted text-sm">No identity information available</p>
             </CardContent>
           </Card>
         </template>
@@ -270,19 +270,19 @@ function formatAuthMethod(method: AuthenticationMethod): string {
                 <div
                   v-for="(device, index) in session.devices"
                   :key="index"
-                  class="rounded-lg bg-surface-raised p-4"
+                  class="bg-surface-raised rounded-lg p-4"
                 >
                   <div class="flex items-start gap-3">
                     <div
-                      class="flex h-10 w-10 items-center justify-center rounded-lg bg-surface text-text-muted"
+                      class="bg-surface text-text-muted flex h-10 w-10 items-center justify-center rounded-lg"
                     >
                       <Monitor class="h-5 w-5" />
                     </div>
                     <div class="min-w-0 flex-1">
-                      <p class="text-sm font-medium text-text-primary">
+                      <p class="text-text-primary text-sm font-medium">
                         {{ device.user_agent || "Unknown Device" }}
                       </p>
-                      <div class="mt-1 flex items-center gap-4 text-xs text-text-muted">
+                      <div class="text-text-muted mt-1 flex items-center gap-4 text-xs">
                         <span v-if="device.ip_address" class="flex items-center gap-1">
                           <Globe class="h-3 w-3" />
                           {{ device.ip_address }}
@@ -293,7 +293,7 @@ function formatAuthMethod(method: AuthenticationMethod): string {
                   </div>
                 </div>
               </div>
-              <p v-else class="text-sm text-text-muted">No device information available</p>
+              <p v-else class="text-text-muted text-sm">No device information available</p>
             </CardContent>
           </Card>
         </template>

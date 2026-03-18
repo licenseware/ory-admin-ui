@@ -71,14 +71,14 @@ const emit = defineEmits<{
     </DialogTrigger>
     <DialogPortal v-if="isMounted">
       <DialogOverlay
-        class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-fade-in"
+        class="data-[state=open]:animate-fade-in fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
       />
       <DialogContent :class="contentClasses">
         <div v-if="hasTitle || hasDescription" class="flex flex-col space-y-2">
-          <DialogTitle v-if="hasTitle" class="text-lg font-medium text-text-primary">
+          <DialogTitle v-if="hasTitle" class="text-text-primary text-lg font-medium">
             <slot name="title">{{ title }}</slot>
           </DialogTitle>
-          <DialogDescription v-if="hasDescription" class="text-sm text-text-muted">
+          <DialogDescription v-if="hasDescription" class="text-text-muted text-sm">
             <slot name="description">{{ description }}</slot>
           </DialogDescription>
         </div>
@@ -91,9 +91,9 @@ const emit = defineEmits<{
           <slot name="footer" />
         </div>
         <DialogClose
-          class="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface"
+          class="focus:ring-accent focus:ring-offset-surface absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none"
         >
-          <X class="h-4 w-4 text-text-secondary" />
+          <X class="text-text-secondary h-4 w-4" />
           <span class="sr-only">Close</span>
         </DialogClose>
       </DialogContent>

@@ -16,7 +16,7 @@ const sizeClasses = {
 
 <template>
   <svg
-    :class="['animate-spin text-accent', sizeClasses[size]]"
+    :class="['text-accent animate-spin', sizeClasses[size]]"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"

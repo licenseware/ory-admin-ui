@@ -41,7 +41,7 @@ function getCurrentBreadcrumb() {
 <template>
   <TooltipProvider>
     <header
-      class="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border-subtle bg-surface/80 px-3 backdrop-blur-sm md:px-6"
+      class="border-border-subtle bg-surface/80 sticky top-0 z-30 flex h-14 items-center justify-between border-b px-3 backdrop-blur-sm md:px-6"
     >
       <!-- Left side: hamburger + breadcrumb -->
       <div class="flex items-center gap-2">
@@ -50,8 +50,8 @@ function getCurrentBreadcrumb() {
         </Button>
         <nav class="text-sm">
           <span class="text-text-secondary">Ory Admin</span>
-          <span class="mx-2 text-text-muted">/</span>
-          <span class="font-medium text-text-primary">{{ getCurrentBreadcrumb() }}</span>
+          <span class="text-text-muted mx-2">/</span>
+          <span class="text-text-primary font-medium">{{ getCurrentBreadcrumb() }}</span>
         </nav>
       </div>
 
@@ -61,7 +61,7 @@ function getCurrentBreadcrumb() {
         <Tooltip :content="healthTooltip" side="bottom">
           <div class="flex items-center gap-2 rounded-md px-2 py-1">
             <Circle :class="['h-2 w-2 fill-current', healthColor]" />
-            <span class="hidden text-xs text-text-muted sm:inline">
+            <span class="text-text-muted hidden text-xs sm:inline">
               {{ healthLabel }}
             </span>
           </div>
@@ -84,7 +84,7 @@ function getCurrentBreadcrumb() {
             href="https://github.com/licenseware/ory-admin-ui"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-2 py-1 text-sm text-text-secondary transition-colors hover:text-text-primary"
+            class="text-text-secondary hover:text-text-primary inline-flex items-center gap-2 px-2 py-1 text-sm transition-colors"
           >
             <Github class="h-4 w-4" />
             <span class="hidden sm:inline">GitHub</span>

@@ -46,11 +46,20 @@ export default defineConfig(({ mode }) => {
       cssMinify: "lightningcss",
       rollupOptions: {
         output: {
-          manualChunks: {
-            vue: ["vue", "vue-router", "pinia"],
-            query: ["@tanstack/vue-query"],
-            ui: ["radix-vue", "lucide-vue-next"],
-            validation: ["zod"],
+          manualChunks(id: string) {
+            if (
+              id.includes("node_modules/vue/") ||
+              id.includes("node_modules/vue-router/") ||
+              id.includes("node_modules/pinia/")
+            )
+              return "vue"
+            if (id.includes("node_modules/@tanstack/vue-query/")) return "query"
+            if (
+              id.includes("node_modules/radix-vue/") ||
+              id.includes("node_modules/lucide-vue-next/")
+            )
+              return "ui"
+            if (id.includes("node_modules/zod/")) return "validation"
           },
         },
       },

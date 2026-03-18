@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
     :disabled="props.disabled"
     :class="
       cn(
-        'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium text-text-muted transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-surface-raised data-[state=active]:text-text-primary data-[state=active]:shadow-sm',
+        'text-text-muted focus-visible:ring-accent focus-visible:ring-offset-surface data-[state=active]:bg-surface-raised data-[state=active]:text-text-primary inline-flex items-center justify-center rounded-md px-3 py-1 text-sm font-medium whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm',
         props.class
       )
     "

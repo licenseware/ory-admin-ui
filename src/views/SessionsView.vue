@@ -148,8 +148,8 @@ function handleRevoke() {
     <!-- Page header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-semibold text-text-primary">Sessions</h1>
-        <p class="mt-1 text-sm text-text-muted">View and manage active user sessions</p>
+        <h1 class="text-text-primary text-2xl font-semibold">Sessions</h1>
+        <p class="text-text-muted mt-1 text-sm">View and manage active user sessions</p>
       </div>
       <ReloadButton :is-fetching="isFetching" @reload="refetch" />
     </div>
@@ -160,7 +160,7 @@ function handleRevoke() {
         <div class="flex flex-col gap-4">
           <!-- Search -->
           <div class="relative">
-            <Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+            <Search class="text-text-muted absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
               v-model="searchQuery"
               placeholder="Search by session ID, user email, or identity ID..."
@@ -171,7 +171,7 @@ function handleRevoke() {
           <!-- Filters row -->
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div class="flex items-center gap-2 sm:w-44">
-              <Filter class="h-4 w-4 flex-shrink-0 text-text-muted" />
+              <Filter class="text-text-muted h-4 w-4 flex-shrink-0" />
               <Select
                 v-model="activeFilter"
                 :options="activeOptions"
@@ -180,7 +180,7 @@ function handleRevoke() {
               />
             </div>
             <div class="flex items-center gap-2 sm:ml-auto sm:w-48">
-              <ArrowUpDown class="h-4 w-4 flex-shrink-0 text-text-muted" />
+              <ArrowUpDown class="text-text-muted h-4 w-4 flex-shrink-0" />
               <Select
                 v-model="sortValue"
                 :options="sortOptions"
@@ -222,34 +222,34 @@ function handleRevoke() {
           "
         >
           <template #icon>
-            <Key class="h-8 w-8 text-text-muted" />
+            <Key class="text-text-muted h-8 w-8" />
           </template>
         </EmptyState>
 
         <!-- Session list -->
-        <div v-else class="divide-y divide-border-subtle">
+        <div v-else class="divide-border-subtle divide-y">
           <div
             v-for="session in processedSessions"
             :key="session.id"
-            class="flex items-center justify-between p-4 transition-colors hover:bg-surface-raised"
+            class="hover:bg-surface-raised flex items-center justify-between p-4 transition-colors"
           >
             <RouterLink
               :to="`/sessions/${session.id}`"
               class="flex min-w-0 flex-1 items-center gap-4"
             >
               <div
-                class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-success/10 text-success"
+                class="bg-success/10 text-success flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full"
               >
                 <Key class="h-5 w-5" />
               </div>
               <div class="min-w-0">
                 <div class="mb-1 flex items-center gap-2">
-                  <p class="truncate text-sm font-medium text-text-primary">
+                  <p class="text-text-primary truncate text-sm font-medium">
                     {{ session.id.slice(0, 12) }}...
                   </p>
                   <StatusBadge :status="session.active ? 'active' : 'inactive'" />
                 </div>
-                <div class="flex items-center gap-2 text-xs text-text-muted">
+                <div class="text-text-muted flex items-center gap-2 text-xs">
                   <User class="h-3 w-3" />
                   <span class="truncate">{{ getSessionUser(session) }}</span>
                 </div>
@@ -258,14 +258,14 @@ function handleRevoke() {
 
             <div class="flex items-center gap-4">
               <div class="hidden text-right sm:block">
-                <p class="text-xs text-text-muted">Authenticated</p>
-                <p class="text-xs text-text-secondary">
+                <p class="text-text-muted text-xs">Authenticated</p>
+                <p class="text-text-secondary text-xs">
                   <TimeAgo :date="session.authenticated_at" />
                 </p>
               </div>
               <div class="hidden text-right md:block">
-                <p class="text-xs text-text-muted">Expires</p>
-                <p class="text-xs text-text-secondary">
+                <p class="text-text-muted text-xs">Expires</p>
+                <p class="text-text-secondary text-xs">
                   {{
                     session.expires_at ? new Date(session.expires_at).toLocaleDateString() : "Never"
                   }}
@@ -284,7 +284,7 @@ function handleRevoke() {
                   title="Revoke"
                   @click.prevent="confirmRevoke(session)"
                 >
-                  <AlertTriangle class="h-4 w-4 text-destructive" />
+                  <AlertTriangle class="text-destructive h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -292,7 +292,7 @@ function handleRevoke() {
         </div>
 
         <!-- Pagination -->
-        <div v-if="processedSessions?.length" class="border-t border-border-subtle p-4">
+        <div v-if="processedSessions?.length" class="border-border-subtle border-t p-4">
           <Pagination
             :has-next="hasNext"
             :has-prev="hasPrev"

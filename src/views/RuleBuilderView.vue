@@ -200,10 +200,10 @@ function downloadYaml() {
 
     <!-- Header -->
     <div>
-      <h1 class="text-2xl font-semibold text-text-primary">
+      <h1 class="text-text-primary text-2xl font-semibold">
         {{ isClone ? "Clone Rule" : "New Rule" }}
       </h1>
-      <p class="mt-1 text-sm text-text-muted">
+      <p class="text-text-muted mt-1 text-sm">
         {{
           isClone
             ? "Clone an existing rule and generate a YAML configuration"
@@ -300,7 +300,7 @@ function downloadYaml() {
             id="preserve-host"
             v-model="upstreamPreserveHost"
             type="checkbox"
-            class="h-4 w-4 rounded border-border accent-accent"
+            class="border-border accent-accent h-4 w-4 rounded"
           />
           <Label for="preserve-host" class="cursor-pointer">Preserve Host</Label>
         </div>
@@ -334,7 +334,7 @@ function downloadYaml() {
         <div
           v-for="(auth, index) in authenticators"
           :key="index"
-          class="space-y-3 rounded-lg border border-border-subtle p-3"
+          class="border-border-subtle space-y-3 rounded-lg border p-3"
         >
           <div class="flex items-center justify-between">
             <Label>Handler</Label>
@@ -342,7 +342,7 @@ function downloadYaml() {
               v-if="authenticators.length > 1"
               variant="ghost"
               size="icon"
-              class="h-7 w-7 text-destructive hover:text-destructive"
+              class="text-destructive hover:text-destructive h-7 w-7"
               aria-label="Remove authenticator"
               @click="removeAuthenticator(index)"
             >
@@ -362,10 +362,10 @@ function downloadYaml() {
               :class="cn('font-mono text-sm', !isValidJson(auth.config) && 'border-destructive')"
               placeholder="{}"
             />
-            <p v-if="!isValidJson(auth.config)" class="text-xs text-destructive">Invalid JSON</p>
+            <p v-if="!isValidJson(auth.config)" class="text-destructive text-xs">Invalid JSON</p>
           </div>
         </div>
-        <p v-if="!authenticators.length" class="text-sm text-text-muted">
+        <p v-if="!authenticators.length" class="text-text-muted text-sm">
           No authenticators configured. Click "Add" to add one.
         </p>
       </CardContent>
@@ -398,7 +398,7 @@ function downloadYaml() {
             "
             placeholder="{}"
           />
-          <p v-if="!isValidJson(authorizer.config)" class="text-xs text-destructive">
+          <p v-if="!isValidJson(authorizer.config)" class="text-destructive text-xs">
             Invalid JSON
           </p>
         </div>
@@ -423,7 +423,7 @@ function downloadYaml() {
         <div
           v-for="(mut, index) in mutators"
           :key="index"
-          class="space-y-3 rounded-lg border border-border-subtle p-3"
+          class="border-border-subtle space-y-3 rounded-lg border p-3"
         >
           <div class="flex items-center justify-between">
             <Label>Handler</Label>
@@ -431,7 +431,7 @@ function downloadYaml() {
               v-if="mutators.length > 1"
               variant="ghost"
               size="icon"
-              class="h-7 w-7 text-destructive hover:text-destructive"
+              class="text-destructive hover:text-destructive h-7 w-7"
               aria-label="Remove mutator"
               @click="removeMutator(index)"
             >
@@ -447,10 +447,10 @@ function downloadYaml() {
               :class="cn('font-mono text-sm', !isValidJson(mut.config) && 'border-destructive')"
               placeholder="{}"
             />
-            <p v-if="!isValidJson(mut.config)" class="text-xs text-destructive">Invalid JSON</p>
+            <p v-if="!isValidJson(mut.config)" class="text-destructive text-xs">Invalid JSON</p>
           </div>
         </div>
-        <p v-if="!mutators.length" class="text-sm text-text-muted">
+        <p v-if="!mutators.length" class="text-text-muted text-sm">
           No mutators configured. Click "Add" to add one.
         </p>
       </CardContent>
@@ -471,7 +471,7 @@ function downloadYaml() {
       </CardHeader>
       <CardContent>
         <pre
-          class="overflow-x-auto rounded-lg bg-surface-overlay p-4 font-mono text-sm text-text-primary"
+          class="bg-surface-overlay text-text-primary overflow-x-auto rounded-lg p-4 font-mono text-sm"
           >{{ generatedYaml }}</pre
         >
       </CardContent>

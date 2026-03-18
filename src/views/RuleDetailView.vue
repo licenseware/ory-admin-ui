@@ -62,7 +62,7 @@ function hasConfig(handler: RuleHandler): boolean {
       description="The requested rule does not exist or has been removed."
     >
       <template #icon>
-        <Shield class="h-8 w-8 text-text-muted" />
+        <Shield class="text-text-muted h-8 w-8" />
       </template>
     </EmptyState>
 
@@ -73,10 +73,10 @@ function hasConfig(handler: RuleHandler): boolean {
         <CardContent class="p-6">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <h1 class="text-xl font-semibold text-text-primary">
+              <h1 class="text-text-primary text-xl font-semibold">
                 {{ rule.id }}
               </h1>
-              <p v-if="rule.description" class="mt-1 text-sm text-text-muted">
+              <p v-if="rule.description" class="text-text-muted mt-1 text-sm">
                 {{ rule.description }}
               </p>
             </div>
@@ -105,15 +105,15 @@ function hasConfig(handler: RuleHandler): boolean {
           <div v-if="rule.match" class="space-y-3">
             <div
               v-if="rule.match.url"
-              class="flex items-start justify-between border-b border-border-subtle py-2"
+              class="border-border-subtle flex items-start justify-between border-b py-2"
             >
-              <span class="text-sm text-text-muted">URL Pattern</span>
-              <code class="max-w-[60%] break-all text-right font-mono text-sm text-text-primary">
+              <span class="text-text-muted text-sm">URL Pattern</span>
+              <code class="text-text-primary max-w-[60%] text-right font-mono text-sm break-all">
                 {{ rule.match.url }}
               </code>
             </div>
             <div v-if="rule.match.methods?.length" class="py-2">
-              <span class="mb-2 block text-sm text-text-muted">Methods</span>
+              <span class="text-text-muted mb-2 block text-sm">Methods</span>
               <div class="flex flex-wrap gap-1">
                 <Badge v-for="method in rule.match.methods" :key="method" variant="secondary">
                   {{ method }}
@@ -121,7 +121,7 @@ function hasConfig(handler: RuleHandler): boolean {
               </div>
             </div>
           </div>
-          <p v-else class="text-sm text-text-muted">No match configured</p>
+          <p v-else class="text-text-muted text-sm">No match configured</p>
         </CardContent>
       </Card>
 
@@ -137,27 +137,27 @@ function hasConfig(handler: RuleHandler): boolean {
           <div v-if="rule.upstream" class="space-y-3">
             <div
               v-if="rule.upstream.url"
-              class="flex items-start justify-between border-b border-border-subtle py-2"
+              class="border-border-subtle flex items-start justify-between border-b py-2"
             >
-              <span class="text-sm text-text-muted">URL</span>
-              <code class="max-w-[60%] break-all text-right font-mono text-sm text-text-primary">
+              <span class="text-text-muted text-sm">URL</span>
+              <code class="text-text-primary max-w-[60%] text-right font-mono text-sm break-all">
                 {{ rule.upstream.url }}
               </code>
             </div>
-            <div class="flex items-center justify-between border-b border-border-subtle py-2">
-              <span class="text-sm text-text-muted">Preserve Host</span>
+            <div class="border-border-subtle flex items-center justify-between border-b py-2">
+              <span class="text-text-muted text-sm">Preserve Host</span>
               <Badge :variant="rule.upstream.preserve_host ? 'success' : 'secondary'">
                 {{ rule.upstream.preserve_host ? "Yes" : "No" }}
               </Badge>
             </div>
             <div v-if="rule.upstream.strip_path" class="flex items-start justify-between py-2">
-              <span class="text-sm text-text-muted">Strip Path</span>
-              <code class="max-w-[60%] break-all text-right font-mono text-sm text-text-primary">
+              <span class="text-text-muted text-sm">Strip Path</span>
+              <code class="text-text-primary max-w-[60%] text-right font-mono text-sm break-all">
                 {{ rule.upstream.strip_path }}
               </code>
             </div>
           </div>
-          <p v-else class="text-sm text-text-muted">No upstream configured</p>
+          <p v-else class="text-text-muted text-sm">No upstream configured</p>
         </CardContent>
       </Card>
 
@@ -174,7 +174,7 @@ function hasConfig(handler: RuleHandler): boolean {
             <div
               v-for="(auth, index) in rule.authenticators"
               :key="index"
-              class="rounded-lg bg-surface-raised p-4"
+              class="bg-surface-raised rounded-lg p-4"
             >
               <Badge variant="outline">{{ auth.handler }}</Badge>
               <div v-if="hasConfig(auth)" class="mt-3">
@@ -182,7 +182,7 @@ function hasConfig(handler: RuleHandler): boolean {
               </div>
             </div>
           </div>
-          <p v-else class="text-sm text-text-muted">None configured</p>
+          <p v-else class="text-text-muted text-sm">None configured</p>
         </CardContent>
       </Card>
 
@@ -195,7 +195,7 @@ function hasConfig(handler: RuleHandler): boolean {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div v-if="rule.authorizer" class="rounded-lg bg-surface-raised p-4">
+          <div v-if="rule.authorizer" class="bg-surface-raised rounded-lg p-4">
             <Badge variant="outline">{{ rule.authorizer.handler }}</Badge>
             <div v-if="hasConfig(rule.authorizer)" class="mt-3">
               <JsonViewer
@@ -205,7 +205,7 @@ function hasConfig(handler: RuleHandler): boolean {
               />
             </div>
           </div>
-          <p v-else class="text-sm text-text-muted">No authorizer configured</p>
+          <p v-else class="text-text-muted text-sm">No authorizer configured</p>
         </CardContent>
       </Card>
 
@@ -222,7 +222,7 @@ function hasConfig(handler: RuleHandler): boolean {
             <div
               v-for="(mutator, index) in rule.mutators"
               :key="index"
-              class="rounded-lg bg-surface-raised p-4"
+              class="bg-surface-raised rounded-lg p-4"
             >
               <Badge variant="outline">{{ mutator.handler }}</Badge>
               <div v-if="hasConfig(mutator)" class="mt-3">
@@ -230,7 +230,7 @@ function hasConfig(handler: RuleHandler): boolean {
               </div>
             </div>
           </div>
-          <p v-else class="text-sm text-text-muted">None configured</p>
+          <p v-else class="text-text-muted text-sm">None configured</p>
         </CardContent>
       </Card>
 
@@ -239,7 +239,7 @@ function hasConfig(handler: RuleHandler): boolean {
         <CardHeader>
           <div class="flex items-center justify-between">
             <button
-              class="flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-text-primary"
+              class="text-text-secondary hover:text-text-primary flex items-center gap-2 text-sm transition-colors"
               :aria-expanded="rawJsonExpanded"
               @click="rawJsonExpanded = !rawJsonExpanded"
             >

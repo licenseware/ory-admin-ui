@@ -21,7 +21,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="flex items-center justify-between">
-    <div class="text-sm text-text-muted">
+    <div class="text-text-muted text-sm">
       <template v-if="itemCount !== undefined">
         Showing {{ itemCount }} item{{ itemCount !== 1 ? "s" : "" }}
       </template>

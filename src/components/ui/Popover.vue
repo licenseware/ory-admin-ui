@@ -30,7 +30,7 @@ onBeforeUnmount(() => {
         :side="side"
         :align="align"
         :side-offset="4"
-        class="z-50 w-72 animate-fade-in rounded-lg border border-border-subtle bg-surface-overlay shadow-md"
+        class="animate-fade-in border-border-subtle bg-surface-overlay z-50 w-72 rounded-lg border shadow-md"
       >
         <slot />
       </PopoverContent>
