@@ -21,8 +21,6 @@ import { useUrlState } from "@/composables/useUrlState"
 import type { Message } from "@/types/api"
 
 const STATUS_ALL = "all" as const
-type MessageStatus = "queued" | "sent" | "processing" | "abandoned"
-type StatusFilterValue = typeof STATUS_ALL | MessageStatus
 
 // URL-synced state
 const { state: urlState, debounced } = useUrlState({

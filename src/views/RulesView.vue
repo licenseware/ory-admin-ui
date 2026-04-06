@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, toRef } from "vue"
+import { computed, toRef } from "vue"
 import { RouterLink } from "vue-router"
 import { useRules, useOathkeeperHealth, useOathkeeperVersion } from "@/composables/useOathkeeper"
 import Card from "@/components/ui/Card.vue"
