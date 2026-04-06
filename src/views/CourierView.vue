@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { ref, computed, watch, toRef, type Ref } from "vue"
 import { useCourierMessages } from "@/composables/useCourier"
 import Card from "@/components/ui/Card.vue"
 import CardContent from "@/components/ui/CardContent.vue"
@@ -17,17 +17,38 @@ import Pagination from "@/components/common/Pagination.vue"
 import JsonViewer from "@/components/common/JsonViewer.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
 import { Search, Mail, Eye, Filter } from "lucide-vue-next"
+import { useUrlState } from "@/composables/useUrlState"
 import type { Message } from "@/types/api"
 
 const STATUS_ALL = "all" as const
 type MessageStatus = "queued" | "sent" | "processing" | "abandoned"
 type StatusFilterValue = typeof STATUS_ALL | MessageStatus
 
-const pageSize = ref(20)
-const searchQuery = ref("")
-const statusFilter = ref<StatusFilterValue>(STATUS_ALL)
+// URL-synced state
+const { state: urlState } = useUrlState({
+  search: { key: "search", defaultValue: "" },
+  status: { key: "status", defaultValue: STATUS_ALL as string },
+  page_size: {
+    key: "page_size",
+    defaultValue: 20,
+    transform: { parse: Number, serialize: String },
+  },
+})
+
+const searchQuery = ref(urlState.search as string)
+const statusFilter = toRef(urlState, "status") as Ref<StatusFilterValue>
+const pageSize = toRef(urlState, "page_size") as Ref<number>
 const selectedMessage = ref<Message | null>(null)
 const detailDialogOpen = ref(false)
+
+// Sync search to URL with debounce
+let searchTimeout: ReturnType<typeof setTimeout> | undefined
+watch(searchQuery, (val) => {
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    urlState.search = val
+  }, 300)
+})
 
 const { data: messages, isLoading, isFetching, isError, error, refetch } = useCourierMessages()
 

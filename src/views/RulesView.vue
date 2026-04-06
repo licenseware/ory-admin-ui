@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onBeforeUnmount } from "vue"
+import { ref, computed, watch, onBeforeUnmount, toRef, type Ref } from "vue"
 import { RouterLink } from "vue-router"
 import { useRules, useOathkeeperHealth, useOathkeeperVersion } from "@/composables/useOathkeeper"
 import Card from "@/components/ui/Card.vue"
@@ -14,15 +14,26 @@ import EmptyState from "@/components/common/EmptyState.vue"
 import ErrorState from "@/components/common/ErrorState.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
 import { Shield, Plus, Search, Copy, Eye, Activity, ArrowLeft, ArrowRight } from "lucide-vue-next"
+import { useUrlState } from "@/composables/useUrlState"
 import type { Rule } from "@/types/oathkeeper"
 
-// Pagination state
-const pageSize = 20
-const currentPage = ref(1)
+// URL-synced state
+const { state: urlState } = useUrlState({
+  search: { key: "search", defaultValue: "" },
+  page: { key: "page", defaultValue: 1, transform: { parse: Number, serialize: String } },
+  page_size: {
+    key: "page_size",
+    defaultValue: 20,
+    transform: { parse: Number, serialize: String },
+  },
+})
+
+const currentPage = toRef(urlState, "page") as Ref<number>
+const pageSize = urlState.page_size as number
 
 const apiParams = computed(() => ({
-  limit: pageSize,
-  offset: (currentPage.value - 1) * pageSize,
+  limit: urlState.page_size as number,
+  offset: ((urlState.page as number) - 1) * (urlState.page_size as number),
 }))
 
 // Data fetching
@@ -40,15 +51,16 @@ const {
   refetch: refetchVersion,
 } = useOathkeeperVersion()
 
-// Search
-const searchQuery = ref("")
-const debouncedSearch = ref("")
+// Search: local ref for immediate input, URL state for committed
+const searchQuery = ref(urlState.search as string)
+const debouncedSearch = ref(urlState.search as string)
 let searchTimeout: ReturnType<typeof setTimeout> | undefined
 
 watch(searchQuery, (val) => {
   clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
     debouncedSearch.value = val
+    urlState.search = val
   }, 300)
 })
 

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
+import { useProfileStore } from "@/stores/profile"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -80,6 +81,17 @@ const router = createRouter({
       component: () => import("@/views/NotFoundView.vue"),
     },
   ],
+})
+
+router.afterEach((to) => {
+  const profileStore = useProfileStore()
+  if (!to.query.profile && profileStore.activeSlug) {
+    router.replace({
+      path: to.path,
+      query: { ...to.query, profile: profileStore.activeSlug },
+      hash: to.hash,
+    })
+  }
 })
 
 export default router

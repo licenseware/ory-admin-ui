@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue"
+import { useUrlState } from "@/composables/useUrlState"
 import { useSchemas } from "@/composables/useSchemas"
 import { useSchemaNavigation } from "@/composables/useSchemaNavigation"
 import Card from "@/components/ui/Card.vue"
@@ -38,7 +39,21 @@ import {
 import type { IdentitySchema } from "@/types/api"
 import { cn } from "@/lib/utils"
 
-const listSearchQuery = ref("")
+const { state: urlState } = useUrlState({
+  search: { key: "search", defaultValue: "" },
+  selected: { key: "selected", defaultValue: "" },
+})
+
+const listSearchQuery = ref(urlState.search as string)
+
+// Sync search to URL with debounce
+let searchTimeout: ReturnType<typeof setTimeout> | undefined
+watch(listSearchQuery, (val) => {
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    urlState.search = val
+  }, 300)
+})
 const selectedSchema = ref<IdentitySchema | null>(null)
 const detailDialogOpen = ref(false)
 const searchInputRef = ref<HTMLInputElement | null>(null)
@@ -63,6 +78,7 @@ const filteredSchemas = computed(() => {
 
 function viewSchema(schema: IdentitySchema) {
   selectedSchema.value = schema
+  urlState.selected = schema.id
   navigation.selectedPath.value = ""
   navigation.focusedPath.value = ""
   navigation.searchQuery.value = ""
@@ -162,8 +178,22 @@ watch(detailDialogOpen, (open) => {
     navigation.isFullscreen.value = false
     showRawJson.value = false
     showKeyboardHelp.value = false
+    urlState.selected = ""
   }
 })
+
+// If ?selected= present on page load, auto-open that schema
+watch(
+  () => schemas.value,
+  (loaded) => {
+    if (!loaded || !urlState.selected) return
+    const match = loaded.find((s) => s.id === urlState.selected)
+    if (match && !detailDialogOpen.value) {
+      viewSchema(match)
+    }
+  },
+  { immediate: true }
+)
 
 const dialogSize = computed(() => (navigation.isFullscreen.value ? "full" : "5xl"))
 </script>
