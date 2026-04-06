@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { ref, computed, toRef } from "vue"
 import { useRoute, useRouter, RouterLink } from "vue-router"
 import { useSession, useRevokeSession } from "@/composables/useSessions"
+import { useUrlState } from "@/composables/useUrlState"
 import Card from "@/components/ui/Card.vue"
 import CardHeader from "@/components/ui/CardHeader.vue"
 import CardTitle from "@/components/ui/CardTitle.vue"
@@ -26,7 +27,10 @@ const route = useRoute()
 const router = useRouter()
 const sessionId = computed(() => String(route.params.id))
 
-const activeTab = ref("overview")
+const { state: urlState } = useUrlState({
+  tab: { key: "tab", defaultValue: "overview" },
+})
+const activeTab = toRef(urlState, "tab")
 const revokeDialogOpen = ref(false)
 
 const { data: session, isLoading, isFetching, isError, error, refetch } = useSession(sessionId)

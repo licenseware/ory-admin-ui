@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue"
+import { ref, computed, watch, toRef } from "vue"
 import { RouterLink } from "vue-router"
 import { useSessions, useRevokeSession } from "@/composables/useSessions"
 import Card from "@/components/ui/Card.vue"
@@ -16,18 +16,34 @@ import ErrorState from "@/components/common/ErrorState.vue"
 import Pagination from "@/components/common/Pagination.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
 import { Search, Key, Eye, AlertTriangle, User, Filter, ArrowUpDown } from "lucide-vue-next"
+import { useUrlState } from "@/composables/useUrlState"
+import { useSortState } from "@/composables/useSortState"
 import type { Session } from "@/types/api"
 
-// Pagination state
-const pageSize = ref(20)
+// URL-synced filter/sort state
+const { state: urlState, debounced } = useUrlState({
+  search: { key: "search", defaultValue: "", debounce: 300 },
+  active: { key: "active", defaultValue: "active" },
+  sort: { key: "sort", defaultValue: "authenticated_at:desc" },
+  page_size: {
+    key: "page_size",
+    defaultValue: 20,
+    transform: { parse: Number, serialize: String },
+  },
+})
+
+// Pagination state (not URL-synced)
 const pageToken = ref<string | undefined>()
 const prevTokens = ref<string[]>([])
 
-// Filter & sort state
-const searchQuery = ref("")
-const activeFilter = ref("active")
-const sortField = ref<"authenticated_at" | "expires_at">("authenticated_at")
-const sortDir = ref<"asc" | "desc">("desc")
+const searchQuery = debounced.search
+const activeFilter = toRef(urlState, "active")
+const pageSize = toRef(urlState, "page_size")
+
+const { sortValue, sortField, sortDir } = useSortState<"authenticated_at" | "expires_at">(
+  urlState,
+  "sort"
+)
 
 // Revoke dialog state
 const revokeDialogOpen = ref(false)
@@ -55,15 +71,6 @@ const sortOptions = [
   { value: "expires_at:asc", label: "Expires soonest" },
   { value: "expires_at:desc", label: "Expires latest" },
 ]
-
-const sortValue = computed({
-  get: () => `${sortField.value}:${sortDir.value}`,
-  set: (val: string) => {
-    const [field, dir] = val.split(":") as ["authenticated_at" | "expires_at", "asc" | "desc"]
-    sortField.value = field
-    sortDir.value = dir
-  },
-})
 
 // Client-side pipeline: search → sort on current page data
 const processedSessions = computed(() => {

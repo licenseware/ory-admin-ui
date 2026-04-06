@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue"
+import { ref, computed, watch, toRef } from "vue"
 import { RouterLink } from "vue-router"
 import { useQueryClient } from "@tanstack/vue-query"
 import {
@@ -34,34 +34,45 @@ import {
   Sparkles,
   Hash,
 } from "lucide-vue-next"
+import { useUrlState } from "@/composables/useUrlState"
+import { useSortState } from "@/composables/useSortState"
 import { matchesIdentitySearch, isUuid } from "@/lib/utils"
 import type { Identity, PaginatedResponse } from "@/types/api"
 import { toast } from "vue-sonner"
 
 const queryClient = useQueryClient()
 
-// Pagination state
-const pageSize = ref(20)
+// URL-synced filter/sort state
+const { state: urlState, debounced } = useUrlState({
+  search: { key: "search", defaultValue: "", debounce: 300 },
+  state: { key: "state", defaultValue: "all" },
+  schema: { key: "schema", defaultValue: "all" },
+  sort: { key: "sort", defaultValue: "created_at:desc" },
+  page_size: {
+    key: "page_size",
+    defaultValue: 20,
+    transform: { parse: Number, serialize: String },
+  },
+})
+
+// Pagination state (not URL-synced — tokens are opaque/session-specific)
 const pageToken = ref<string | undefined>()
 const prevTokens = ref<string[]>([])
 
-// Filter & sort state
-const searchQuery = ref("")
-const debouncedSearch = ref("")
-const stateFilter = ref("all")
-const schemaFilter = ref("all")
-const sortField = ref<"created_at" | "name">("created_at")
-const sortDir = ref<"asc" | "desc">("desc")
+// Search: debounced ref for input binding, urlState.search for committed value
+const searchQuery = debounced.search
+const debouncedSearch = toRef(urlState, "search")
+const stateFilter = toRef(urlState, "state")
+const schemaFilter = toRef(urlState, "schema")
+const pageSize = toRef(urlState, "page_size")
 
-// Debounce search → server-side credentials_identifier
-let searchTimeout: ReturnType<typeof setTimeout> | undefined
-watch(searchQuery, (val) => {
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
-    debouncedSearch.value = val
-    resetPagination()
-  }, 300)
-})
+const { sortValue, sortField, sortDir } = useSortState<"created_at" | "name">(urlState, "sort")
+
+// Reset pagination when search commits
+watch(
+  () => urlState.search,
+  () => resetPagination()
+)
 
 // Reset fuzzy/ID search when debounced search changes
 watch(debouncedSearch, () => {
@@ -181,15 +192,6 @@ const sortOptions = [
   { value: "name:asc", label: "Name A-Z" },
   { value: "name:desc", label: "Name Z-A" },
 ]
-
-const sortValue = computed({
-  get: () => `${sortField.value}:${sortDir.value}`,
-  set: (val: string) => {
-    const [field, dir] = val.split(":") as ["created_at" | "name", "asc" | "desc"]
-    sortField.value = field
-    sortDir.value = dir
-  },
-})
 
 // Unified display pipeline: picks data source based on tier, then applies filters + sort
 const displayIdentities = computed(() => {

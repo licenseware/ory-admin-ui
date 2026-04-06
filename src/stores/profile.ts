@@ -1,6 +1,8 @@
 import { defineStore } from "pinia"
 import { ref, computed } from "vue"
-import { useQueryClient } from "@tanstack/vue-query"
+import type { QueryClient } from "@tanstack/vue-query"
+
+let _queryClient: QueryClient | undefined
 import { getRuntimeProfiles } from "@/config/loader"
 import { resetApiClient, resetPublicApiClient, resetOathkeeperApiClient } from "@/api/client"
 import { profilesMapSchema, importExportSchema, slugSchema } from "@/types/profile"
@@ -142,15 +144,6 @@ export const useProfileStore = defineStore("profile", () => {
     localStorage.setItem(ACTIVE_SLUG_STORAGE_KEY, activeSlug.value)
   }
 
-  function invalidateAllQueries() {
-    try {
-      const queryClient = useQueryClient()
-      queryClient.clear()
-    } catch {
-      // QueryClient may not be available during initial setup
-    }
-  }
-
   // --- Actions ---
 
   function initialize(): void {
@@ -193,6 +186,10 @@ export const useProfileStore = defineStore("profile", () => {
     persistActiveSlug()
   }
 
+  function setQueryClient(qc: QueryClient): void {
+    _queryClient = qc
+  }
+
   function switchProfile(slug: string): void {
     if (!profiles.value.has(slug)) return
     activeSlug.value = slug
@@ -200,7 +197,7 @@ export const useProfileStore = defineStore("profile", () => {
     resetApiClient()
     resetPublicApiClient()
     resetOathkeeperApiClient()
-    invalidateAllQueries()
+    _queryClient?.invalidateQueries()
   }
 
   function createProfile(name: string, data: ProfileData): string {
@@ -233,7 +230,7 @@ export const useProfileStore = defineStore("profile", () => {
       resetApiClient()
       resetPublicApiClient()
       resetOathkeeperApiClient()
-      invalidateAllQueries()
+      _queryClient?.invalidateQueries()
     }
   }
 
@@ -309,6 +306,7 @@ export const useProfileStore = defineStore("profile", () => {
     localProfiles,
     configProfiles: configProfilesList,
     // Actions
+    setQueryClient,
     initialize,
     switchProfile,
     createProfile,

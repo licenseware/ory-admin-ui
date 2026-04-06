@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { ref, computed, toRef } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import {
   useIdentity,
@@ -27,6 +27,7 @@ import EmptyState from "@/components/common/EmptyState.vue"
 import StatusBadge from "@/components/common/StatusBadge.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
 import BackButton from "@/components/common/BackButton.vue"
+import { useUrlState } from "@/composables/useUrlState"
 import {
   Trash2,
   Key,
@@ -43,7 +44,10 @@ const route = useRoute()
 const router = useRouter()
 const identityId = computed(() => String(route.params.id))
 
-const activeTab = ref("overview")
+const { state: urlState } = useUrlState({
+  tab: { key: "tab", defaultValue: "overview" },
+})
+const activeTab = toRef(urlState, "tab")
 const deleteDialogOpen = ref(false)
 const blockDialogOpen = ref(false)
 const revokeSessionDialogOpen = ref(false)

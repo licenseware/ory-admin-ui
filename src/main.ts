@@ -1,6 +1,6 @@
 import { createApp } from "vue"
 import { createPinia } from "pinia"
-import { VueQueryPlugin } from "@tanstack/vue-query"
+import { VueQueryPlugin, QueryClient } from "@tanstack/vue-query"
 import App from "./App.vue"
 import router from "./router"
 import { loadRuntimeProfiles } from "./config/loader"
@@ -15,20 +15,22 @@ async function bootstrap() {
 
   app.use(createPinia())
   app.use(router)
-  app.use(VueQueryPlugin, {
-    queryClientConfig: {
-      defaultOptions: {
-        queries: {
-          staleTime: 30_000,
-          retry: 1,
-          refetchOnWindowFocus: false,
-        },
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 30_000,
+        retry: 1,
+        refetchOnWindowFocus: false,
       },
     },
   })
 
+  app.use(VueQueryPlugin, { queryClient })
+
   // Initialize profile store after Pinia + VueQuery are installed
   const profileStore = useProfileStore()
+  profileStore.setQueryClient(queryClient)
   profileStore.initialize()
 
   app.mount("#app")
