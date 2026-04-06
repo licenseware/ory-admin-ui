@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/licenseware/ory-admin-ui/compare/v0.2.0...v0.3.0) (2026-04-06)
+
+
+### Features
+
+* add shareable URLs to user-facing endpoints ([#47](https://github.com/licenseware/ory-admin-ui/issues/47)) ([e3ccdf4](https://github.com/licenseware/ory-admin-ui/commit/e3ccdf4768253129ee82028f305c759a30eaca5c))
+
 ## [0.2.0](https://github.com/licenseware/ory-admin-ui/compare/v0.1.1...v0.2.0) (2026-03-18)
 
 
