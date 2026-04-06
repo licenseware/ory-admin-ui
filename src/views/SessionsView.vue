@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, toRef, type Ref } from "vue"
+import { ref, computed, watch, toRef } from "vue"
 import { RouterLink } from "vue-router"
 import { useSessions, useRevokeSession } from "@/composables/useSessions"
 import Card from "@/components/ui/Card.vue"
@@ -17,11 +17,12 @@ import Pagination from "@/components/common/Pagination.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
 import { Search, Key, Eye, AlertTriangle, User, Filter, ArrowUpDown } from "lucide-vue-next"
 import { useUrlState } from "@/composables/useUrlState"
+import { useSortState } from "@/composables/useSortState"
 import type { Session } from "@/types/api"
 
 // URL-synced filter/sort state
-const { state: urlState } = useUrlState({
-  search: { key: "search", defaultValue: "" },
+const { state: urlState, debounced } = useUrlState({
+  search: { key: "search", defaultValue: "", debounce: 300 },
   active: { key: "active", defaultValue: "active" },
   sort: { key: "sort", defaultValue: "authenticated_at:desc" },
   page_size: {
@@ -35,19 +36,14 @@ const { state: urlState } = useUrlState({
 const pageToken = ref<string | undefined>()
 const prevTokens = ref<string[]>([])
 
-// Local search ref for immediate input binding
-const searchQuery = ref(urlState.search as string)
-const activeFilter = toRef(urlState, "active") as Ref<string>
-const pageSize = toRef(urlState, "page_size") as Ref<number>
+const searchQuery = debounced.search
+const activeFilter = toRef(urlState, "active")
+const pageSize = toRef(urlState, "page_size")
 
-// Sync search to URL with debounce
-let searchTimeout: ReturnType<typeof setTimeout> | undefined
-watch(searchQuery, (val) => {
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
-    urlState.search = val
-  }, 300)
-})
+const { sortValue, sortField, sortDir } = useSortState<"authenticated_at" | "expires_at">(
+  urlState,
+  "sort"
+)
 
 // Revoke dialog state
 const revokeDialogOpen = ref(false)
@@ -75,18 +71,6 @@ const sortOptions = [
   { value: "expires_at:asc", label: "Expires soonest" },
   { value: "expires_at:desc", label: "Expires latest" },
 ]
-
-const sortValue = computed({
-  get: () => urlState.sort as string,
-  set: (val: string) => {
-    urlState.sort = val
-  },
-})
-
-const sortField = computed(
-  () => (urlState.sort as string).split(":")[0] as "authenticated_at" | "expires_at"
-)
-const sortDir = computed(() => (urlState.sort as string).split(":")[1] as "asc" | "desc")
 
 // Client-side pipeline: search → sort on current page data
 const processedSessions = computed(() => {
@@ -140,10 +124,7 @@ const hasNext = computed(() => !!result.value?.pagination.nextToken)
 const hasPrev = computed(() => prevTokens.value.length > 0)
 
 // Reset pagination when filter changes
-watch(
-  () => urlState.active,
-  () => resetPagination()
-)
+watch(activeFilter, () => resetPagination())
 
 function getSessionUser(session: Session): string {
   const identity = session.identity

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, toRef, type Ref } from "vue"
+import { ref, computed, toRef } from "vue"
 import { useCourierMessages } from "@/composables/useCourier"
 import Card from "@/components/ui/Card.vue"
 import CardContent from "@/components/ui/CardContent.vue"
@@ -25,8 +25,8 @@ type MessageStatus = "queued" | "sent" | "processing" | "abandoned"
 type StatusFilterValue = typeof STATUS_ALL | MessageStatus
 
 // URL-synced state
-const { state: urlState } = useUrlState({
-  search: { key: "search", defaultValue: "" },
+const { state: urlState, debounced } = useUrlState({
+  search: { key: "search", defaultValue: "", debounce: 300 },
   status: { key: "status", defaultValue: STATUS_ALL as string },
   page_size: {
     key: "page_size",
@@ -35,20 +35,11 @@ const { state: urlState } = useUrlState({
   },
 })
 
-const searchQuery = ref(urlState.search as string)
-const statusFilter = toRef(urlState, "status") as Ref<StatusFilterValue>
-const pageSize = toRef(urlState, "page_size") as Ref<number>
+const searchQuery = debounced.search
+const statusFilter = toRef(urlState, "status")
+const pageSize = toRef(urlState, "page_size")
 const selectedMessage = ref<Message | null>(null)
 const detailDialogOpen = ref(false)
-
-// Sync search to URL with debounce
-let searchTimeout: ReturnType<typeof setTimeout> | undefined
-watch(searchQuery, (val) => {
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
-    urlState.search = val
-  }, 300)
-})
 
 const { data: messages, isLoading, isFetching, isError, error, refetch } = useCourierMessages()
 

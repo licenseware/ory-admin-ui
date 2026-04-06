@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onBeforeUnmount, toRef, type Ref } from "vue"
+import { ref, computed, toRef } from "vue"
 import { RouterLink } from "vue-router"
 import { useRules, useOathkeeperHealth, useOathkeeperVersion } from "@/composables/useOathkeeper"
 import Card from "@/components/ui/Card.vue"
@@ -18,8 +18,8 @@ import { useUrlState } from "@/composables/useUrlState"
 import type { Rule } from "@/types/oathkeeper"
 
 // URL-synced state
-const { state: urlState } = useUrlState({
-  search: { key: "search", defaultValue: "" },
+const { state: urlState, debounced } = useUrlState({
+  search: { key: "search", defaultValue: "", debounce: 300 },
   page: { key: "page", defaultValue: 1, transform: { parse: Number, serialize: String } },
   page_size: {
     key: "page_size",
@@ -28,12 +28,12 @@ const { state: urlState } = useUrlState({
   },
 })
 
-const currentPage = toRef(urlState, "page") as Ref<number>
-const pageSize = urlState.page_size as number
+const currentPage = toRef(urlState, "page")
+const pageSize = toRef(urlState, "page_size")
 
 const apiParams = computed(() => ({
-  limit: urlState.page_size as number,
-  offset: ((urlState.page as number) - 1) * (urlState.page_size as number),
+  limit: pageSize.value,
+  offset: (currentPage.value - 1) * pageSize.value,
 }))
 
 // Data fetching
@@ -51,22 +51,9 @@ const {
   refetch: refetchVersion,
 } = useOathkeeperVersion()
 
-// Search: local ref for immediate input, URL state for committed
-const searchQuery = ref(urlState.search as string)
-const debouncedSearch = ref(urlState.search as string)
-let searchTimeout: ReturnType<typeof setTimeout> | undefined
-
-watch(searchQuery, (val) => {
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
-    debouncedSearch.value = val
-    urlState.search = val
-  }, 300)
-})
-
-onBeforeUnmount(() => {
-  clearTimeout(searchTimeout)
-})
+// Search: debounced ref for input binding, urlState.search for committed value
+const searchQuery = debounced.search
+const debouncedSearch = toRef(urlState, "search")
 
 // Filtered rules (client-side search)
 const filteredRules = computed(() => {
@@ -82,7 +69,7 @@ const filteredRules = computed(() => {
 })
 
 // Pagination helpers
-const hasNext = computed(() => rules.value?.length === pageSize)
+const hasNext = computed(() => rules.value?.length === pageSize.value)
 const hasPrev = computed(() => currentPage.value > 1)
 
 function goNext() {

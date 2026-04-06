@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { useQueryClient } from "@tanstack/vue-query"
 import { useProfileStore } from "@/stores/profile"
 import { useBreakpoints } from "@/composables/useBreakpoints"
 import Popover from "@/components/ui/Popover.vue"
@@ -11,7 +10,6 @@ import Input from "@/components/ui/Input.vue"
 import { Server, ChevronDown, Check, Settings } from "lucide-vue-next"
 
 const profileStore = useProfileStore()
-const queryClient = useQueryClient()
 const { isMobile } = useBreakpoints()
 const route = useRoute()
 const router = useRouter()
@@ -30,7 +28,7 @@ const filteredProfiles = computed(() => {
 })
 
 function selectProfile(slug: string) {
-  profileStore.switchProfile(slug, queryClient)
+  profileStore.switchProfile(slug)
   router.replace({
     path: route.path,
     query: { ...route.query, profile: slug },

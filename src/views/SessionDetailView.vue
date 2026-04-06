@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, toRef, type Ref } from "vue"
+import { ref, computed, toRef } from "vue"
 import { useRoute, useRouter, RouterLink } from "vue-router"
 import { useSession, useRevokeSession } from "@/composables/useSessions"
 import { useUrlState } from "@/composables/useUrlState"
@@ -30,7 +30,7 @@ const sessionId = computed(() => String(route.params.id))
 const { state: urlState } = useUrlState({
   tab: { key: "tab", defaultValue: "overview" },
 })
-const activeTab = toRef(urlState, "tab") as Ref<string>
+const activeTab = toRef(urlState, "tab")
 const revokeDialogOpen = ref(false)
 
 const { data: session, isLoading, isFetching, isError, error, refetch } = useSession(sessionId)

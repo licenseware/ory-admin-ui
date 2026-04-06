@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, watch } from "vue"
 import { useRoute, useRouter, RouterView } from "vue-router"
-import { useQueryClient } from "@tanstack/vue-query"
 import { useUIStore } from "@/stores/ui"
 import { useProfileStore } from "@/stores/profile"
 import { useBreakpoints } from "@/composables/useBreakpoints"
@@ -12,7 +11,6 @@ import AppFooter from "./AppFooter.vue"
 
 const uiStore = useUIStore()
 const profileStore = useProfileStore()
-const queryClient = useQueryClient()
 const route = useRoute()
 const router = useRouter()
 const { isMobile } = useBreakpoints()
@@ -31,10 +29,11 @@ watch(
 
     const exists = profileStore.allProfiles.some((p) => p.slug === profileSlug)
     if (exists) {
-      profileStore.switchProfile(profileSlug, queryClient)
+      profileStore.switchProfile(profileSlug)
     } else {
+      const safeSlug = String(profileSlug).slice(0, 64)
       toast.warning(
-        `Profile "${profileSlug}" not found, using "${profileStore.activeProfile?.name || profileStore.activeSlug}"`
+        `Profile "${safeSlug}" not found, using "${profileStore.activeProfile?.name || profileStore.activeSlug}"`
       )
       router.replace({
         path: route.path,

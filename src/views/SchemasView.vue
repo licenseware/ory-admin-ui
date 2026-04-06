@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue"
 import { useUrlState } from "@/composables/useUrlState"
+
 import { useSchemas } from "@/composables/useSchemas"
 import { useSchemaNavigation } from "@/composables/useSchemaNavigation"
 import Card from "@/components/ui/Card.vue"
@@ -39,21 +40,12 @@ import {
 import type { IdentitySchema } from "@/types/api"
 import { cn } from "@/lib/utils"
 
-const { state: urlState } = useUrlState({
-  search: { key: "search", defaultValue: "" },
+const { state: urlState, debounced } = useUrlState({
+  search: { key: "search", defaultValue: "", debounce: 300 },
   selected: { key: "selected", defaultValue: "" },
 })
 
-const listSearchQuery = ref(urlState.search as string)
-
-// Sync search to URL with debounce
-let searchTimeout: ReturnType<typeof setTimeout> | undefined
-watch(listSearchQuery, (val) => {
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
-    urlState.search = val
-  }, 300)
-})
+const listSearchQuery = debounced.search
 const selectedSchema = ref<IdentitySchema | null>(null)
 const detailDialogOpen = ref(false)
 const searchInputRef = ref<HTMLInputElement | null>(null)

@@ -57,7 +57,7 @@ describe("useUrlState", () => {
     })
 
     state.search = "test"
-    await vi.advanceTimersByTimeAsync(150)
+    await vi.advanceTimersByTimeAsync(20)
 
     expect(mockReplace).toHaveBeenCalledWith({
       query: { search: "test" },
@@ -72,7 +72,7 @@ describe("useUrlState", () => {
 
     state.search = "foo"
     state.sort = "name:asc"
-    await vi.advanceTimersByTimeAsync(150)
+    await vi.advanceTimersByTimeAsync(20)
 
     expect(mockReplace).toHaveBeenCalledWith({
       query: { search: "foo", sort: "name:asc" },
@@ -87,7 +87,7 @@ describe("useUrlState", () => {
 
     state.search = "test"
     state.status = "active"
-    await vi.advanceTimersByTimeAsync(150)
+    await vi.advanceTimersByTimeAsync(20)
 
     expect(mockReplace).toHaveBeenCalledTimes(1)
   })
@@ -115,7 +115,7 @@ describe("useUrlState", () => {
     expect(state.search).toBe("")
     expect(state.status).toBe("all")
 
-    await vi.advanceTimersByTimeAsync(150)
+    await vi.advanceTimersByTimeAsync(20)
     expect(mockReplace).toHaveBeenCalledWith({ query: {} })
   })
 
@@ -127,10 +127,51 @@ describe("useUrlState", () => {
     })
 
     state.search = "new"
-    await vi.advanceTimersByTimeAsync(150)
+    await vi.advanceTimersByTimeAsync(20)
 
     expect(mockReplace).toHaveBeenCalledWith({
       query: { profile: "prod", search: "new" },
     })
+  })
+
+  it("supports per-field debounce option", async () => {
+    const { state, debounced } = useUrlState({
+      search: { key: "search", defaultValue: "", debounce: 300 },
+      status: { key: "status", defaultValue: "all" },
+    })
+
+    // Write to debounced ref
+    debounced.search.value = "hello"
+
+    // State not yet updated
+    expect(state.search).toBe("")
+
+    // After debounce, state updates
+    await vi.advanceTimersByTimeAsync(300)
+    expect(state.search).toBe("hello")
+
+    // URL syncs after batch window
+    await vi.advanceTimersByTimeAsync(20)
+    expect(mockReplace).toHaveBeenCalledWith({
+      query: { search: "hello" },
+    })
+  })
+
+  it("reset() clears debounced refs too", async () => {
+    mockQuery.value = { search: "initial" }
+
+    const { debounced, reset, state } = useUrlState({
+      search: { key: "search", defaultValue: "", debounce: 300 },
+    })
+
+    debounced.search.value = "modified"
+    await vi.advanceTimersByTimeAsync(300)
+    expect(state.search).toBe("modified")
+
+    reset()
+    expect(state.search).toBe("")
+    // debounced ref should sync back
+    await vi.advanceTimersByTimeAsync(1)
+    expect(debounced.search.value).toBe("")
   })
 })

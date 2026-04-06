@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, toRef, type Ref } from "vue"
+import { ref, computed, toRef } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import {
   useIdentity,
@@ -47,7 +47,7 @@ const identityId = computed(() => String(route.params.id))
 const { state: urlState } = useUrlState({
   tab: { key: "tab", defaultValue: "overview" },
 })
-const activeTab = toRef(urlState, "tab") as Ref<string>
+const activeTab = toRef(urlState, "tab")
 const deleteDialogOpen = ref(false)
 const blockDialogOpen = ref(false)
 const revokeSessionDialogOpen = ref(false)

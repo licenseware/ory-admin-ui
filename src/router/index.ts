@@ -83,14 +83,13 @@ const router = createRouter({
   ],
 })
 
-router.afterEach((to) => {
+router.beforeEach((to) => {
   const profileStore = useProfileStore()
   if (!to.query.profile && profileStore.activeSlug) {
-    router.replace({
-      path: to.path,
+    return {
+      ...to,
       query: { ...to.query, profile: profileStore.activeSlug },
-      hash: to.hash,
-    })
+    }
   }
 })
 
