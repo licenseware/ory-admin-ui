@@ -42,6 +42,19 @@ export function isUuid(value: string): boolean {
   return UUID_RE.test(value.trim())
 }
 
+export async function getApiErrorMessage(error: unknown, fallback: string): Promise<string> {
+  if (error && typeof error === "object" && "response" in error) {
+    try {
+      const body = await (error.response as Response).clone().json()
+      if (body?.error?.reason) return body.error.reason
+    } catch {
+      // not JSON or no reason field
+    }
+  }
+  if (error instanceof Error) return error.message
+  return fallback
+}
+
 export function matchesIdentitySearch(
   identity: { id: string; traits: Record<string, unknown> },
   query: string

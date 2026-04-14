@@ -166,6 +166,22 @@ export function useCreateRecoveryCode() {
   })
 }
 
+export function useDeleteIdentityCredential() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, type, identifier }: { id: string; type: string; identifier?: string }) =>
+      identitiesApi.deleteCredential(id, type, identifier),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ["identity", id] })
+      toast.success("Credential removed successfully")
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to remove credential: ${error.message}`)
+    },
+  })
+}
+
 export function useBlockIdentity() {
   const queryClient = useQueryClient()
 

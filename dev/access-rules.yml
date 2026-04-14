@@ -38,3 +38,22 @@
     handler: allow
   mutators:
     - handler: noop
+- id: kratos-admin
+  upstream:
+    preserveHost: true
+    url: http://host.docker.internal:4434
+  match:
+    url: http://localhost:<3?>4455</?.*>
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+      - OPTIONS
+  authenticators:
+    - handler: anonymous
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop
