@@ -145,7 +145,22 @@ describe("identitiesApi", () => {
   describe("deleteCredential", () => {
     it("DELETEs admin/identities/:id/credentials/:type", async () => {
       await identitiesApi.deleteCredential("id-1", "password")
-      expect(mockDeleteFn).toHaveBeenCalledWith("admin/identities/id-1/credentials/password")
+      expect(mockDeleteFn).toHaveBeenCalledWith("admin/identities/id-1/credentials/password", {
+        searchParams: undefined,
+      })
+    })
+
+    it("passes identifier query param for oidc/saml", async () => {
+      await identitiesApi.deleteCredential("id-1", "oidc", "google:12345")
+      expect(mockDeleteFn).toHaveBeenCalledWith(
+        "admin/identities/id-1/credentials/oidc",
+        expect.objectContaining({
+          searchParams: expect.any(URLSearchParams),
+        })
+      )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const sp = (mockDeleteFn.mock.lastCall as any[])[1].searchParams as URLSearchParams
+      expect(sp.get("identifier")).toBe("google:12345")
     })
   })
 

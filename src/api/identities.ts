@@ -84,9 +84,13 @@ export const identitiesApi = {
     return client.delete(`admin/identities/${id}`)
   },
 
-  deleteCredential: async (id: string, type: string) => {
+  deleteCredential: async (id: string, type: string, identifier?: string) => {
     const client = getApiClient()
-    return client.delete(`admin/identities/${id}/credentials/${type}`)
+    const searchParams = new URLSearchParams()
+    if (identifier) searchParams.set("identifier", identifier)
+    return client.delete(`admin/identities/${id}/credentials/${type}`, {
+      searchParams: searchParams.toString() ? searchParams : undefined,
+    })
   },
 
   getSessions: async (

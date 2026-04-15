@@ -5,6 +5,7 @@ import {
   useIdentity,
   useIdentitySessions,
   useDeleteIdentity,
+  useDeleteIdentityCredential,
   useBlockIdentity,
   useCreateRecoveryLink,
 } from "@/composables/useIdentities"
@@ -53,6 +54,10 @@ const blockDialogOpen = ref(false)
 const revokeSessionDialogOpen = ref(false)
 const sessionToRevoke = ref<string | null>(null)
 const recoveryLink = ref<string | null>(null)
+const deleteCredentialDialogOpen = ref(false)
+const credentialToDelete = ref<{ type: string; identifier?: string } | null>(null)
+
+const NON_DELETABLE_CREDENTIALS = new Set(["code", "passkey"])
 
 const { data: identity, isLoading, isFetching, isError, error, refetch } = useIdentity(identityId)
 const {
@@ -64,6 +69,7 @@ const { mutate: deleteIdentity, isPending: isDeleting } = useDeleteIdentity()
 const { mutate: blockIdentity, isPending: isBlocking } = useBlockIdentity()
 const { mutate: createRecoveryLink, isPending: isCreatingRecovery } = useCreateRecoveryLink()
 const { mutate: revokeSession, isPending: isRevoking } = useRevokeSession()
+const { mutate: deleteCredential, isPending: isDeletingCredential } = useDeleteIdentityCredential()
 
 const isBlocked = computed(() => identity.value?.state === "inactive")
 
@@ -123,6 +129,37 @@ function handleRevokeSession() {
     },
   })
 }
+
+function confirmDeleteCredential(type: string, identifier?: string) {
+  credentialToDelete.value = { type, identifier }
+  deleteCredentialDialogOpen.value = true
+}
+
+function handleDeleteCredential() {
+  if (!credentialToDelete.value) return
+  deleteCredential(
+    {
+      id: identityId.value,
+      type: credentialToDelete.value.type,
+      identifier: credentialToDelete.value.identifier,
+    },
+    {
+      onSettled: () => {
+        deleteCredentialDialogOpen.value = false
+        credentialToDelete.value = null
+      },
+    }
+  )
+}
+
+const deleteCredentialDescription = computed(() => {
+  if (!credentialToDelete.value) return ""
+  const { type, identifier } = credentialToDelete.value
+  if (identifier) {
+    return `This will remove the "${identifier}" identifier from the ${type} credential. This action cannot be undone.`
+  }
+  return `This will remove the ${type} credential from this identity. This action cannot be undone.`
+})
 </script>
 
 <template>
@@ -391,18 +428,45 @@ function handleRevokeSession() {
                 >
                   <div class="mb-2 flex items-center justify-between">
                     <Badge variant="outline">{{ type }}</Badge>
-                    <span class="text-text-muted text-xs"> Version {{ cred.version }} </span>
+                    <div class="flex items-center gap-2">
+                      <span class="text-text-muted text-xs"> Version {{ cred.version }} </span>
+                      <Button
+                        v-if="
+                          !NON_DELETABLE_CREDENTIALS.has(String(type)) &&
+                          !(String(type) === 'oidc' || String(type) === 'saml')
+                        "
+                        variant="ghost"
+                        size="sm"
+                        @click="confirmDeleteCredential(String(type))"
+                        :title="`Remove ${type} credential`"
+                      >
+                        <Trash2 class="text-destructive h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                   <div v-if="cred.identifiers?.length" class="mt-2">
                     <p class="text-text-muted mb-1 text-xs">Identifiers:</p>
                     <div class="flex flex-wrap gap-1">
-                      <code
+                      <div
                         v-for="identifier in cred.identifiers"
                         :key="identifier"
-                        class="bg-surface rounded px-2 py-1 font-mono text-xs"
+                        class="bg-surface flex items-center gap-1 rounded px-2 py-1"
                       >
-                        {{ identifier }}
-                      </code>
+                        <code class="font-mono text-xs">
+                          {{ identifier }}
+                        </code>
+                        <button
+                          v-if="
+                            (String(type) === 'oidc' || String(type) === 'saml') &&
+                            !NON_DELETABLE_CREDENTIALS.has(String(type))
+                          "
+                          class="text-text-muted hover:text-destructive ml-1 transition-colors"
+                          :title="`Remove ${identifier}`"
+                          @click="confirmDeleteCredential(String(type), identifier)"
+                        >
+                          <Trash2 class="h-3 w-3" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -454,6 +518,17 @@ function handleRevokeSession() {
       :loading="isRevoking"
       @confirm="handleRevokeSession"
       @cancel="revokeSessionDialogOpen = false"
+    />
+
+    <!-- Delete credential dialog -->
+    <AlertDialog
+      :open="deleteCredentialDialogOpen"
+      title="Remove Credential"
+      :description="deleteCredentialDescription"
+      confirm-text="Remove"
+      :loading="isDeletingCredential"
+      @confirm="handleDeleteCredential"
+      @cancel="deleteCredentialDialogOpen = false"
     />
   </div>
 </template>

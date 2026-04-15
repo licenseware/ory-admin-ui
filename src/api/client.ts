@@ -25,7 +25,18 @@ export function createApiClient() {
         },
       ],
       beforeError: [
-        (error) => {
+        async (error) => {
+          try {
+            const body = (await error.response.clone().json()) as {
+              error?: { reason?: string; message?: string }
+            }
+            const detail = body?.error?.reason ?? body?.error?.message
+            if (detail) {
+              error.message = detail
+            }
+          } catch {
+            // response not JSON or no usable field — keep original message
+          }
           log.error(`[API] Error:`, error.message)
           return error
         },
@@ -68,7 +79,15 @@ export function createPublicApiClient() {
         },
       ],
       beforeError: [
-        (error) => {
+        async (error) => {
+          try {
+            const body = (await error.response.clone().json()) as { error?: { reason?: string } }
+            if (body?.error?.reason) {
+              error.message = body.error.reason
+            }
+          } catch {
+            // response not JSON or no reason — keep original message
+          }
           log.error(`[Public API] Error:`, error.message)
           return error
         },
@@ -111,7 +130,15 @@ export function createOathkeeperApiClient() {
         },
       ],
       beforeError: [
-        (error) => {
+        async (error) => {
+          try {
+            const body = (await error.response.clone().json()) as { error?: { reason?: string } }
+            if (body?.error?.reason) {
+              error.message = body.error.reason
+            }
+          } catch {
+            // response not JSON or no reason — keep original message
+          }
           log.error(`[Oathkeeper API] Error:`, error.message)
           return error
         },
