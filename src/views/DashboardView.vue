@@ -2,7 +2,7 @@
 import { computed, ref } from "vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
 import { RouterLink } from "vue-router"
-import { useIdentities } from "@/composables/useIdentities"
+import { useIdentities, useIdentitiesCount } from "@/composables/useIdentities"
 import { useSessions } from "@/composables/useSessions"
 import { useCourierMessages } from "@/composables/useCourier"
 import { useSystemHealth } from "@/composables/useHealth"
@@ -35,6 +35,11 @@ const {
   refetch: refetchIdentities,
 } = useIdentities(dashboardParams)
 const {
+  data: identitiesCount,
+  isFetching: identitiesCountFetching,
+  refetch: refetchIdentitiesCount,
+} = useIdentitiesCount()
+const {
   data: sessions,
   isLoading: sessionsLoading,
   isFetching: sessionsFetching,
@@ -57,11 +62,16 @@ const {
 } = useSystemHealth()
 
 const isAnyFetching = computed(
-  () => identitiesFetching.value || sessionsFetching.value || messagesFetching.value
+  () =>
+    identitiesFetching.value ||
+    identitiesCountFetching.value ||
+    sessionsFetching.value ||
+    messagesFetching.value
 )
 
 function reloadAll() {
   refetchIdentities()
+  refetchIdentitiesCount()
   refetchSessions()
   refetchMessages()
 }
@@ -78,7 +88,7 @@ const recentMessages = computed(() => {
 const stats = computed(() => [
   {
     name: "Identities",
-    value: identities.value?.pagination?.totalCount ?? identities.value?.data?.length ?? 0,
+    value: identitiesCount.value ?? 0,
     icon: Users,
     href: "/identities",
     color: "text-accent",

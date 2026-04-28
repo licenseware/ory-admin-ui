@@ -12,6 +12,14 @@ export function useIdentities(params?: Ref<IdentitySearchParams>) {
   })
 }
 
+export function useIdentitiesCount() {
+  return useQuery({
+    queryKey: ["identities-count"],
+    queryFn: () => identitiesApi.count(),
+    staleTime: 30_000,
+  })
+}
+
 export function useFuzzyIdentitySearch(query: Ref<string>, pageSize: Ref<number>) {
   const enabled = ref(false)
 
@@ -85,6 +93,7 @@ export function useCreateIdentity() {
     mutationFn: (body: CreateIdentityBody) => identitiesApi.create(body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["identities"] })
+      queryClient.invalidateQueries({ queryKey: ["identities-count"] })
       toast.success("Identity created successfully")
     },
     onError: (error: Error) => {
@@ -117,6 +126,7 @@ export function useDeleteIdentity() {
     mutationFn: (id: string) => identitiesApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["identities"] })
+      queryClient.invalidateQueries({ queryKey: ["identities-count"] })
       toast.success("Identity deleted successfully")
     },
     onError: (error: Error) => {
