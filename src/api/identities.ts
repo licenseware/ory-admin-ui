@@ -47,6 +47,18 @@ export const identitiesApi = {
     return { data, pagination }
   },
 
+  // Kratos only emits X-Total-Count on the legacy `page`/`per_page` branch
+  // (see kratos x/pagination.go); keyset paging returns Link only.
+  count: async (): Promise<number> => {
+    const client = getApiClient()
+    const searchParams = new URLSearchParams({ page: "1", per_page: "1" })
+    const response = await client.get("admin/identities", { searchParams })
+    await response.json<Identity[]>()
+    const total = response.headers.get("x-total-count")
+    const parsed = total === null ? NaN : Number(total)
+    return Number.isFinite(parsed) ? parsed : 0
+  },
+
   get: async (id: string, includeCredentials?: string[]): Promise<Identity> => {
     const client = getApiClient()
     const searchParams = new URLSearchParams()
