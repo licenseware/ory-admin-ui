@@ -197,7 +197,9 @@ export function useBlockIdentity() {
 
   return useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) =>
-      identitiesApi.patch(id, { state: blocked ? "inactive" : "active" }),
+      identitiesApi.patch(id, [
+        { op: "replace", path: "/state", value: blocked ? "inactive" : "active" },
+      ]),
     onSuccess: (_, { id, blocked }) => {
       queryClient.invalidateQueries({ queryKey: ["identities"] })
       queryClient.invalidateQueries({ queryKey: ["identity", id] })

@@ -60,6 +60,15 @@ export interface UpdateIdentityBody {
   metadata_public?: Record<string, unknown>
 }
 
+export interface JsonPatch {
+  op: "add" | "remove" | "replace" | "move" | "copy" | "test"
+  path: string
+  value?: unknown
+  from?: string
+}
+
+export type JsonPatchDocument = JsonPatch[]
+
 // --- Pagination (structural, not API response) ---
 
 export interface PaginationParams {

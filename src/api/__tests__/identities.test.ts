@@ -125,12 +125,12 @@ describe("identitiesApi", () => {
   })
 
   describe("patch", () => {
-    it("PATCHes to admin/identities/:id with partial body", async () => {
-      const body = { traits: { email: "new@b.com" } }
-      const patched = { id: "id-1", traits: body.traits }
+    it("PATCHes to admin/identities/:id with a JSON Patch array (RFC 6902)", async () => {
+      const patch = [{ op: "replace" as const, path: "/state", value: "inactive" }]
+      const patched = { id: "id-1", state: "inactive" }
       mockJsonFn.mockResolvedValue(patched)
-      const result = await identitiesApi.patch("id-1", body)
-      expect(mockPatchFn).toHaveBeenCalledWith("admin/identities/id-1", { json: body })
+      const result = await identitiesApi.patch("id-1", patch)
+      expect(mockPatchFn).toHaveBeenCalledWith("admin/identities/id-1", { json: patch })
       expect(result).toEqual(patched)
     })
   })

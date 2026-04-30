@@ -11,6 +11,7 @@ import type {
   Identity,
   CreateIdentityBody,
   UpdateIdentityBody,
+  JsonPatchDocument,
   RecoveryLinkResponse,
   RecoveryCodeResponse,
   PaginationParams,
@@ -85,9 +86,9 @@ export const identitiesApi = {
     return safeParseWithLog(identitySchema, raw, "identitiesApi.update")
   },
 
-  patch: async (id: string, body: Partial<UpdateIdentityBody>): Promise<Identity> => {
+  patch: async (id: string, patch: JsonPatchDocument): Promise<Identity> => {
     const client = getApiClient()
-    const raw = await client.patch(`admin/identities/${id}`, { json: body }).json<Identity>()
+    const raw = await client.patch(`admin/identities/${id}`, { json: patch }).json<Identity>()
     return safeParseWithLog(identitySchema, raw, "identitiesApi.patch")
   },
 
