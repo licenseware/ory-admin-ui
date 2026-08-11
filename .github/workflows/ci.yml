@@ -1,5 +1,9 @@
 name: ci
 
+concurrency:
+  cancel-in-progress: ${{ !(github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(main):\ release')) }}
+  group: ci-${{ github.ref_name }}-${{ github.event_name }}
+
 on:
   pull_request:
     branches:
@@ -162,7 +166,8 @@ jobs:
         name: Release please
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
         with:
-          release-type: node
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
   build-prod:
     needs: release-please

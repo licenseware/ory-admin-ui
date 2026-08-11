@@ -1,6 +1,78 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "automerge": false,
   "extends": [
     "github>licenseware/.github"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "before 5am on monday"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Skip update PRs for our own org's packages (reusable workflows, actions, images, libs)",
+      "enabled": false,
+      "matchPackageNames": [
+        "licenseware/infrastructure-v2"
+      ]
+    },
+    {
+      "description": "Group all Go toolchain updates into one PR, isolated from non-major batches",
+      "groupName": "go version",
+      "groupSlug": "go-version",
+      "matchDatasources": [
+        "golang-version",
+        "docker"
+      ],
+      "matchDepNames": [
+        "go",
+        "golang"
+      ],
+      "separateMajorMinor": false,
+      "separateMinorPatch": false
+    },
+    {
+      "description": "Group Go module updates into their own PR, isolated from infra/CI tooling",
+      "groupName": "go dependencies",
+      "groupSlug": "go-deps",
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    },
+    {
+      "description": "Group frontend dependency updates (package.json) into their own PR, isolated from infra/CI tooling",
+      "groupName": "frontend dependencies",
+      "groupSlug": "frontend-deps",
+      "matchManagers": [
+        "npm",
+        "bun"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    },
+    {
+      "description": "Group infra/CI tooling updates (GitHub Actions, Dockerfiles, compose, pre-commit) into their own PR, isolated from the app batches",
+      "groupName": "infra tooling",
+      "groupSlug": "infra-tooling",
+      "matchManagers": [
+        "github-actions",
+        "dockerfile",
+        "docker-compose",
+        "pre-commit"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ]
+    }
   ]
 }
