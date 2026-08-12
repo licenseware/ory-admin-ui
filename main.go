@@ -43,6 +43,7 @@ type Config struct {
 	Debug    bool   `env:"DEBUG" envDefault:"false"`
 
 	ContentSecurityPolicy string `env:"CONTENT_SECURITY_POLICY" envDefault:""`
+	TrustProxyHeaders     bool   `env:"TRUST_PROXY_HEADERS" envDefault:"false"`
 }
 
 type AppState struct {
@@ -97,7 +98,9 @@ func startServer(ctx context.Context, appState *AppState) error {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
+	if appState.Config.TrustProxyHeaders {
+		r.Use(middleware.RealIP)
+	}
 	r.Use(middleware.CleanPath)
 	r.Use(middleware.GetHead)
 	r.Use(middleware.Heartbeat("/health"))
