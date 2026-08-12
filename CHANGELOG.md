@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.4.0](https://github.com/licenseware/ory-admin-ui/compare/v0.3.0...v0.4.0) (2026-08-12)
+
+
+### Features
+
+* delete identity credential with confirmation modal ([#55](https://github.com/licenseware/ory-admin-ui/issues/55)) ([cf1cf55](https://github.com/licenseware/ory-admin-ui/commit/cf1cf5570a72993f65feb71df9dc9d690477690d))
+
+
+### Bug Fixes
+
+* **CI:** make release PR more verbose ([c7eb3ca](https://github.com/licenseware/ory-admin-ui/commit/c7eb3ca999522896ce362d7a48e49093171db9ba))
+* document and skip real-ip vuln issue ([cb2db97](https://github.com/licenseware/ory-admin-ui/commit/cb2db97f166064417102fcb574dec2ed0609388d))
+* **footer:** use commit-sha when not in stable release ([#93](https://github.com/licenseware/ory-admin-ui/issues/93)) ([80b6429](https://github.com/licenseware/ory-admin-ui/commit/80b6429ed35bcab3e74b2cc1fe56a6e07f5a708c))
+* **go:** disable real-ip middleware by default ([c66da70](https://github.com/licenseware/ory-admin-ui/commit/c66da700b4aba614b1041182646474d6a4e5289f))
+* run prettier on files changed ([b30d13f](https://github.com/licenseware/ory-admin-ui/commit/b30d13f301b10d887c698118fed1c41bd2765ef5))
+* submit patch json for unblocking identities ([3a18a14](https://github.com/licenseware/ory-admin-ui/commit/3a18a14b48749e0e2373f6b4f38c6bb0210a873c))
+* **UI:** fetch total identities from legacy API ([#57](https://github.com/licenseware/ory-admin-ui/issues/57)) ([c5a469b](https://github.com/licenseware/ory-admin-ui/commit/c5a469b9d728aafa46afe5313d0e104036787295))
+
+
+### Build & Dependencies
+
+* **deps:** update docker/login-action action to v4 ([#76](https://github.com/licenseware/ory-admin-ui/issues/76)) ([f3e5193](https://github.com/licenseware/ory-admin-ui/commit/f3e5193a92a3644cde4eb6c4fabffd2a356a9bb8))
+* **deps:** update docker/setup-buildx-action action to v4 ([#77](https://github.com/licenseware/ory-admin-ui/issues/77)) ([bb55d4a](https://github.com/licenseware/ory-admin-ui/commit/bb55d4a1a223ec5a3e01552f74666b3c620d2b87))
+* **deps:** update docker/setup-qemu-action action to v4 ([#78](https://github.com/licenseware/ory-admin-ui/issues/78)) ([0bb49ad](https://github.com/licenseware/ory-admin-ui/commit/0bb49ad4cd0f3b368e7ec9d5185e8e5a3921cfea))
+* **deps:** update go dependencies ([#86](https://github.com/licenseware/ory-admin-ui/issues/86)) ([8ec2593](https://github.com/licenseware/ory-admin-ui/commit/8ec259325594c23f0acd0b9cb8b68234ad9b61cf))
+* **deps:** update googleapis/release-please-action action to v5 ([#79](https://github.com/licenseware/ory-admin-ui/issues/79)) ([9dc6ca4](https://github.com/licenseware/ory-admin-ui/commit/9dc6ca4853f80530525139d00650235f9fbc3435))
+* **deps:** update sigstore/cosign-installer action to v4 ([#92](https://github.com/licenseware/ory-admin-ui/issues/92)) ([f00c329](https://github.com/licenseware/ory-admin-ui/commit/f00c3290850d8c38fc981a16555ccfd4d8a3b12a))
+
+
+### Chores
+
+* **deps:** lock file maintenance ([#59](https://github.com/licenseware/ory-admin-ui/issues/59)) ([e190081](https://github.com/licenseware/ory-admin-ui/commit/e1900814bd8e1d1331948ac8aaaa75bae78741b5))
+* **deps:** lock file maintenance ([#60](https://github.com/licenseware/ory-admin-ui/issues/60)) ([58de804](https://github.com/licenseware/ory-admin-ui/commit/58de804e8911da1eafc52c383e99bdbfd623f666))
+* **deps:** update precommit hooks ([1476840](https://github.com/licenseware/ory-admin-ui/commit/1476840475c05db3ccf9120e24bbb3bf94ac2668))
+* **deps:** upgrade js dependencies and update outdated code ([#85](https://github.com/licenseware/ory-admin-ui/issues/85)) ([a7db3f0](https://github.com/licenseware/ory-admin-ui/commit/a7db3f050e6ca7b7dcd21d548cfc0643aab3412c))
+
 ## [0.3.0](https://github.com/licenseware/ory-admin-ui/compare/v0.2.0...v0.3.0) (2026-04-06)
 
 
