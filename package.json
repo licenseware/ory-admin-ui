@@ -10,7 +10,7 @@
     "js-yaml": "^4.1.1",
     "ky": "^1.14.3",
     "loglevel": "^1.9.2",
-    "lucide-vue-next": "^0.577.0",
+    "lucide-vue-next": "^1.0.0",
     "pinia": "^3.0.4",
     "radix-vue": "^1.9.17",
     "tailwind-merge": "^3.5.0",
