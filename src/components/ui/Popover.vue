@@ -12,7 +12,7 @@ withDefaults(defineProps<Props>(), {
   align: "start",
 })
 
-const open = defineModel<boolean>("open", { default: undefined })
+const open = defineModel<boolean>("open")
 
 const isMounted = ref(true)
 onBeforeUnmount(() => {
