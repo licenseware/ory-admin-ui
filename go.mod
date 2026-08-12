@@ -3,11 +3,11 @@ module github.com/licenseware/ory-admin-ui
 go 1.25.5
 
 require (
-	github.com/caarlos0/env/v11 v11.4.0
-	github.com/go-chi/chi/v5 v5.2.5
+	github.com/caarlos0/env/v11 v11.4.1
+	github.com/go-chi/chi/v5 v5.3.1
 	github.com/meysam81/x/logging v0.0.0-20260310092240-698998704ca9
-	github.com/rs/zerolog v1.34.0
-	github.com/urfave/cli/v3 v3.7.0
+	github.com/rs/zerolog v1.35.1
+	github.com/urfave/cli/v3 v3.10.1
 )
 
 require (
