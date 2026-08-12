@@ -2,3 +2,4 @@ tsconfig.*
 src/views/SchemasView.vue
 CHANGELOG.md
 renovate.json
+bun.lock

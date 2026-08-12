@@ -28,7 +28,7 @@ Ory Admin UI is a production-grade single-page application for managing identiti
 | HTTP Client      | ky                                              |
 | Styling          | Tailwind CSS 3.4                                |
 | UI Components    | Radix Vue primitives                            |
-| Icons            | Lucide Vue Next                                 |
+| Icons            | @lucide/vue                                     |
 | Notifications    | vue-sonner                                      |
 | Linting          | oxlint, ESLint                                  |
 | Formatting       | Prettier                                        |
@@ -229,11 +229,9 @@ HTTP requests use `ky` with centralized configuration:
 export function createApiClient() {
   const settings = useSettingsStore()
   return ky.create({
-    prefixUrl: settings.kratosAdminBaseURL,
+    prefix: settings.kratosAdminBaseURL,
     timeout: 30000,
-    hooks: {
-      /* logging hooks */
-    },
+    hooks: {/* logging hooks */},
   })
 }
 ```

@@ -1,48 +1,49 @@
-import ky from "ky"
+import ky, { isHTTPError } from "ky"
 import log from "loglevel"
 import { useProfileStore } from "@/stores/profile"
 
 log.setLevel(import.meta.env.DEV ? "debug" : "warn")
 
-export function createApiClient() {
-  const settings = useProfileStore()
+type ErrorBody = { error?: { reason?: string; message?: string } }
 
+function createClient(prefix: string, label: string) {
   return ky.create({
-    prefixUrl: settings.kratosAdminBaseURL,
+    prefix,
     timeout: 30000,
     credentials: "include",
     redirect: "follow",
     hooks: {
       beforeRequest: [
-        (request) => {
-          log.debug(`[API] Request: ${request.method} ${request.url}`)
+        ({ request }) => {
+          log.debug(`[${label}] Request: ${request.method} ${request.url}`)
         },
       ],
       afterResponse: [
-        (request, _options, response) => {
-          log.debug(`[API] Response: ${request.method} ${request.url} - ${response.status}`)
+        ({ request, response }) => {
+          log.debug(`[${label}] Response: ${request.method} ${request.url} - ${response.status}`)
           return response
         },
       ],
       beforeError: [
-        async (error) => {
-          try {
-            const body = (await error.response.clone().json()) as {
-              error?: { reason?: string; message?: string }
-            }
-            const detail = body?.error?.reason ?? body?.error?.message
+        ({ error }) => {
+          if (isHTTPError(error)) {
+            const body = error.data as ErrorBody | string | undefined
+            const detail =
+              typeof body === "object" ? (body?.error?.reason ?? body?.error?.message) : undefined
             if (detail) {
               error.message = detail
             }
-          } catch {
-            // response not JSON or no usable field — keep original message
           }
-          log.error(`[API] Error:`, error.message)
+          log.error(`[${label}] Error:`, error.message)
           return error
         },
       ],
     },
   })
+}
+
+export function createApiClient() {
+  return createClient(useProfileStore().kratosAdminBaseURL, "API")
 }
 
 let apiClient: ReturnType<typeof createApiClient> | null = null
@@ -59,41 +60,7 @@ export function resetApiClient() {
 }
 
 export function createPublicApiClient() {
-  const settings = useProfileStore()
-
-  return ky.create({
-    prefixUrl: settings.kratosPublicBaseURL,
-    timeout: 30000,
-    credentials: "include",
-    redirect: "follow",
-    hooks: {
-      beforeRequest: [
-        (request) => {
-          log.debug(`[Public API] Request: ${request.method} ${request.url}`)
-        },
-      ],
-      afterResponse: [
-        (_request, _options, response) => {
-          log.debug(`[Public API] Response: ${response.status}`)
-          return response
-        },
-      ],
-      beforeError: [
-        async (error) => {
-          try {
-            const body = (await error.response.clone().json()) as { error?: { reason?: string } }
-            if (body?.error?.reason) {
-              error.message = body.error.reason
-            }
-          } catch {
-            // response not JSON or no reason — keep original message
-          }
-          log.error(`[Public API] Error:`, error.message)
-          return error
-        },
-      ],
-    },
-  })
+  return createClient(useProfileStore().kratosPublicBaseURL, "Public API")
 }
 
 let publicApiClient: ReturnType<typeof createPublicApiClient> | null = null
@@ -110,41 +77,7 @@ export function resetPublicApiClient() {
 }
 
 export function createOathkeeperApiClient() {
-  const settings = useProfileStore()
-
-  return ky.create({
-    prefixUrl: settings.oathkeeperApiBaseURL,
-    timeout: 30000,
-    credentials: "include",
-    redirect: "follow",
-    hooks: {
-      beforeRequest: [
-        (request) => {
-          log.debug(`[Oathkeeper API] Request: ${request.method} ${request.url}`)
-        },
-      ],
-      afterResponse: [
-        (_request, _options, response) => {
-          log.debug(`[Oathkeeper API] Response: ${response.status}`)
-          return response
-        },
-      ],
-      beforeError: [
-        async (error) => {
-          try {
-            const body = (await error.response.clone().json()) as { error?: { reason?: string } }
-            if (body?.error?.reason) {
-              error.message = body.error.reason
-            }
-          } catch {
-            // response not JSON or no reason — keep original message
-          }
-          log.error(`[Oathkeeper API] Error:`, error.message)
-          return error
-        },
-      ],
-    },
-  })
+  return createClient(useProfileStore().oathkeeperApiBaseURL, "Oathkeeper API")
 }
 
 let oathkeeperApiClient: ReturnType<typeof createOathkeeperApiClient> | null = null

@@ -21,7 +21,7 @@ import ErrorState from "@/components/common/ErrorState.vue"
 import type { AuthenticationMethod } from "@/types/api"
 import ReloadButton from "@/components/common/ReloadButton.vue"
 import BackButton from "@/components/common/BackButton.vue"
-import { AlertTriangle, Key, User, Clock, Monitor, Globe, Shield } from "lucide-vue-next"
+import { AlertTriangle, Key, User, Clock, Monitor, Globe, Shield } from "@lucide/vue"
 
 const route = useRoute()
 const router = useRouter()

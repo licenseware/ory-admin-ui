@@ -16,7 +16,7 @@ import ErrorState from "@/components/common/ErrorState.vue"
 import Pagination from "@/components/common/Pagination.vue"
 import JsonViewer from "@/components/common/JsonViewer.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
-import { Search, Mail, Eye, Filter } from "lucide-vue-next"
+import { Search, Mail, Eye, Filter } from "@lucide/vue"
 import { useUrlState } from "@/composables/useUrlState"
 import type { Message } from "@/types/api"
 

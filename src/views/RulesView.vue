@@ -13,7 +13,7 @@ import Skeleton from "@/components/ui/Skeleton.vue"
 import EmptyState from "@/components/common/EmptyState.vue"
 import ErrorState from "@/components/common/ErrorState.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
-import { Shield, Plus, Search, Copy, Eye, Activity, ArrowLeft, ArrowRight } from "lucide-vue-next"
+import { Shield, Plus, Search, Copy, Eye, Activity, ArrowLeft, ArrowRight } from "@lucide/vue"
 import { useUrlState } from "@/composables/useUrlState"
 import type { Rule } from "@/types/oathkeeper"
 

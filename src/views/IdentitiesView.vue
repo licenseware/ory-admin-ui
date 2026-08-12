@@ -33,7 +33,7 @@ import {
   SearchX,
   Sparkles,
   Hash,
-} from "lucide-vue-next"
+} from "@lucide/vue"
 import { useUrlState } from "@/composables/useUrlState"
 import { useSortState } from "@/composables/useSortState"
 import { matchesIdentitySearch, isUuid } from "@/lib/utils"

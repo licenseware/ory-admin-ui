@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RefreshCw } from "lucide-vue-next"
+import { RefreshCw } from "@lucide/vue"
 import { TooltipProvider } from "radix-vue"
 import Button from "@/components/ui/Button.vue"
 import Tooltip from "@/components/ui/Tooltip.vue"

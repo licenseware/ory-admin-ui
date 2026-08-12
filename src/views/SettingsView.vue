@@ -31,7 +31,7 @@ import {
   Upload,
   Check,
   Copy,
-} from "lucide-vue-next"
+} from "@lucide/vue"
 import { toast } from "vue-sonner"
 
 const appVersion = __APP_VERSION__

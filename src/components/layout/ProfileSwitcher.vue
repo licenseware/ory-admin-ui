@@ -7,7 +7,7 @@ import Popover from "@/components/ui/Popover.vue"
 import Button from "@/components/ui/Button.vue"
 import Badge from "@/components/ui/Badge.vue"
 import Input from "@/components/ui/Input.vue"
-import { Server, ChevronDown, Check, Settings } from "lucide-vue-next"
+import { Server, ChevronDown, Check, Settings } from "@lucide/vue"
 
 const profileStore = useProfileStore()
 const { isMobile } = useBreakpoints()

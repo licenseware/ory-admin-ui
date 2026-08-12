@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBackNavigation } from "@/composables/useBackNavigation"
 import Button from "@/components/ui/Button.vue"
-import { ArrowLeft } from "lucide-vue-next"
+import { ArrowLeft } from "@lucide/vue"
 
 interface Props {
   fallback: string

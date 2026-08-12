@@ -15,7 +15,7 @@ import JsonViewer from "@/components/common/JsonViewer.vue"
 import CopyButton from "@/components/common/CopyButton.vue"
 import BackButton from "@/components/common/BackButton.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
-import { Shield, Copy, Globe, Server, Lock, ChevronDown, ChevronRight } from "lucide-vue-next"
+import { Shield, Copy, Globe, Server, Lock, ChevronDown, ChevronRight } from "@lucide/vue"
 import type { RuleHandler } from "@/types/oathkeeper"
 
 const route = useRoute()

@@ -36,7 +36,7 @@ import {
   ChevronUp,
   X,
   Keyboard,
-} from "lucide-vue-next"
+} from "@lucide/vue"
 import type { IdentitySchema } from "@/types/api"
 import { cn } from "@/lib/utils"
 

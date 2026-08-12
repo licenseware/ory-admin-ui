@@ -18,7 +18,7 @@ import ErrorState from "@/components/common/ErrorState.vue"
 import EmptyState from "@/components/common/EmptyState.vue"
 import Badge from "@/components/ui/Badge.vue"
 import { useProfileStore } from "@/stores/profile"
-import { Users, Key, Mail, Activity, ArrowRight, Circle } from "lucide-vue-next"
+import { Users, Key, Mail, Activity, ArrowRight, Circle } from "@lucide/vue"
 
 const profileStore = useProfileStore()
 

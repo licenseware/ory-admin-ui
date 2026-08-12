@@ -1,17 +1,18 @@
 {
   "author": "meysam81",
   "dependencies": {
+    "@lucide/vue": "^1.0.0",
     "@tanstack/vue-query": "^5.92.9",
+    "@vue/devtools-api": "^8.1.5",
     "@vueuse/core": "^14.2.1",
     "baseline-browser-mapping": "^2.10.8",
     "caniuse-lite": "^1.0.30001780",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "js-yaml": "^4.1.1",
-    "ky": "^1.14.3",
+    "js-yaml": "^5.0.0",
+    "ky": "^2.0.0",
     "loglevel": "^1.9.2",
-    "lucide-vue-next": "^0.577.0",
-    "pinia": "^3.0.4",
+    "pinia": "^4.0.0",
     "radix-vue": "^1.9.17",
     "tailwind-merge": "^3.5.0",
     "vue": "^3.5.30",
@@ -22,20 +23,19 @@
   "description": "Production-grade admin UI for Ory Kratos identity server",
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.1",
-    "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.5.0",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vitest/coverage-v8": "^4.1.0",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.27",
-    "jsdom": "^29.0.0",
+    "jsdom": "^30.0.0",
     "lightningcss": "^1.32.0",
     "oxlint": "^1.56.0",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.2.1",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.0",
     "vite": "^8.0.0",
     "vite-plugin-compression2": "^2.5.2",
     "vite-plugin-html": "^3.2.2",
@@ -43,7 +43,7 @@
     "vue-tsc": "^3.2.6"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "keywords": [
     "ory",

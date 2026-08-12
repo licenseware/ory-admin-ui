@@ -17,7 +17,7 @@ import ErrorState from "@/components/common/ErrorState.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
 import BackButton from "@/components/common/BackButton.vue"
 import { useBackNavigation } from "@/composables/useBackNavigation"
-import { Save, FileJson, User } from "lucide-vue-next"
+import { Save, FileJson, User } from "@lucide/vue"
 
 const router = useRouter()
 const { goBack } = useBackNavigation("/identities", "Back to Identities")

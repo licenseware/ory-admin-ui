@@ -12,7 +12,7 @@ import ErrorState from "@/components/common/ErrorState.vue"
 import JsonViewer from "@/components/common/JsonViewer.vue"
 import CopyButton from "@/components/common/CopyButton.vue"
 import ReloadButton from "@/components/common/ReloadButton.vue"
-import { KeyRound, ChevronDown } from "lucide-vue-next"
+import { KeyRound, ChevronDown } from "@lucide/vue"
 import { cn } from "@/lib/utils"
 
 const showRawJson = ref(false)

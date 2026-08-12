@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue"
 import { useRoute } from "vue-router"
-import yaml from "js-yaml"
+import { dump } from "js-yaml"
 import { useRule } from "@/composables/useOathkeeper"
 import Card from "@/components/ui/Card.vue"
 import CardHeader from "@/components/ui/CardHeader.vue"
@@ -15,7 +15,7 @@ import Select from "@/components/ui/Select.vue"
 import Textarea from "@/components/ui/Textarea.vue"
 import CopyButton from "@/components/common/CopyButton.vue"
 import BackButton from "@/components/common/BackButton.vue"
-import { Shield, Plus, Trash2, Download } from "lucide-vue-next"
+import { Shield, Plus, Trash2, Download } from "@lucide/vue"
 import { cn } from "@/lib/utils"
 
 const route = useRoute()
@@ -178,7 +178,7 @@ const generatedYaml = computed(() => {
       ...(parseJsonSafe(m.config) !== undefined ? { config: parseJsonSafe(m.config) } : {}),
     })),
   }
-  return yaml.dump([rule], { lineWidth: -1 })
+  return dump([rule], { lineWidth: -1 })
 })
 
 // --- Download ---
@@ -472,8 +472,7 @@ function downloadYaml() {
       <CardContent>
         <pre
           class="bg-surface-overlay text-text-primary overflow-x-auto rounded-lg p-4 font-mono text-sm"
-          >{{ generatedYaml }}</pre
-        >
+          >{{ generatedYaml }}</pre>
       </CardContent>
     </Card>
   </div>

@@ -11,7 +11,7 @@ import {
   SelectItemText,
   SelectItemIndicator,
 } from "radix-vue"
-import { ChevronDown, Check } from "lucide-vue-next"
+import { ChevronDown, Check } from "@lucide/vue"
 
 interface Option {
   value: string
