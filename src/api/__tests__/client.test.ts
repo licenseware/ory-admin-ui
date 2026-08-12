@@ -4,6 +4,7 @@ vi.mock("ky", () => ({
   default: {
     create: vi.fn(() => "mock-client-instance"),
   },
+  isHTTPError: vi.fn(() => false),
 }))
 
 vi.mock("@/stores/profile", () => ({
@@ -36,10 +37,10 @@ describe("client", () => {
   })
 
   describe("createApiClient", () => {
-    it("calls ky.create with admin prefixUrl", () => {
+    it("calls ky.create with admin prefix", () => {
       createApiClient()
       expect(ky.create).toHaveBeenCalledWith(
-        expect.objectContaining({ prefixUrl: "http://admin.test" })
+        expect.objectContaining({ prefix: "http://admin.test" })
       )
     })
   })
@@ -69,10 +70,10 @@ describe("client", () => {
   })
 
   describe("createPublicApiClient", () => {
-    it("calls ky.create with public prefixUrl", () => {
+    it("calls ky.create with public prefix", () => {
       createPublicApiClient()
       expect(ky.create).toHaveBeenCalledWith(
-        expect.objectContaining({ prefixUrl: "http://public.test" })
+        expect.objectContaining({ prefix: "http://public.test" })
       )
     })
   })
@@ -101,10 +102,10 @@ describe("client", () => {
   })
 
   describe("createOathkeeperApiClient", () => {
-    it("calls ky.create with oathkeeper prefixUrl", () => {
+    it("calls ky.create with oathkeeper prefix", () => {
       createOathkeeperApiClient()
       expect(ky.create).toHaveBeenCalledWith(
-        expect.objectContaining({ prefixUrl: "http://oathkeeper.test" })
+        expect.objectContaining({ prefix: "http://oathkeeper.test" })
       )
     })
   })

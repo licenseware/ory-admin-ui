@@ -4,10 +4,11 @@ import { useThemeStore } from "@/stores/theme"
 import { useUIStore } from "@/stores/ui"
 import { useSystemHealth } from "@/composables/useHealth"
 import { useBreakpoints } from "@/composables/useBreakpoints"
-import { Sun, Moon, Github, Settings, Circle, Menu } from "lucide-vue-next"
+import { Sun, Moon, Settings, Circle, Menu } from "@lucide/vue"
 import Button from "@/components/ui/Button.vue"
 import Tooltip from "@/components/ui/Tooltip.vue"
 import ProfileSwitcher from "@/components/layout/ProfileSwitcher.vue"
+import GithubIcon from "@/components/common/GithubIcon.vue"
 import { TooltipProvider } from "radix-vue"
 
 const route = useRoute()
@@ -86,7 +87,7 @@ function getCurrentBreadcrumb() {
             rel="noopener noreferrer"
             class="text-text-secondary hover:text-text-primary inline-flex items-center gap-2 px-2 py-1 text-sm transition-colors"
           >
-            <Github class="h-4 w-4" />
+            <GithubIcon class="h-4 w-4" />
             <span class="hidden sm:inline">GitHub</span>
           </a>
         </Tooltip>

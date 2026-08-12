@@ -12,7 +12,7 @@ import {
   RefreshCw,
   ShieldCheck,
   Info,
-} from "lucide-vue-next"
+} from "@lucide/vue"
 import Badge from "@/components/ui/Badge.vue"
 import Card from "@/components/ui/Card.vue"
 import CardContent from "@/components/ui/CardContent.vue"

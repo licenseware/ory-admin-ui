@@ -14,7 +14,7 @@ import {
   ChevronRight,
   Shield,
   KeyRound,
-} from "lucide-vue-next"
+} from "@lucide/vue"
 import Tooltip from "@/components/ui/Tooltip.vue"
 import { TooltipProvider } from "radix-vue"
 

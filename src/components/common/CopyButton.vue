@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { Copy, Check } from "lucide-vue-next"
+import { Copy, Check } from "@lucide/vue"
 import Button from "@/components/ui/Button.vue"
 import { toast } from "vue-sonner"
 

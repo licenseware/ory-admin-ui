@@ -9,7 +9,7 @@ import {
   Braces,
   List,
   CircleDot,
-} from "lucide-vue-next"
+} from "@lucide/vue"
 import Badge from "@/components/ui/Badge.vue"
 import { cn } from "@/lib/utils"
 
