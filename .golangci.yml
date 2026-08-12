@@ -1,0 +1,14 @@
+version: "2"
+
+linters:
+  exclusions:
+    rules:
+      # middleware.RealIP is deprecated because it trusts X-Forwarded-For /
+      # X-Real-IP / True-Client-IP unconditionally (GHSA-3fxj-6jh8-hvhx,
+      # GHSA-rjr7-jggh-pgcp, GHSA-9g5q-2w5x-hmxf). We only register it when
+      # TRUST_PROXY_HEADERS is explicitly set, i.e. when the operator confirms
+      # the app sits behind a proxy that overwrites those headers.
+      - path: main\.go
+        linters:
+          - staticcheck
+        text: "SA1019: middleware.RealIP is deprecated"

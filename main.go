@@ -98,6 +98,8 @@ func startServer(ctx context.Context, appState *AppState) error {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
+	// RealIP blindly trusts X-Forwarded-For/X-Real-IP/True-Client-IP, so it is
+	// only safe behind a proxy that overwrites them; opt in explicitly.
 	if appState.Config.TrustProxyHeaders {
 		r.Use(middleware.RealIP)
 	}
