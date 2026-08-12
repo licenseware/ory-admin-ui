@@ -4,6 +4,14 @@ import { useProfileStore, nameToSlug } from "@/stores/profile"
 import { useThemeStore } from "@/stores/theme"
 import { useHealthAlive, usePublicHealthAlive, useVersion } from "@/composables/useHealth"
 import { useOathkeeperHealth, useOathkeeperVersion } from "@/composables/useOathkeeper"
+import {
+  appVersion,
+  commitSha,
+  commitUrl,
+  isStableBuild,
+  releaseUrl,
+  shortCommitSha,
+} from "@/lib/buildInfo"
 import Card from "@/components/ui/Card.vue"
 import CardHeader from "@/components/ui/CardHeader.vue"
 import CardTitle from "@/components/ui/CardTitle.vue"
@@ -34,7 +42,12 @@ import {
 } from "@lucide/vue"
 import { toast } from "vue-sonner"
 
-const appVersion = __APP_VERSION__
+const buildLabel = isStableBuild
+  ? appVersion
+  : shortCommitSha
+    ? `${appVersion} · ${shortCommitSha}`
+    : appVersion
+const buildUrl = isStableBuild ? releaseUrl : commitUrl
 const profileStore = useProfileStore()
 const themeStore = useThemeStore()
 
@@ -638,12 +651,13 @@ watch(theme, (newTheme) => {
         <div class="border-border-subtle flex justify-between border-b py-2">
           <span class="text-text-muted text-sm">Admin UI Version</span>
           <a
-            :href="`https://github.com/licenseware/ory-admin-ui/releases/tag/v${appVersion}`"
+            :href="buildUrl"
+            :title="isStableBuild ? undefined : commitSha"
             target="_blank"
             rel="noopener noreferrer"
             class="text-accent hover:text-accent-hover font-mono text-sm"
           >
-            {{ appVersion }}
+            {{ buildLabel }}
           </a>
         </div>
         <div class="border-border-subtle flex justify-between border-b py-2">
