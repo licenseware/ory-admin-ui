@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { useVersion } from "@/composables/useHealth"
+import {
+  appVersion,
+  commitSha,
+  commitUrl,
+  isStableBuild,
+  releaseUrl,
+  shortCommitSha,
+} from "@/lib/buildInfo"
 
-const appVersion = __APP_VERSION__
 const { data: versionData } = useVersion()
 </script>
 
@@ -12,13 +19,29 @@ const { data: versionData } = useVersion()
     >
       <div class="flex items-center gap-2">
         <a
-          :href="`https://github.com/licenseware/ory-admin-ui/releases/tag/v${appVersion}`"
+          v-if="isStableBuild"
+          :href="releaseUrl"
           target="_blank"
           rel="noopener noreferrer"
           class="hover:text-text-secondary transition-colors"
         >
-          Ory Admin UI v{{ appVersion }}
+          Ory Admin UI {{ appVersion }}
         </a>
+        <span v-else>
+          Ory Admin UI {{ appVersion }}
+          <template v-if="shortCommitSha">
+            &middot;
+            <a
+              :href="commitUrl"
+              :title="commitSha"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-text-secondary font-mono transition-colors"
+            >
+              {{ shortCommitSha }}
+            </a>
+          </template>
+        </span>
         <span v-if="versionData?.version" class="text-text-muted">
           &middot;
           <a

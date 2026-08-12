@@ -1,7 +1,13 @@
 FROM oven/bun:1 AS builder
 
+ARG VERSION
+ARG COMMIT
+
 WORKDIR /app
 COPY . .
+
+ENV APP_VERSION=${VERSION} \
+    APP_COMMIT=${COMMIT}
 
 RUN bun install --frozen-lockfile && \
     bun run build

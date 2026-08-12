@@ -9,7 +9,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
   return {
     define: {
-      __APP_VERSION__: JSON.stringify(version),
+      __APP_VERSION__: JSON.stringify(env.APP_VERSION || version),
+      __APP_COMMIT__: JSON.stringify(env.APP_COMMIT || ""),
     },
     plugins: [
       vue(),
