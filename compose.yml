@@ -16,7 +16,7 @@ services:
       retries: 5
 
   kratos-migrate:
-    image: oryd/kratos:v1.3.1
+    image: oryd/kratos:v26.2.0
     command: migrate sql -e --yes
     environment:
       - DSN=postgres://kratos:kratos@postgres:5432/kratos?sslmode=disable
@@ -29,7 +29,7 @@ services:
     restart: on-failure
 
   kratos:
-    image: oryd/kratos:v1.3.1
+    image: oryd/kratos:v26.2.0
     command: serve all --dev --watch-courier -c /etc/kratos/kratos.yml
     environment:
       - DSN=postgres://kratos:kratos@postgres:5432/kratos?sslmode=disable
