@@ -1,0 +1,53 @@
+name: pr
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      # --force is an upsert, so this also repairs a hand-edited or deleted label.
+      - name: Ensure labels exist
+        run: |
+          ensure() { gh label create "$1" --color "$2" --description "$3" --force >/dev/null; }
+          ensure size/xs  00CC00 "1-10 lines"
+          ensure size/s   66CC00 "11-50 lines"
+          ensure size/m   CCCC00 "51-100 lines"
+          ensure size/l   CC6600 "101-500 lines"
+          ensure size/xl  CC0000 "501-1000 lines"
+          ensure size/2xl AA0000 "1001-2500 lines"
+          ensure size/3xl 880000 "2501-5000 lines"
+          ensure size/4xl 660000 "5001-10000 lines"
+          ensure size/5xl 440000 "10000+ lines"
+      # Thresholds mirror the size/* label descriptions above.
+      - name: Label PR by changed lines
+        run: |
+          n=$(gh pr view "$PR" --json additions,deletions -q '.additions + .deletions')
+          if   [ "$n" -le 10 ];  then s=xs
+          elif [ "$n" -le 50 ];  then s=s
+          elif [ "$n" -le 100 ]; then s=m
+          elif [ "$n" -le 500 ]; then s=l
+          elif [ "$n" -le 1000 ]; then s=xl
+          elif [ "$n" -le 2500 ]; then s=2xl
+          elif [ "$n" -le 5000 ]; then s=3xl
+          elif [ "$n" -le 10000 ]; then s=4xl
+          else                        s=5xl
+          fi
+          stale=$(gh pr view "$PR" --json labels \
+            -q "[.labels[].name | select(startswith(\"size/\") and . != \"size/$s\")] | join(\",\")")
+          gh pr edit "$PR" --add-label "size/$s" ${stale:+--remove-label "$stale"}
