@@ -4,7 +4,7 @@
     "@lucide/vue": "^1.0.0",
     "@tanstack/vue-query": "^5.92.9",
     "@vue/devtools-api": "^8.1.5",
-    "@vueuse/core": "^14.2.1",
+    "@vueuse/core": "^15.0.0",
     "baseline-browser-mapping": "^2.10.8",
     "caniuse-lite": "^1.0.30001780",
     "class-variance-authority": "^0.7.1",
