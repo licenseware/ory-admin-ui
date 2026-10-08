@@ -11,4 +11,4 @@ linters:
       - path: main\.go
         linters:
           - staticcheck
-        text: "SA1019: middleware.RealIP is deprecated"
+        text: 'SA1019: \S*middleware\.RealIP is deprecated'
