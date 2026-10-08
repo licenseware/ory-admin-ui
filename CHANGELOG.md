@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/licenseware/ory-admin-ui/compare/v0.4.0...v0.4.1) (2026-10-08)
+
+
+### Build & Dependencies
+
+* **deps:** consolidate dependency updates ([#102](https://github.com/licenseware/ory-admin-ui/issues/102)) ([5272058](https://github.com/licenseware/ory-admin-ui/commit/5272058ff0ec0e5b695780d454ce2ad8316e6744))
+
+
+### CI
+
+* label PRs by size ([#100](https://github.com/licenseware/ory-admin-ui/issues/100)) ([7025ab1](https://github.com/licenseware/ory-admin-ui/commit/7025ab1e055ccfba4fb1a3a483efa45073e99e77))
+
 ## [0.4.0](https://github.com/licenseware/ory-admin-ui/compare/v0.3.0...v0.4.0) (2026-08-12)
 
 
