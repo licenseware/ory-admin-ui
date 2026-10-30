@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.5.0](https://github.com/licenseware/ory-admin-ui/compare/v0.4.0...v0.5.0) (2026-10-30)
+
+
+### Features
+
+* **deps-security:** update module github.com/go-chi/chi/v5 to v5.4.0 [security] ([#103](https://github.com/licenseware/ory-admin-ui/issues/103)) ([a291934](https://github.com/licenseware/ory-admin-ui/commit/a2919345be2b65ca2209828408ababfb19413b51))
+* **deps-security:** update module golang.org/x/sys to v0.44.0 [security] ([#104](https://github.com/licenseware/ory-admin-ui/issues/104)) ([9545c50](https://github.com/licenseware/ory-admin-ui/commit/9545c50ea9f178330f4984d395ce83a59f204c4f))
+
+
+### Build & Dependencies
+
+* **deps:** consolidate dependency updates ([#102](https://github.com/licenseware/ory-admin-ui/issues/102)) ([5272058](https://github.com/licenseware/ory-admin-ui/commit/5272058ff0ec0e5b695780d454ce2ad8316e6744))
+
+
+### CI
+
+* label PRs by size ([#100](https://github.com/licenseware/ory-admin-ui/issues/100)) ([7025ab1](https://github.com/licenseware/ory-admin-ui/commit/7025ab1e055ccfba4fb1a3a483efa45073e99e77))
+* move releases to their own never-cancelled workflow ([#109](https://github.com/licenseware/ory-admin-ui/issues/109)) ([d1cd9ae](https://github.com/licenseware/ory-admin-ui/commit/d1cd9aee26cc8d5e84a1d8fec5005d187ae4e52c)), closes [#105](https://github.com/licenseware/ory-admin-ui/issues/105)
+* pin GitHub Actions to commit SHAs ([#107](https://github.com/licenseware/ory-admin-ui/issues/107)) ([e275014](https://github.com/licenseware/ory-admin-ui/commit/e275014a384983cc542780f43230b382d2aab708))
+
 ## [0.4.0](https://github.com/licenseware/ory-admin-ui/compare/v0.3.0...v0.4.0) (2026-08-12)
 
 
