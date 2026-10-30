@@ -328,8 +328,11 @@ GitHub Actions workflow (`.github/workflows/ci.yml`):
 - Builds Docker images on push to main and PRs
 - Uses cosign for image signing
 - Kubescape security scanning
-- Release Please for automated releases
 - Images pushed to Docker Hub and GHCR
+
+Releases (`.github/workflows/release.yml`): Release Please tags the release and
+GoReleaser publishes the `v*` images, binaries and Homebrew cask. Runs are never
+cancelled. To publish an existing tag again, run the workflow manually with `tag`.
 
 ## Key Files Reference
 
