@@ -8,6 +8,7 @@ import {
   useDeleteIdentityCredential,
   useBlockIdentity,
   useCreateRecoveryLink,
+  useCreateRecoveryCode,
 } from "@/composables/useIdentities"
 import { useRevokeSession } from "@/composables/useSessions"
 import Card from "@/components/ui/Card.vue"
@@ -32,6 +33,7 @@ import { useUrlState } from "@/composables/useUrlState"
 import {
   Trash2,
   Key,
+  KeyRound,
   Shield,
   ShieldOff,
   Link,
@@ -54,6 +56,7 @@ const blockDialogOpen = ref(false)
 const revokeSessionDialogOpen = ref(false)
 const sessionToRevoke = ref<string | null>(null)
 const recoveryLink = ref<string | null>(null)
+const recoveryCode = ref<{ link: string; code: string } | null>(null)
 const deleteCredentialDialogOpen = ref(false)
 const credentialToDelete = ref<{ type: string; identifier?: string } | null>(null)
 
@@ -68,6 +71,7 @@ const {
 const { mutate: deleteIdentity, isPending: isDeleting } = useDeleteIdentity()
 const { mutate: blockIdentity, isPending: isBlocking } = useBlockIdentity()
 const { mutate: createRecoveryLink, isPending: isCreatingRecovery } = useCreateRecoveryLink()
+const { mutate: createRecoveryCode, isPending: isCreatingRecoveryCode } = useCreateRecoveryCode()
 const { mutate: revokeSession, isPending: isRevoking } = useRevokeSession()
 const { mutate: deleteCredential, isPending: isDeletingCredential } = useDeleteIdentityCredential()
 
@@ -108,7 +112,20 @@ function handleCreateRecoveryLink() {
     { identityId: identityId.value },
     {
       onSuccess: (data) => {
+        recoveryCode.value = null
         recoveryLink.value = data.recovery_link
+      },
+    }
+  )
+}
+
+function handleCreateRecoveryCode() {
+  createRecoveryCode(
+    { identityId: identityId.value, expiresIn: "1h" },
+    {
+      onSuccess: (data) => {
+        recoveryLink.value = null
+        recoveryCode.value = { link: data.recovery_link, code: data.recovery_code }
       },
     }
   )
@@ -231,6 +248,14 @@ const deleteCredentialDescription = computed(() => {
                 <Link class="mr-2 h-4 w-4" />
                 Recovery Link
               </Button>
+              <Button
+                variant="outline"
+                @click="handleCreateRecoveryCode"
+                :disabled="isCreatingRecoveryCode"
+              >
+                <KeyRound class="mr-2 h-4 w-4" />
+                Recovery Code
+              </Button>
               <Button :variant="isBlocked ? 'outline' : 'outline'" @click="blockDialogOpen = true">
                 <ShieldOff v-if="!isBlocked" class="mr-2 h-4 w-4" />
                 <Shield v-else class="mr-2 h-4 w-4" />
@@ -257,6 +282,29 @@ const deleteCredentialDescription = computed(() => {
             </div>
             <p class="text-text-muted mt-2 text-xs">
               This link will expire. Share it securely with the user.
+            </p>
+          </div>
+
+          <!-- Recovery code display -->
+          <div
+            v-if="recoveryCode"
+            class="border-success/30 bg-success/10 mt-4 rounded-lg border p-4"
+          >
+            <p class="text-success mb-2 text-sm font-medium">Recovery Code Generated</p>
+            <div class="flex items-center gap-2">
+              <code class="text-text-primary flex-1 font-mono text-xs break-all">
+                {{ recoveryCode.link }}
+              </code>
+              <CopyButton :text="recoveryCode.link" />
+            </div>
+            <div class="mt-3 flex items-center gap-2">
+              <code class="text-text-primary flex-1 font-mono text-2xl tracking-widest">
+                {{ recoveryCode.code }}
+              </code>
+              <CopyButton :text="recoveryCode.code" />
+            </div>
+            <p class="text-text-muted mt-2 text-xs">
+              Send the link and the code to the user. The code works once and expires in 1 hour.
             </p>
           </div>
         </CardContent>
