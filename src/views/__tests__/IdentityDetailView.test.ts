@@ -11,6 +11,7 @@ vi.mock("@/api/identities", () => ({
     delete: vi.fn(),
     patch: vi.fn(),
     createRecoveryLink: vi.fn(),
+    createRecoveryCode: vi.fn(),
   },
 }))
 
@@ -176,5 +177,68 @@ describe("IdentityDetailView", () => {
     const alertDialogs = wrapper.findAllComponents({ name: "AlertDialogRoot" })
     const openDialog = alertDialogs.find((d) => d.props("open") === true)
     expect(openDialog).toBeDefined()
+  })
+
+  describe("recovery code", () => {
+    const identityId = "test-uuid-1234-5678-abcd-ef1234567890"
+    const codeResult = {
+      recovery_link: "https://app.example.test/recovery?flow=f-1",
+      recovery_code: "482913",
+    }
+
+    async function clickButton(wrapper: ReturnType<typeof renderDetail>["wrapper"], label: string) {
+      const btn = wrapper.findAll("button").find((b) => b.text().includes(label))!
+      await btn.trigger("click")
+      await flushPromises()
+    }
+
+    async function renderLoaded() {
+      const result = renderDetail()
+      await result.router.push(`/identities/${identityId}`)
+      await result.router.isReady()
+      await flushPromises()
+      return result.wrapper
+    }
+
+    it("creates a recovery code valid for one hour", async () => {
+      vi.mocked(identitiesApi.createRecoveryCode).mockResolvedValue(codeResult)
+      const wrapper = await renderLoaded()
+
+      await clickButton(wrapper, "Recovery Code")
+
+      expect(vi.mocked(identitiesApi.createRecoveryCode)).toHaveBeenCalledWith(identityId, "1h")
+    })
+
+    it("shows the recovery link and code after creation", async () => {
+      vi.mocked(identitiesApi.createRecoveryCode).mockResolvedValue(codeResult)
+      const wrapper = await renderLoaded()
+
+      await clickButton(wrapper, "Recovery Code")
+
+      const text = wrapper.text()
+      expect(text).toContain("Recovery Code Generated")
+      expect(text).toContain("https://app.example.test/recovery?flow=f-1")
+      expect(text).toContain("482913")
+      expect(text).toContain("The code works once and expires in 1 hour.")
+    })
+
+    it("shows only the latest recovery result", async () => {
+      vi.mocked(identitiesApi.createRecoveryCode).mockResolvedValue(codeResult)
+      vi.mocked(identitiesApi.createRecoveryLink).mockResolvedValue({
+        recovery_link: "https://app.example.test/link",
+      })
+      const wrapper = await renderLoaded()
+
+      await clickButton(wrapper, "Recovery Code")
+      await clickButton(wrapper, "Recovery Link")
+      expect(wrapper.text()).not.toContain("482913")
+      expect(wrapper.text()).not.toContain("Recovery Code Generated")
+      expect(wrapper.text()).toContain("Recovery Link Generated")
+
+      await clickButton(wrapper, "Recovery Code")
+      expect(wrapper.text()).toContain("482913")
+      expect(wrapper.text()).not.toContain("Recovery Link Generated")
+      expect(wrapper.text()).not.toContain("https://app.example.test/link")
+    })
   })
 })
