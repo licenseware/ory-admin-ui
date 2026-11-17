@@ -1,9 +1,9 @@
 module github.com/licenseware/ory-admin-ui
 
-go 1.25.5
+go 1.26.0
 
 require (
-	github.com/caarlos0/env/v11 v11.4.1
+	github.com/caarlos0/env/v11 v11.4.2
 	github.com/go-chi/chi/v5 v5.5.0
 	github.com/meysam81/x/logging v0.0.0-20260914104220-b9e8862c3944
 	github.com/rs/zerolog v1.35.1
