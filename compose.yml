@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:18
+    image: postgres:18@sha256:64c8b0d31e4ab6ea665e8426ea406a94bf52de3c05b3a4a8bf713704eefa9328
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -16,7 +16,7 @@ services:
       retries: 5
 
   kratos-migrate:
-    image: oryd/kratos:v26.2.0
+    image: oryd/kratos:v26.2.0@sha256:2a13bb8d362c7a7ae33bd7c0f5168aee46921f15c916a06346db91c06dc76643
     command: migrate sql up -e --yes
     environment:
       - DSN=postgres://kratos:kratos@postgres:5432/kratos?sslmode=disable
@@ -29,7 +29,7 @@ services:
     restart: on-failure
 
   kratos:
-    image: oryd/kratos:v26.2.0
+    image: oryd/kratos:v26.2.0@sha256:2a13bb8d362c7a7ae33bd7c0f5168aee46921f15c916a06346db91c06dc76643
     command: serve all --dev --watch-courier -c /etc/kratos/kratos.yml
     environment:
       - DSN=postgres://kratos:kratos@postgres:5432/kratos?sslmode=disable
@@ -45,7 +45,7 @@ services:
         condition: service_completed_successfully
 
   oathkeeper:
-    image: oryd/oathkeeper:v26.2.0
+    image: oryd/oathkeeper:v26.2.0@sha256:467329abde34feefca217b7af76fff59e77fe1795a19376e9d479f33c7c198fc
     command: serve proxy -c /etc/oathkeeper/oathkeeper.yml
     volumes:
       - ./dev/oathkeeper.yml:/etc/oathkeeper/oathkeeper.yml:ro
@@ -58,7 +58,7 @@ services:
       - host.docker.internal:host-gateway
 
   mailslurper:
-    image: oryd/mailslurper:latest-smtps
+    image: oryd/mailslurper:latest-smtps@sha256:d4b6583cc0f2715ca698c8ee2771b7d2e17d3c50f04070a1a1af63ba5867c615
     ports:
       - "4436:4436"
       - "4437:4437"
